@@ -1,0 +1,21 @@
+/* ===== GRAPHITE GTK4 ===== */
+@import url("resource:///org/gtk/libgtk/theme/Adwaita/gtk-dark.css");
+/* Colores de acento */
+@define-color accent_color #B8B8B8;
+@define-color accent_bg_color #777777;
+@define-color accent_fg_color #FFFFFF;
+
+/* Selecciones */
+@define-color theme_selected_bg_color #777777;
+@define-color theme_selected_fg_color #FFFFFF;
+
+/* Barras de volumen y progreso */
+scale trough highlight,
+progressbar trough progress {
+    background-color: #B8B8B8;
+}
+
+/* Pestañas seleccionadas */
+stackswitcher button:checked {
+    box-shadow: inset 0 -3px #B8B8B8;
+}

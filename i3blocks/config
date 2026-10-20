@@ -1,0 +1,26 @@
+separator=false
+separator_block_width=15
+markup=pango
+
+[cpu]
+label=CPU: 
+command=mpstat 1 1 | awk '/Average:/ {printf("%s%%", 100 - $12)}'
+interval=2
+color=#B8B8B8
+
+[memory]
+label=RAM: 
+command=free -h | awk '/^Mem:/ {print $3 "/" $2}'
+interval=5
+color=#9A9A9A
+
+[volume]
+label=VOL: 
+command=if [ "$BLOCK_BUTTON" = "1" ]; then env GTK_THEME=Adwaita:dark pavucontrol & fi; amixer sget Master | awk -F'[][]' '/%/ {if ($4=="off") print "Mute"; else print $2; exit}'
+interval=1
+color=#D8D8D8
+
+[time]
+command=date '+%Y-%m-%d %H:%M'
+interval=30
+color=#F2F2F2

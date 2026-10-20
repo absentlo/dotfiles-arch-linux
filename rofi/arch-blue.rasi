@@ -1,0 +1,65 @@
+* {
+    font: "DejaVu Sans 11";
+}
+
+window {
+    width: 40%;
+    border: 2px;
+    border-color: #4DA3D9;
+    border-radius: 8px;
+    background-color: #101820;
+}
+
+mainbox {
+    padding: 12px;
+    spacing: 8px;
+    background-color: transparent;
+}
+
+inputbar {
+    padding: 10px;
+    border-radius: 5px;
+    background-color: #263B50;
+    children: [prompt, entry];
+}
+
+prompt {
+    text-color: #4DA3D9;
+    background-color: transparent;
+}
+
+entry {
+    text-color: #DCE6F0;
+    background-color: transparent;
+}
+
+listview {
+    lines: 8;
+    spacing: 4px;
+    scrollbar: false;
+    background-color: transparent;
+}
+
+element {
+    padding: 8px;
+    spacing: 8px;
+    border-radius: 5px;
+    background-color: transparent;
+    text-color: #DCE6F0;
+    children: [element-icon, element-text];
+}
+
+element-icon {
+    size: 20px;
+    background-color: inherit;
+}
+
+element-text {
+    background-color: inherit;
+    text-color: inherit;
+}
+
+element selected {
+    background-color: #29516D;
+    text-color: #FFFFFF;
+}
