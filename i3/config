@@ -183,3 +183,6 @@ exec --no-startup-id gsettings set org.gnome.desktop.interface color-scheme 'pre
 
 # Carga del fondo de pantalla (exec_always asegura que se aplique correctamente tras cada reload)
 exec_always --no-startup-id sh ~/.fehbg
+
+# Extras
+exec_always --no-startup-id picom -b
