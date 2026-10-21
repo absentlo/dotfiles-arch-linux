@@ -130,6 +130,10 @@ bindsym $mod+Shift+8 move container to workspace number $ws8
 bindsym $mod+Shift+9 move container to workspace number $ws9
 bindsym $mod+Shift+0 move container to workspace number $ws10
 
+# Active focus cycling
+bindsym $mod+Tab focus next
+bindsym $mod+Shift+Tab focus prev
+
 # Reload the configuration file
 bindsym $mod+Shift+c reload
 # Restart i3 inplace
@@ -220,11 +224,14 @@ bindsym $mod+Mod1+m exec --no-startup-id ~/.local/bin/i3-volume mute
 # Shortcuts Guide - Rofi
 bindsym $mod+Shift+h exec --no-startup-id ~/.local/bin/i3-shortcuts
 
+# Windows-style Alt+Tab switcher
+exec_always --no-startup-id alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32
+
 # =====================================
 # FLOATING WINDOWS - GRAPHITE
 # =====================================
 for_window [class="^pavucontrol$"] floating enable, resize set 780 500, move position center[cite: 16]
-for_window [class="^Thunar$"] floating enable, resize set 900 600, move position center
+#for_window [class="^Thunar$"] floating enable, resize set 900 600, move position center
 
 # =====================================
 # MONITOR ARRANGEMENT
