@@ -1,3 +1,4 @@
+# i3blocks Config - Minimalist Graphite Style
 separator=false
 separator_block_width=15
 markup=pango
@@ -19,6 +20,12 @@ label=VOL:
 command=if [ "$BLOCK_BUTTON" = "1" ]; then env GTK_THEME=Adwaita:dark pavucontrol & fi; amixer sget Master | awk -F'[][]' '/%/ {if ($4=="off") print "Mute"; else print $2; exit}'
 interval=1
 color=#D8D8D8
+
+[disk]
+label=HDD: 
+command=df -h / | awk '/\// {print $4 }'
+interval=60
+color=#9A9A9A
 
 [time]
 command=date '+%Y-%m-%d %H:%M'

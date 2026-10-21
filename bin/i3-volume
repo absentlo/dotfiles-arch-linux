@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+
+# Control de volumen PipeWire + Dunst Graphite
+
+SINK="@DEFAULT_AUDIO_SINK@"
+
+case "${1:-}" in
+    up)
+        wpctl set-volume -l 1.0 "$SINK" 5%+
+        ;;
+    down)
+        wpctl set-volume "$SINK" 5%-
+        ;;
+    mute)
+        wpctl set-mute "$SINK" toggle
+        ;;
+    *)
+        exit 1
+        ;;
+esac
+
+# Consultar volumen actual
+STATUS=$(wpctl get-volume "$SINK")
+PERCENT=$(awk '{printf "%.0f", $2 * 100}' <<< "$STATUS")
+
+# Mostrar estado real
+if [[ "$STATUS" == *MUTED* ]]; then
+    MESSAGE="Silenciado"
+    BAR_VALUE=0
+else
+    MESSAGE="${PERCENT}%"
+    BAR_VALUE="$PERCENT"
+fi
+
+# Notificacion compacta con barra de progreso
+dunstify \
+    -a "Audio" \
+    -r 5559 \
+    -u low \
+    -t 1200 \
+    -h "int:value:$BAR_VALUE" \
+    "Volumen" "$MESSAGE"

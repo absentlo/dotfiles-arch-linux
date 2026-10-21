@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+
+# Guia interactiva de atajos - Arch Linux i3wm
+
+rofi -dmenu \
+     -i \
+     -no-custom \
+     -p "Atajos i3" \
+     -theme "$HOME/.config/rofi/arch-gray.rasi" <<'MENU'
+APLICACIONES | Win + Enter - Terminal
+APLICACIONES | Win + D - Rofi
+APLICACIONES | Win + Shift + B - Brave
+APLICACIONES | Win + Shift + F - Thunar
+VENTANAS | Win + Flechas - Cambiar foco
+VENTANAS | Win + Shift + Flechas - Mover
+VENTANAS | Win + H - Division horizontal
+VENTANAS | Win + V - Division vertical
+VENTANAS | Win + F - Pantalla completa
+VENTANAS | Win + S - Apilar
+VENTANAS | Win + W - Pestanas
+VENTANAS | Win + E - Alternar division
+VENTANAS | Win + R - Redimensionar
+VENTANAS | Win + Shift + Espacio - Flotante
+VENTANAS | Win + Shift + Q - Cerrar ventana
+VENTANAS | Win + Espacio - Alternar foco
+VENTANAS | Win + A - Enfocar contenedor padre
+ESCRITORIOS | Win + 1 al 0 - Cambiar espacio
+ESCRITORIOS | Win + Shift + 1 al 0 - Mover ventana
+VOLUMEN | Win + Alt + Arriba - Subir 5%
+VOLUMEN | Win + Alt + Abajo - Bajar 5%
+VOLUMEN | Win + Alt + M - Silenciar
+CAPTURAS | Print - Pantalla completa
+CAPTURAS | Win + Shift + S - Seleccionar area
+SISTEMA | Win + L - Bloquear
+SISTEMA | Win + Shift + P - Menu de energia
+SISTEMA | Win + Shift + C - Recargar i3
+SISTEMA | Win + Shift + R - Reiniciar i3
+MENU

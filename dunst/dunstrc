@@ -4,32 +4,32 @@
     monitor = 0
     follow = none
 
-    # Posición y dimensiones
+    # Position and dimensions
     width = 280
     height = (0, 160)
     origin = top-right
     offset = (12, 35)
 
-    # Estética y tipografía (Sincronizada a tamaño 7)
+    # Aesthetics and typography (Synced to size 7)
     font = DejaVu Sans 7
     frame_width = 1
     frame_color = "#393939"
     corner_radius = 4
     transparency = 0
 
-    # Espaciado
+    # Spacing
     padding = 8
     horizontal_padding = 10
     separator_height = 1
     separator_color = frame
 
-    # Formato de texto
+    # Text format
     format = "<b>%s</b>\n%b"
     alignment = left
     word_wrap = yes
     show_indicators = no
 
-    # Barra de progreso (para volumen/brillo)
+    # Progress bar (for volume/brightness indicators)
     progress_bar = true
     progress_bar_height = 6
     progress_bar_frame_width = 0
@@ -37,7 +37,7 @@
     progress_bar_max_width = 250
     progress_bar_corner_radius = 2
 
-    # Comportamiento
+    # Behavior
     notification_limit = 4
     sort = yes
     stack_duplicates = true
