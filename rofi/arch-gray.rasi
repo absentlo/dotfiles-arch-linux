@@ -1,65 +1,62 @@
+/* Minimalist Graphite Rofi Theme */
+
 * {
-    font: "DejaVu Sans 7";
+    font: "DejaVu Sans 8";
+    background-color: transparent;
+    text-color: #D8D8D8;
+    margin: 0;
+    padding: 0;
 }
 
 window {
-    width: 440px;
+    width: 400px;
+    background-color: #111111;
     border: 1px;
-    border-color: #555555;
-    border-radius: 5px;
-    background-color: #181818;
+    border-color: #3A3A3A;
+    border-radius: 4px;
+    padding: 12px;
 }
 
 mainbox {
-    padding: 8px;
-    spacing: 5px;
-    background-color: transparent;
+    spacing: 12px;
 }
 
 inputbar {
-    padding: 7px;
-    border-radius: 3px;
-    background-color: #292929;
-    children: [prompt, entry];
+    spacing: 8px;
+    children: [ prompt, entry ];
 }
 
 prompt {
-    text-color: #AAAAAA;
-    background-color: transparent;
+    text-color: #9A9A9A;
 }
 
 entry {
-    text-color: #E4E4E4;
-    background-color: transparent;
+    placeholder: "Search...";
+    placeholder-color: #4A4A4A;
 }
 
 listview {
-    lines: 6;
-    spacing: 2px;
+    lines: 7;
+    spacing: 4px;
     scrollbar: false;
-    background-color: transparent;
 }
 
 element {
-    padding: 5px;
-    spacing: 7px;
-    border-radius: 3px;
-    background-color: transparent;
-    text-color: #CCCCCC;
-    children: [element-icon, element-text];
+    padding: 6px;
+    border-radius: 2px;
+}
+
+element selected {
+    background-color: #2F2F2F;
+    text-color: #FFFFFF;
+}
+
+element-text {
+    text-color: inherit;
+    vertical-align: 0.5;
 }
 
 element-icon {
     size: 16px;
-    background-color: inherit;
-}
-
-element-text {
-    background-color: inherit;
-    text-color: inherit;
-}
-
-element selected {
-    background-color: #393939;
-    text-color: #FFFFFF;
+    padding: 0 8px 0 0;
 }

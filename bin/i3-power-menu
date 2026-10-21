@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+
+opcion=$(printf '%s\n' \
+  "Lock" \
+  "Log Out" \
+  "Reboot" \
+  "Power Off" |
+  rofi -dmenu -i -p "System" -lines 4 -theme "$THEME")
+
+confirmar() {
+    respuesta=$(printf '%s\n' "No" "Yes" |
+      rofi -dmenu -p "$1" -lines 2 -theme "$THEME")
+    [[ "$respuesta" == "Yes" ]]
+}
+
+case "$opcion" in
+    "Lock")
+        i3lock -c 181818
+        ;;
+    "Log Out")
+        confirmar "Log Out?" && i3-msg exit
+        ;;
+    "Reboot")
+        confirmar "Reboot?" && systemctl reboot
+        ;;
+    "Power Off")
+        confirmar "Power Off?" && systemctl poweroff
+        ;;
+esac
