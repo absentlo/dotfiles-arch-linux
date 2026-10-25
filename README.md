@@ -39,7 +39,7 @@ Configurations are **copies**, not symlinks. Copy each folder back to its place:
 
 | Repo folder | Goes to |
 | :--- | :--- |
-| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0` | `~/.config/<same name>/` |
+| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire` | `~/.config/<same name>/` |
 | `bin/` | `~/.local/bin/` |
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
 | `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |

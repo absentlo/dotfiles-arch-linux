@@ -182,3 +182,7 @@ exec --no-startup-id xset s off
 # rice-v3: popups instead of resident tray applets (nm-applet + blueman, ~190 MB)
 bindsym $mod+n exec --no-startup-id ~/.local/bin/i3-wifi
 bindsym $mod+b exec --no-startup-id ~/.local/bin/i3-bluetooth popup
+
+# Scratchpad terminal: Win+` shows/hides it, starts it on first use
+for_window [window_role="^scratchpad$"] floating enable, resize set 1000 450, move scratchpad, scratchpad show
+bindsym $mod+grave exec --no-startup-id sh -c 'i3-msg "[window_role=^scratchpad$] scratchpad show" | grep -q true || xfce4-terminal --role=scratchpad'
