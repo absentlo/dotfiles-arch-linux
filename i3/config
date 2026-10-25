@@ -3,17 +3,18 @@ set $mod Mod4
 
 # ---------- APPEARANCE ----------
 font pango:JetBrainsMono Nerd Font, FontAwesome 8
-default_border pixel 0
+default_border pixel 2
+smart_borders on
 default_floating_border pixel 0
 hide_edge_borders none
-for_window [all] border pixel 0
+for_window [all] border pixel 2
 title_align center
 for_window [all] title_window_icon padding 4
 gaps inner 8
 gaps outer 4
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #111111 #111111 #FFFFFF #111111   #111111
+client.focused          #888888 #111111 #FFFFFF #888888   #888888
 client.focused_inactive #111111 #111111 #888888 #111111   #111111
 client.unfocused        #111111 #111111 #555555 #111111   #111111
 client.urgent           #5A2A2A #3A1A1A #FFFFFF #5A2A2A   #5A2A2A
@@ -30,11 +31,11 @@ floating_modifier $mod
 tiling_drag modifier titlebar
 
 # ---------- WORKSPACES ----------
-set $ws1 "1"
-set $ws2 "2"
-set $ws3 "3"
-set $ws4 "4"
-set $ws5 "5"
+set $ws1 "1:"
+set $ws2 "2:"
+set $ws3 "3:"
+set $ws4 "4:"
+set $ws5 "5:󰭹"
 set $ws6 "6"
 set $ws7 "7"
 set $ws8 "8"
@@ -69,7 +70,7 @@ exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id sh -c 'pgrep -x picom >/dev/null || picom -b'
 exec --no-startup-id sh -c 'pgrep -x dunst >/dev/null || dunst'
 exec --no-startup-id sh -c 'pgrep -x lxqt-policykit-agent >/dev/null || lxqt-policykit-agent'
-exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 181818 --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/.local/share/i3lock/lock.png -c 111111 --nofork
 exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Split each new window along the focused window's longer side (dwindle-style)
@@ -119,7 +120,7 @@ bindsym $mod+Shift+r restart
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'Exit i3? This ends your X session.' -B 'Yes, exit i3' 'i3-msg exit'"
 
 # lock moved to $mod+x (so $mod+l can be focus up)
-bindsym $mod+x exec --no-startup-id i3lock -c 181818
+bindsym $mod+x exec --no-startup-id i3lock -i ~/.local/share/i3lock/lock.png -c 111111
 bindsym $mod+Shift+p exec --no-startup-id ~/.local/bin/i3-power-menu
 bindsym $mod+Shift+b exec --no-startup-id gtk-launch brave-origin.desktop
 bindsym $mod+Shift+f exec --no-startup-id thunar

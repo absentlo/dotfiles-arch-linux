@@ -104,7 +104,7 @@ popup() {
 
         choice=$(cut -f3 "$ROWS" | rofi -dmenu -i -no-custom -format i -p "$PROMPT" \
             -selected-row "$sel" "${theme_args[@]}" \
-            -theme-str "window { width: 440px; } listview { lines: $lines; } element-text { font: \"JetBrainsMono Nerd Font 8\"; }")
+            -theme-str "window { width: 400px; } listview { lines: $lines; } element-text { font: \"JetBrainsMono Nerd Font 8\"; }")
         [ $? -eq 0 ] || break      # Esc, click-away or toggled off
 
         n=$((choice + 1))

@@ -48,3 +48,11 @@ Configurations are **copies**, not symlinks. Copy each folder back to its place:
 | `system/99-rice.conf` | `/etc/sysctl.d/` (sudo) |
 | `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
+
+## Lock screen image
+`Win + x` and auto-lock use a darkened copy of the wallpaper. Recreate it after a fresh install (or a new wallpaper / screen size):
+
+```
+mkdir -p ~/.local/share/i3lock
+ffmpeg -i /usr/share/backgrounds/archlinux/gritty.png -vf "scale=1600:900:force_original_aspect_ratio=increase,crop=1600:900,boxblur=12:2,eq=brightness=-0.25" -frames:v 1 ~/.local/share/i3lock/lock.png
+```
