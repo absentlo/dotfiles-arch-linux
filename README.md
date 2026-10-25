@@ -56,3 +56,10 @@ Configurations are **copies**, not symlinks. Copy each folder back to its place:
 mkdir -p ~/.local/share/i3lock
 ffmpeg -i /usr/share/backgrounds/archlinux/gritty.png -vf "scale=1600:900:force_original_aspect_ratio=increase,crop=1600:900,boxblur=12:2,eq=brightness=-0.25" -frames:v 1 ~/.local/share/i3lock/lock.png
 ```
+
+## Bluetooth earbuds stay in music quality
+Games/apps that open the mic would switch the earbuds to mono 16 kHz "headset" mode (sounds distorted). Turned off once with:
+
+```
+wpctl settings --save bluetooth.autoswitch-to-headset-profile false
+```
