@@ -12,7 +12,7 @@
 
 POPUP_ID="i3cal-popup"      # unique marker used to detect the open popup
 FIRST_WEEKDAY=6             # 0 = Monday ... 6 = Sunday
-BAR_HEIGHT=30               # popup sits just above the bottom bar
+BAR_HEIGHT=30               # popup sits just below the top bar
 THEME="$HOME/.config/rofi/arch-gray.rasi"
 
 # Toggle: if the popup is already open, close it and quit
@@ -25,7 +25,7 @@ theme_args=()
 [ -f "$THEME" ] && theme_args=(-theme "$THEME")
 
 # Popup placement and look (bottom-right corner, above the bar)
-theme_str="window { location: south east; anchor: south east; x-offset: -8px; y-offset: -${BAR_HEIGHT}px; width: 340px; }
+theme_str="window { location: north east; anchor: north east; x-offset: -8px; y-offset: ${BAR_HEIGHT}px; width: 340px; }
 mainbox { children: [ listview ]; }
 listview { lines: 12; columns: 1; scrollbar: false; fixed-height: true; }
 element-text { horizontal-align: 0.5; font: \"JetBrainsMono Nerd Font 11\"; }"

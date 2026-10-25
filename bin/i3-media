@@ -19,7 +19,7 @@
 # Requires: playerctl, rofi (1.7+ / 2.x), python3
 
 POPUP_ID="i3media-popup"     # unique marker used to detect the open popup
-BAR_HEIGHT=28                # popup sits just above the bottom bar
+BAR_HEIGHT=28                # popup sits just below the top bar
 THEME="$HOME/.config/rofi/arch-gray.rasi"
 CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/i3-media"
 THEME_FILE="${XDG_RUNTIME_DIR:-/tmp}/i3-media-popup.rasi"
@@ -257,13 +257,13 @@ def cover_height(path):
 # then cover and info text, so a bad text rule can never drop the buttons.
 theme = [
     rule("window", [
-        ("location", "south"),
-        ("anchor", "south"),
-        ("y-offset", "-%spx" % bar_height),
+        ("location", "north"),
+        ("anchor", "north"),
+        ("y-offset", "%spx" % bar_height),
         ("width", "%spx" % WIN_W),
         ("padding", "0px"),
         ("background-color", "#111111"),
-        ("border", "2px"),
+        ("border", "0px"),
         ("border-color", "#3A3A3A"),
         ("border-radius", "10px"),
     ]),
@@ -335,6 +335,7 @@ theme += [
         ("background-color", "transparent"),
     ]),
     rule("element", [
+        ("children", "[ element-text ]"),
         ("padding", "10px 0px"),
         ("border-radius", "8px"),
         ("background-color", "transparent"),
