@@ -6,7 +6,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 
 ## System Specifications
 - **OS**: Arch Linux
-- **WM**: i3wm
+- **WM**: i3wm + autotiling (`sudo pacman -S autotiling`)
 - **Bar**: Polybar
 - **Compositor**: Picom
 - **Launcher / Power Menu**: Rofi

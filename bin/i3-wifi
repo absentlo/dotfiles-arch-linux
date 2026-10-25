@@ -65,7 +65,7 @@ if run("nmcli", "radio", "wifi").strip() == "enabled":
     rows.append(("toggle", "", "Wi-Fi is ON  -  select to turn OFF"))
     rows.append(("rescan", "", "Rescan networks"))
     best = {}
-    listing = run("nmcli", "-t", "-f", "IN-USE,SSID,SIGNAL,SECURITY", "device", "wifi", "list")
+    listing = run("nmcli", "-t", "-f", "IN-USE,SSID,SIGNAL,SECURITY", "device", "wifi", "list", "--rescan", "no")  # instant open; the Rescan row scans on demand
     for line in listing.splitlines():
         f = split_terse(line)
         if len(f) < 4:

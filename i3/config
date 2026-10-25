@@ -72,6 +72,8 @@ exec --no-startup-id sh -c 'pgrep -x lxqt-policykit-agent >/dev/null || lxqt-pol
 exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -c 181818 --nofork
 exec_always --no-startup-id sh -c 'pkill -x alttab; sleep 0.3; exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
 exec_always --no-startup-id ~/.config/polybar/launch.sh
+# Split each new window along the focused window's longer side (dwindle-style)
+exec_always --no-startup-id sh -c 'pgrep -x autotiling >/dev/null || exec autotiling'
 # Manual extras (uncomment if needed):
 #exec --no-startup-id nm-applet
 #exec --no-startup-id blueman-applet
