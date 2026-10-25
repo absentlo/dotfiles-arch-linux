@@ -13,6 +13,7 @@ mkdir -p "$D/pipewire" && cp -r "$C/pipewire/." "$D/pipewire/"
 cp "$HOME"/.local/bin/* "$D/bin/"
 cp "$C/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml" \
    "$HOME/.local/share/xfce4/terminal/colorschemes/graphite.theme" "$D/xfce4-terminal/"
+cp "$C/gamemode.ini" "$D/"
 cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
