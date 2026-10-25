@@ -7,7 +7,7 @@
 # connected one to disconnect. Top rows: Wi-Fi on/off and rescan. Esc closes.
 # Requires: networkmanager (nmcli), rofi, python3, dunst (dunstify)
 
-PROMPT="Wi-Fi"
+PROMPT="Network"
 THEME="$HOME/.config/rofi/arch-gray.rasi"
 RUN="${XDG_RUNTIME_DIR:-/tmp}"
 
@@ -61,6 +61,18 @@ def clean(s):
     return s.replace("\t", " ").replace("\n", " ")
 
 rows = []
+# Wired first: it carries the traffic whenever the cable is in
+for line in run("nmcli", "-t", "-f", "DEVICE,TYPE,STATE", "device").splitlines():
+    f = split_terse(line)
+    if len(f) < 3 or f[1] != "ethernet":
+        continue
+    dev, state = f[0], f[2]
+    if state.startswith("connected"):
+        rows.append(("eth:up", dev, "● Ethernet  connected  -  select to disconnect"))
+    elif state == "unavailable":
+        rows.append(("eth:none", dev, "  Ethernet  cable unplugged"))
+    else:
+        rows.append(("eth:down", dev, "  Ethernet  cable in  -  select to connect"))
 if run("nmcli", "radio", "wifi").strip() == "enabled":
     rows.append(("toggle", "", "Wi-Fi is ON  -  select to turn OFF"))
     rows.append(("rescan", "", "Rescan networks"))
@@ -130,9 +142,10 @@ connect() {   # connect <ssid> <kind>   (kind = net:<in-use>:<secured>)
     fi
 }
 
-sel=0
+want=toggle   # row kind to highlight after the menu rebuilds
 while :; do
     build
+    sel=$(cut -f1 "$ROWS" | grep -nxm1 -- "$want" | cut -d: -f1); sel=$(( ${sel:-1} - 1 ))
     count=$(wc -l < "$ROWS")
     lines=$(( count > 10 ? 10 : count ))
     [ "$lines" -lt 1 ] && lines=1
@@ -154,12 +167,25 @@ while :; do
                 nmcli radio wifi on >/dev/null 2>&1
                 sleep 2
             fi
-            sel=0
+            want=toggle
             ;;
         rescan)
             nmcli device wifi rescan >/dev/null 2>&1
             sleep 2
-            sel=1
+            want=rescan
+            ;;
+        eth:up)
+            nmcli device disconnect "$ssid" >/dev/null 2>&1 && notify "Ethernet disconnected" || notify "Could not disconnect Ethernet"
+            want=eth:down
+            ;;
+        eth:down)
+            notify "Connecting Ethernet ..."
+            nmcli --wait 15 device connect "$ssid" >/dev/null 2>&1 && notify "Ethernet connected" || notify "Ethernet failed to connect"
+            want=eth:up
+            ;;
+        eth:none)
+            notify "Plug in the Ethernet cable first"
+            want=eth:none
             ;;
         net:*)
             connect "$ssid" "$kind"
