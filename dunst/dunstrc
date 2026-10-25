@@ -1,43 +1,43 @@
-# Dunst Graphite Rice - Arch Linux + i3wm
+# Dunst Graphite - Arch + i3  (rice-v2: icons, unified font)
 
 [global]
     monitor = 0
     follow = none
 
-    # Position and dimensions
-    width = 280
+    width = 300
     height = (0, 160)
     origin = top-right
-    offset = (12, 35)
+    offset = (12, 12)
 
-    # Aesthetics and typography (Synced to size 7)
-    font = DejaVu Sans 7
+    font = JetBrainsMono Nerd Font 8
     frame_width = 1
     frame_color = "#393939"
     corner_radius = 4
     transparency = 0
 
-    # Spacing
-    padding = 8
-    horizontal_padding = 10
+    padding = 10
+    horizontal_padding = 12
     separator_height = 1
     separator_color = frame
 
-    # Text format
     format = "<b>%s</b>\n%b"
     alignment = left
     word_wrap = yes
     show_indicators = no
 
-    # Progress bar (for volume/brightness indicators)
+    icon_position = left
+    min_icon_size = 24
+    max_icon_size = 32
+    icon_theme = "Papirus-Dark, Adwaita"
+    enable_recursive_icon_lookup = true
+
     progress_bar = true
     progress_bar_height = 6
     progress_bar_frame_width = 0
     progress_bar_min_width = 200
     progress_bar_max_width = 250
-    progress_bar_corner_radius = 2
+    progress_bar_corner_radius = 3
 
-    # Behavior
     notification_limit = 4
     sort = yes
     stack_duplicates = true

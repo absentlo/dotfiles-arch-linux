@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# Event-driven media label: no polling, playerctl pushes changes.
+while true; do
+    playerctl -F metadata --format '{{artist}} - {{title}}' 2>/dev/null |
+    while IFS= read -r line; do
+        [ -z "$line" ] && line="No media"
+        echo "${line:0:30}"
+    done
+    echo "No media"
+    sleep 3
+done

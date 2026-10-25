@@ -1,0 +1,459 @@
+#!/usr/bin/env bash
+# i3-media - media player popup (rofi) + one-icon status-bar block, powered by playerctl
+#
+#   i3-media block   a single icon for the i3blocks [mediaplayer] block
+#   i3-media popup   player card: cover art, title, artist, progress and all controls (toggle)
+#   i3-media debug   print what the popup found (player, cover URL, cover file, theme)
+#
+# The bar only shows an icon of the player (Spotify, browser, or a music note);
+# it is bright while playing and dim while paused. Everything else lives in the popup.
+#
+# Block mouse:  left = open popup | middle = play/pause | right = next | scroll = player volume
+# Popup:        click a control, or Tab / Shift+Tab + Enter
+#               Alt+Left previous | Alt+P play/pause | Alt+Right next
+#               Esc, click-away, or running "popup" again closes it
+#
+# Cover art comes from the player itself; when there is none, the application icon
+# (or a big player glyph) is shown instead.
+#
+# Requires: playerctl, rofi (1.7+ / 2.x), python3
+
+POPUP_ID="i3media-popup"     # unique marker used to detect the open popup
+BAR_HEIGHT=28                # popup sits just above the bottom bar
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+CACHE_DIR="${XDG_CACHE_HOME:-$HOME/.cache}/i3-media"
+THEME_FILE="${XDG_RUNTIME_DIR:-/tmp}/i3-media-popup.rasi"
+
+# ---------------------------------------------------------------- status bar block (icon only)
+block() {
+    case "$BLOCK_BUTTON" in
+        1) setsid -f "$0" popup >/dev/null 2>&1 </dev/null ;;
+        2) playerctl play-pause >/dev/null 2>&1 ;;
+        3) playerctl next >/dev/null 2>&1 ;;
+        4) playerctl volume 0.05+ >/dev/null 2>&1 ;;
+        5) playerctl volume 0.05- >/dev/null 2>&1 ;;
+    esac
+
+    # No player or stopped: print nothing, i3blocks hides the block
+    local status name icon color
+    status=$(playerctl status 2>/dev/null) || return 0
+    [ "$status" = "Stopped" ] && return 0
+
+    name=$(playerctl metadata --format '{{playerName}}' 2>/dev/null | tr 'A-Z' 'a-z')
+    case "$name" in
+        *spotify*)                                   icon="&#xf1bc;" ;;   # spotify
+        *firefox*|*librewolf*|*zen*|*floorp*)        icon="&#xf269;" ;;   # firefox
+        *chrom*|*brave*|*vivaldi*|*edge*|*opera*)    icon="&#xf268;" ;;   # chrome
+        *)                                           icon="&#xf001;" ;;   # music note
+    esac
+
+    if [ "$status" = "Playing" ]; then color="#F2F2F2"; else color="#6A6A6A"; fi
+    echo "<span foreground='$color'>$icon</span>"
+}
+
+# ---------------------------------------------------------------- popup: controls row + rofi theme
+# Prints the control entries (one per line) and writes the rofi theme for the
+# card (cover, title, artist, progress) to $THEME_FILE.
+build_popup() {
+python3 - "$THEME_FILE" "$CACHE_DIR" "$BAR_HEIGHT" <<'PY'
+import glob
+import hashlib
+import html
+import os
+import struct
+import subprocess
+import sys
+import time
+import urllib.parse
+import urllib.request
+import codecs
+
+# Ensure stdout handles UTF-8 correctly to prevent missing UI buttons
+if (sys.stdout.encoding or '').lower() != 'utf-8':
+    sys.stdout = codecs.getwriter('utf-8')(sys.stdout.buffer, 'strict')
+
+theme_file, cache_dir, bar_height = sys.argv[1], sys.argv[2], sys.argv[3]
+
+def pc(*args):
+    try:
+        r = subprocess.run(["playerctl", *args], capture_output=True, text=True, timeout=2)
+        return r.stdout.strip() if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+def esc(s):
+    return html.escape(s, quote=False)
+
+def clip(s, n):
+    return s if len(s) <= n else s[: n - 1] + "…"
+
+def q(s):
+    """Escape text placed inside a quoted rofi theme string."""
+    return s.replace("\\", "\\\\").replace('"', '\\"')
+
+def fmt(sec):
+    sec = int(sec)
+    return f"{sec // 60}:{sec % 60:02d}"
+
+def sniff_ext(data):
+    if data[:8] == b"\x89PNG\r\n\x1a\n":
+        return ".png"
+    if data[:3] == b"\xff\xd8\xff":
+        return ".jpg"
+    if data[:4] == b"RIFF" and data[8:12] == b"WEBP":
+        return ".webp"
+    return None
+
+def image_size(path):
+    """Read (width, height) from PNG/JPEG headers without extra deps."""
+    try:
+        with open(path, "rb") as f:
+            d = f.read(65536)
+        if d[:8] == b"\x89PNG\r\n\x1a\n":
+            return struct.unpack(">II", d[16:24])
+        if d[:3] == b"\xff\xd8\xff":
+            i = 2
+            while i + 9 < len(d):
+                if d[i] != 0xFF:
+                    i += 1
+                    continue
+                m = d[i + 1]
+                if m in (0xD8, 0x01) or 0xD0 <= m <= 0xD7:
+                    i += 2
+                    continue
+                seg = struct.unpack(">H", d[i + 2:i + 4])[0]
+                if 0xC0 <= m <= 0xCF and m not in (0xC4, 0xC8, 0xCC):
+                    h, w = struct.unpack(">HH", d[i + 5:i + 9])
+                    return w, h
+                i += 2 + seg
+    except Exception:
+        pass
+    return None
+
+def prune_cache():
+    """Keep the cover cache small: drop files older than 14 days."""
+    cutoff = time.time() - 14 * 86400
+    for path in glob.glob(os.path.join(cache_dir, "*")):
+        try:
+            if os.path.getmtime(path) < cutoff:
+                os.remove(path)
+        except OSError:
+            pass
+
+def cover_from_url(url):
+    """Return a local image path for the player's cover art URL, or None."""
+    if not url:
+        return None
+    key = hashlib.sha1(url.encode()).hexdigest()
+    for ext in (".png", ".jpg", ".webp"):
+        cached = os.path.join(cache_dir, key + ext)
+        if os.path.isfile(cached):
+            return cached
+    try:
+        if url.startswith("file://"):
+            path = urllib.parse.unquote(urllib.parse.urlparse(url).path)
+            with open(path, "rb") as f:
+                data = f.read(5_000_000)
+        elif url.startswith(("http://", "https://")):
+            req = urllib.request.Request(url, headers={"User-Agent": "i3-media"})
+            data = urllib.request.urlopen(req, timeout=3).read(5_000_000)
+        else:
+            return None
+    except Exception:
+        return None
+    ext = sniff_ext(data)
+    if not ext:
+        return None
+    os.makedirs(cache_dir, exist_ok=True)
+    out = os.path.join(cache_dir, key + ext)
+    with open(out, "wb") as f:
+        f.write(data)
+    prune_cache()
+    return out
+
+def app_icon(player):
+    """Icon of the application (spotify, firefox, vlc...) as a fallback cover."""
+    base = player.split(".")[0].lower()
+    if not base:
+        return None
+    sizes = ["512x512", "256x256", "192x192", "128x128", "96x96", "64x64", "48x48"]
+    dirs = [f"/usr/share/icons/hicolor/{s}/apps" for s in sizes] + ["/usr/share/pixmaps"]
+    for d in dirs:
+        for pat in (base + ".png", base + "-*.png", base + "*.png"):
+            hits = sorted(glob.glob(os.path.join(d, pat)))
+            if hits:
+                return hits[0]
+    return None
+
+def glyph_for(name):
+    base = name.split(".")[0].lower()
+    if "spotify" in base:
+        return ""
+    if any(k in base for k in ("firefox", "librewolf", "zen", "floorp")):
+        return ""
+    if any(k in base for k in ("chrom", "brave", "vivaldi", "edge", "opera")):
+        return ""
+    return ""
+
+status = pc("status")
+title = clip(pc("metadata", "title") or "Unknown title", 32)
+artist = clip(pc("metadata", "artist"), 40)
+album = clip(pc("metadata", "album"), 40)
+player = pc("metadata", "--format", "{{playerName}}")
+
+cover = cover_from_url(pc("metadata", "mpris:artUrl")) or app_icon(player)
+sub = " — ".join(x for x in (artist, album) if x) or player or " "
+
+# Progress bar (thin box-drawing line) and a time / volume line
+BAR_W = 34
+try:
+    pos = float(pc("position"))
+    length = float(pc("metadata", "mpris:length")) / 1e6
+    n = max(0, min(BAR_W, int(pos / length * BAR_W))) if length > 0 else 0
+    bar = (
+        "<span foreground='#B8B8B8'>" + "━" * n + "</span>"
+        "<span foreground='#3A3A3A'>" + "─" * (BAR_W - n) + "</span>"
+    )
+    times = f"{fmt(pos)} / {fmt(length)}"
+except Exception:
+    bar = "<span foreground='#3A3A3A'>" + "─" * BAR_W + "</span>"
+    times = "live"
+try:
+    times += f"       {round(float(pc('volume')) * 100)}%"
+except Exception:
+    pass
+
+# Control entries using pure Unicode characters (safer for Rofi parsing)
+# Indexes: 0 prev | 1 play/pause | 2 next | 3 vol- | 4 vol+ | 5 shuffle | 6 loop | 7 Gallery
+shuffle_on = pc("shuffle").lower() == "on"
+loop = pc("loop")
+entries = [
+    "",
+    "" if status == "Playing" else "",
+    "",
+    "",
+    "",
+    "<span foreground='%s'></span>" % ("#FFFFFF" if shuffle_on else "#555555"),
+    "<span foreground='%s'>%s</span>" % (
+        "#FFFFFF" if loop in ("Track", "Playlist") else "#555555",
+        "¹" if loop == "Track" else "",
+    ),
+    "<span foreground='#D8D8D8'></span>",  # 8th Button: The Gallery Switcher
+]
+
+def rule(selector, props):
+    return "\n".join([selector + " {"] + ["    %s: %s;" % (k, v) for k, v in props] + ["}"])
+
+WIN_W = 380
+PAD = 14
+COVER_W = WIN_W - 4 - 2 * PAD   # window minus borders minus side margins
+
+def cover_height(path):
+    """Cover box height from the real aspect ratio (no crop, no zoom)."""
+    sz = image_size(path) if path else None
+    if not sz or not sz[0]:
+        return COVER_W
+    return max(60, COVER_W * sz[1] // sz[0])
+
+# Rules are ordered: window, mainbox, controls (listview/element) first,
+# then cover and info text, so a bad text rule can never drop the buttons.
+info_children = ["textbox-custom-1", "textbox-title", "textbox-sub", "textbox-bar", "textbox-time"]
+theme = [
+    rule("window", [
+        ("location", "south"),
+        ("anchor", "south"),
+        ("y-offset", "-%spx" % bar_height),
+        ("width", "%spx" % WIN_W),
+        ("padding", "0px"),
+        ("background-color", "#111111"),
+        ("border", "2px"),
+        ("border-color", "#3A3A3A"),
+        ("border-radius", "10px"),
+    ]),
+    rule("mainbox", [
+        ("children", "[ textbox-custom-1, infobox, listview ]"),
+        ("spacing", "0px"),
+        ("padding", "%dpx %dpx %dpx %dpx" % (PAD, PAD, PAD, PAD)),
+        ("background-color", "transparent"),
+    ]),
+]
+
+if cover:
+    ch = cover_height(cover)
+    theme.append(rule("textbox-custom-1", [
+        ("content", '" "'),
+        ("expand", "false"),
+        ("padding", "%dpx 0px" % max(0, (ch - 2) // 2)),
+        ("margin", "0px 0px 0px 0px"),
+        ("border-radius", "8px"),
+        ("background-color", "#111111"),
+        ("background-image", 'url("%s", width)' % q(cover)),
+        ("font", '"JetBrainsMono Nerd Font 1"'),
+    ]))
+else:
+    theme.append(rule("textbox-custom-1", [
+        ("content", '"%s"' % glyph_for(player)),
+        ("markup", "true"),
+        ("expand", "false"),
+        ("horizontal-align", "0.5"),
+        ("vertical-align", "0.5"),
+        ("padding", "34px 0px 20px 0px"),
+        ("text-color", "#5A5A5A"),
+        ("background-color", "transparent"),
+        ("font", '"JetBrainsMono Nerd Font 64"'),
+    ]))
+
+info = "\\n".join([
+    q("<span size='12pt' foreground='#F2F2F2'><b>" + esc(title) + "</b></span>"),
+    q("<span size='10pt' foreground='#8A8A8A'>" + esc(sub) + "</span>"),
+    q(bar),
+    q("<span size='9pt' foreground='#8A8A8A'>" + esc(times) + "</span>"),
+])
+
+theme += [
+    rule("infobox", [
+        ("orientation", "vertical"),
+        ("children", "[ textbox-info ]"),
+        ("spacing", "0px"),
+        ("padding", "0px"),
+        ("background-color", "#111111"),
+    ]),
+    rule("textbox-info", [
+        ("content", '"%s"' % info),
+        ("markup", "true"),
+        ("expand", "false"),
+        ("horizontal-align", "0.5"),
+        ("vertical-align", "0.5"),
+        ("padding", "12px 0px 12px 0px"),
+        ("text-color", "#D8D8D8"),
+        ("background-color", "#111111"),
+        ("font", '"JetBrainsMono Nerd Font 10"'),
+    ]),
+    rule("listview", [
+        ("columns", "8"),
+        ("lines", "1"),
+        ("fixed-columns", "true"),
+        ("scrollbar", "false"),
+        ("spacing", "4px"),
+        ("background-color", "transparent"),
+    ]),
+    rule("element", [
+        ("padding", "10px 0px"),
+        ("border-radius", "8px"),
+        ("background-color", "transparent"),
+    ]),
+    rule("element selected.normal", [
+        ("background-color", "#3A3A3A"),
+        ("text-color", "#FFFFFF"),
+    ]),
+    rule("element-text", [
+        ("horizontal-align", "0.5"),
+        ("vertical-align", "0.5"),
+        ("text-color", "#B8B8B8"),
+        ("background-color", "transparent"),
+        ("font", '"JetBrainsMono Nerd Font 14"'),
+    ]),
+]
+ 
+with open(theme_file, "w") as f:
+    f.write("\n".join(theme) + "\n")
+
+# Output elements to stdout for Rofi rendering
+print("\n".join(entries))
+PY
+}
+
+# ---------------------------------------------------------------- popup
+popup() {
+    # Toggle: if the popup is already open, close it and quit
+    if pkill -f "rofi.*${POPUP_ID}" 2>/dev/null; then
+        return 0
+    fi
+
+    if ! playerctl status >/dev/null 2>&1; then
+        notify-send -t 2000 "Media" "No player running" 2>/dev/null
+        return 0
+    fi
+
+    local theme_args=() rows selected choice code cur new players menu p p_status p_title selection target old_state new_state
+    [ -f "$THEME" ] && theme_args=(-theme "$THEME")
+
+    selected=1   # start on Play/Pause
+
+    while :; do
+        old_state=$(playerctl metadata --format '{{title}}{{status}}{{volume}}' 2>/dev/null)$(playerctl loop 2>/dev/null)$(playerctl shuffle 2>/dev/null)
+        rows=$(build_popup)
+        choice=$(printf '%s\n' "$rows" | rofi -dmenu -markup-rows -no-custom -format i \
+            -p "$POPUP_ID" -selected-row "$selected" \
+            -kb-custom-1 "alt+Left" -kb-custom-2 "alt+Right" -kb-custom-3 "alt+p" \
+            "${theme_args[@]}" -theme-str "$(cat "$THEME_FILE")")
+        code=$?
+
+        case $code in
+            10) playerctl previous >/dev/null 2>&1; selected=0 ;;
+            11) playerctl next >/dev/null 2>&1; selected=2 ;;
+            12) playerctl play-pause >/dev/null 2>&1; selected=1 ;;
+            0)
+                selected=${choice:-1}
+                case "$choice" in
+                    0) playerctl previous >/dev/null 2>&1 ;;
+                    1) playerctl play-pause >/dev/null 2>&1 ;;
+                    2) playerctl next >/dev/null 2>&1 ;;
+                    3) playerctl volume 0.05- >/dev/null 2>&1 ;;
+                    4) playerctl volume 0.05+ >/dev/null 2>&1 ;;
+                    5) playerctl shuffle Toggle >/dev/null 2>&1 ;;
+                    6)
+                        cur=$(playerctl loop 2>/dev/null)
+                        case "$cur" in
+                            None) new=Playlist ;;
+                            Playlist) new=Track ;;
+                            *) new=None ;;
+                        esac
+                        playerctl loop "$new" >/dev/null 2>&1
+                        ;;
+                    7)
+                        # Switch Player Gallery Interface (8th Button)
+                        players=$(playerctl -l 2>/dev/null)
+                        if [ -n "$players" ]; then
+                            menu=""
+                            for p in $players; do
+                                p_status=$(playerctl -p "$p" status 2>/dev/null)
+                                p_title=$(playerctl -p "$p" metadata --format "{{ artist }} - {{ title }}" 2>/dev/null | cut -c 1-45)
+                                menu+="$p [$p_status]  -  $p_title\n"
+                            done
+                            selection=$(echo -e "$menu" | awk 'NF' | rofi -dmenu -i -p "Switch Player" "${theme_args[@]}" -theme-str "listview { lines: 5; }")
+                            if [ -n "$selection" ]; then
+                                target=$(echo "$selection" | awk '{print $1}')
+                                playerctl -a pause >/dev/null 2>&1
+                                playerctl -p "$target" play >/dev/null 2>&1
+                            fi
+                        fi
+                        ;;
+                esac
+                ;;
+            *) break ;;  # Esc, click-away or toggled off
+        esac
+
+        # Ultra-fast polling: breaks instantly as soon as playerctl reflects the action. 
+        # Resolves the sluggish UI feel entirely while remaining 100% precise.
+        for ((i=0; i<8; i++)); do
+            new_state=$(playerctl metadata --format '{{title}}{{status}}{{volume}}' 2>/dev/null)$(playerctl loop 2>/dev/null)$(playerctl shuffle 2>/dev/null)
+            [ "$new_state" != "$old_state" ] && break
+            sleep 0.1
+        done
+        
+        playerctl status >/dev/null 2>&1 || break    # player closed
+    done
+}
+
+case "$1" in
+    block) block; exit 0 ;;
+    popup) popup; exit 0 ;;
+    debug)
+        echo "rofi: $(rofi -version 2>&1 | head -n1)"
+        echo "block output: $(BLOCK_BUTTON= "$0" block)"
+        I3_MEDIA_DEBUG=1 build_popup >/dev/null
+        echo "--- theme ($THEME_FILE) ---"; cat "$THEME_FILE"
+        exit 0 ;;
+    *) echo "usage: i3-media {block|popup|debug}" >&2; exit 1 ;;
+esac

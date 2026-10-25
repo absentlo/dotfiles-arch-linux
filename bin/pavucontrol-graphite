@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+exec env GTK_THEME=Adwaita:dark /usr/bin/pavucontrol "$@"

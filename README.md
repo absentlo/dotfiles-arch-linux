@@ -7,7 +7,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 ## System Specifications
 - **OS**: Arch Linux
 - **WM**: i3wm
-- **Bar**: i3blocks
+- **Bar**: Polybar
 - **Compositor**: Picom
 - **Launcher / Power Menu**: Rofi
 - **Notifications**: Dunst
@@ -23,11 +23,28 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | `$mod + Shift + p` | Power Menu |
 | `$mod + Shift + f` | File Manager (Thunar) |
 | `$mod + Shift + b` | Web Browser (Brave) |
-| `$mod + l` | Fast Lock Screen |
+| `$mod + x` | Lock Screen |
 | `Alt + Tab` | Visual Window Switcher |
-| `$mod + Tab` | Active Focus Cycle |
+| `$mod + Tab` | Previous Workspace |
+| `$mod + n` | Wi-Fi Menu |
+| `$mod + b` | Bluetooth Menu |
+| `$mod + m` | Media Player |
+| `$mod + c` | Calendar |
+| `$mod + Shift + h` | Shortcuts Help |
 | `$mod + Shift + s` | Area Screenshot |
 | `$mod + Shift + r` | Restart i3 |
 
 ## Synchronization & Backup
-Configurations are tracked in this repository and linked to `~/.config/`!
+Configurations are **copies**, not symlinks. Copy each folder back to its place:
+
+| Repo folder | Goes to |
+| :--- | :--- |
+| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0` | `~/.config/<same name>/` |
+| `bin/` | `~/.local/bin/` |
+| `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
+| `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |
+| `home/`, `.bashrc` | `~/` |
+| `librewolf/user.js` | your LibreWolf profile folder |
+| `system/99-rice.conf` | `/etc/sysctl.d/` (sudo) |
+| `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
+| `system/zram-generator.conf` | `/etc/systemd/` (sudo) |

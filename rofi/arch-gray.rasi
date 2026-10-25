@@ -1,7 +1,12 @@
+configuration {
+    icon-theme: "Papirus-Dark";
+    drun-display-format: "{name}";
+}
+
 /* Minimalist Graphite Rofi Theme */
 
 * {
-    font: "DejaVu Sans 8";
+    font: "JetBrainsMono Nerd Font 8";
     background-color: transparent;
     text-color: #D8D8D8;
     margin: 0;

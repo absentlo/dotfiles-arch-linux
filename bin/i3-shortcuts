@@ -12,6 +12,7 @@ APLICACIONES | Win + D - Rofi
 APLICACIONES | Win + Shift + B - Brave
 APLICACIONES | Win + Shift + F - Thunar
 VENTANAS | Win + Flechas - Cambiar foco
+VENTANAS | Win + J K L ; - Foco izq abajo arriba der
 VENTANAS | Win + Shift + Flechas - Mover
 VENTANAS | Win + H - Division horizontal
 VENTANAS | Win + V - Division vertical
@@ -31,8 +32,10 @@ VOLUMEN | Win + Alt + Abajo - Bajar 5%
 VOLUMEN | Win + Alt + M - Silenciar
 CAPTURAS | Print - Pantalla completa
 CAPTURAS | Win + Shift + S - Seleccionar area
-SISTEMA | Win + L - Bloquear
+SISTEMA | Win + X - Bloquear
 SISTEMA | Win + Shift + P - Menu de energia
 SISTEMA | Win + Shift + C - Recargar i3
 SISTEMA | Win + Shift + R - Reiniciar i3
+REDES | Win + N - Wi-Fi
+REDES | Win + B - Bluetooth
 MENU

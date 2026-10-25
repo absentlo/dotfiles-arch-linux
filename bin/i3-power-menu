@@ -2,16 +2,19 @@
 
 THEME="$HOME/.config/rofi/arch-gray.rasi"
 
+menu() {  # menu <prompt> <lines>   (items on stdin)
+    rofi -dmenu -i -p "$1" -theme "$THEME" -theme-str "listview { lines: $2; }"
+}
+
 opcion=$(printf '%s\n' \
   "Lock" \
   "Log Out" \
   "Reboot" \
   "Power Off" |
-  rofi -dmenu -i -p "System" -lines 4 -theme "$THEME")
+  menu "System" 4)
 
 confirmar() {
-    respuesta=$(printf '%s\n' "No" "Yes" |
-      rofi -dmenu -p "$1" -lines 2 -theme "$THEME")
+    respuesta=$(printf '%s\n' "No" "Yes" | menu "$1" 2)
     [[ "$respuesta" == "Yes" ]]
 }
 

@@ -1,0 +1,170 @@
+#!/usr/bin/env bash
+# i3-wifi - Wi-Fi popup built with rofi + nmcli (no resident application)
+#
+#   i3-wifi    open the popup; run it again while open to close it
+#
+# Select a network to connect (saved networks need no password) or the
+# connected one to disconnect. Top rows: Wi-Fi on/off and rescan. Esc closes.
+# Requires: networkmanager (nmcli), rofi, python3, dunst (dunstify)
+
+PROMPT="Wi-Fi"
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+RUN="${XDG_RUNTIME_DIR:-/tmp}"
+
+# Toggle: if the popup is already open, close it and quit
+if pkill -f "rofi.* -p ${PROMPT}( |\$)" 2>/dev/null; then
+    exit 0
+fi
+
+notify() { dunstify -a "Wi-Fi" -r 5560 -t 3500 "Wi-Fi" "$1" >/dev/null 2>&1; }
+command -v nmcli >/dev/null 2>&1 || { notify "nmcli not found (package: networkmanager)"; exit 1; }
+
+theme_args=()
+[ -f "$THEME" ] && theme_args=(-theme "$THEME")
+
+ROWS=$(mktemp "$RUN/i3-wifi.XXXXXX") || exit 1
+trap 'rm -f "$ROWS"' EXIT
+
+# Writes one row per line to $ROWS:  kind <TAB> ssid <TAB> text shown in rofi
+build() {
+python3 - "$ROWS" <<'PY'
+import subprocess, sys
+
+out_file = sys.argv[1]
+
+def run(*args):
+    try:
+        r = subprocess.run(args, capture_output=True, text=True, timeout=8)
+        return r.stdout if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+def split_terse(line):
+    """Split an `nmcli -t` line on unescaped ':' and unescape '\\:' and '\\\\'."""
+    parts, cur, i = [], [], 0
+    while i < len(line):
+        c = line[i]
+        if c == "\\" and i + 1 < len(line):
+            cur.append(line[i + 1])
+            i += 2
+            continue
+        if c == ":":
+            parts.append("".join(cur))
+            cur = []
+        else:
+            cur.append(c)
+        i += 1
+    parts.append("".join(cur))
+    return parts
+
+def clean(s):
+    return s.replace("\t", " ").replace("\n", " ")
+
+rows = []
+if run("nmcli", "radio", "wifi").strip() == "enabled":
+    rows.append(("toggle", "", "Wi-Fi is ON  -  select to turn OFF"))
+    rows.append(("rescan", "", "Rescan networks"))
+    best = {}
+    listing = run("nmcli", "-t", "-f", "IN-USE,SSID,SIGNAL,SECURITY", "device", "wifi", "list")
+    for line in listing.splitlines():
+        f = split_terse(line)
+        if len(f) < 4:
+            continue
+        use, ssid, sig, sec = f[0].strip() == "*", clean(f[1]), f[2], f[3].strip()
+        if not ssid:
+            continue
+        try:
+            sig = int(sig)
+        except ValueError:
+            sig = 0
+        sec = "" if sec in ("", "--") else sec
+        item = (use, sig, ssid, sec)
+        old = best.get(ssid)
+        if old is None or (item[0], item[1]) > (old[0], old[1]):
+            best[ssid] = item
+    for use, sig, ssid, sec in sorted(best.values(), key=lambda x: (not x[0], -x[1])):
+        name = ssid if len(ssid) <= 24 else ssid[:23] + "…"
+        mark = "●" if use else " "
+        kind = "net:%d:%d" % (1 if use else 0, 1 if sec else 0)
+        rows.append((kind, ssid, "%s %-24s %3d%%  %s" % (mark, name, sig, sec or "open")))
+else:
+    rows.append(("toggle", "", "Wi-Fi is OFF  -  select to turn ON"))
+
+with open(out_file, "w", encoding="utf-8") as f:
+    for kind, ssid, text in rows:
+        f.write("%s\t%s\t%s\n" % (kind, ssid, text))
+PY
+}
+
+connect() {   # connect <ssid> <kind>   (kind = net:<in-use>:<secured>)
+    local ssid="$1" kind="$2" inuse secured dev out rc pw
+    inuse=${kind#net:}; inuse=${inuse%%:*}
+    secured=${kind##*:}
+
+    if [ "$inuse" = 1 ]; then
+        dev=$(nmcli -t -f DEVICE,TYPE device 2>/dev/null | awk -F: '$2=="wifi"{print $1; exit}')
+        if [ -n "$dev" ] && nmcli device disconnect "$dev" >/dev/null 2>&1; then
+            notify "Disconnected from $ssid"
+        else
+            notify "Could not disconnect"
+        fi
+        return
+    fi
+
+    notify "Connecting to $ssid ..."
+    if nmcli -t -f NAME connection show 2>/dev/null | grep -Fxq -- "$ssid"; then
+        out=$(nmcli --wait 25 connection up id "$ssid" 2>&1); rc=$?
+    elif [ "$secured" = 0 ]; then
+        out=$(nmcli --wait 25 device wifi connect "$ssid" 2>&1); rc=$?
+    else
+        pw=$(printf '' | rofi -dmenu -password -p "Password: $ssid" \
+                "${theme_args[@]}" -theme-str 'listview { lines: 0; }')
+        [ $? -eq 0 ] && [ -n "$pw" ] || return
+        out=$(nmcli --wait 25 device wifi connect "$ssid" password "$pw" 2>&1); rc=$?
+    fi
+
+    if [ "$rc" -eq 0 ]; then
+        notify "Connected to $ssid"
+    else
+        notify "Failed: $(printf '%s' "$out" | tail -n1 | cut -c1-90)"
+    fi
+}
+
+sel=0
+while :; do
+    build
+    count=$(wc -l < "$ROWS")
+    lines=$(( count > 10 ? 10 : count ))
+    [ "$lines" -lt 1 ] && lines=1
+
+    choice=$(cut -f3 "$ROWS" | rofi -dmenu -i -no-custom -format i -p "$PROMPT" \
+        -selected-row "$sel" "${theme_args[@]}" \
+        -theme-str "window { width: 440px; } listview { lines: $lines; } element-text { font: \"JetBrainsMono Nerd Font 8\"; }")
+    [ $? -eq 0 ] || break      # Esc, click-away or toggled off
+
+    n=$((choice + 1))
+    kind=$(sed -n "${n}p" "$ROWS" | cut -f1)
+    ssid=$(sed -n "${n}p" "$ROWS" | cut -f2)
+
+    case "$kind" in
+        toggle)
+            if [ "$(nmcli radio wifi 2>/dev/null)" = "enabled" ]; then
+                nmcli radio wifi off >/dev/null 2>&1
+            else
+                nmcli radio wifi on >/dev/null 2>&1
+                sleep 2
+            fi
+            sel=0
+            ;;
+        rescan)
+            nmcli device wifi rescan >/dev/null 2>&1
+            sleep 2
+            sel=1
+            ;;
+        net:*)
+            connect "$ssid" "$kind"
+            break
+            ;;
+        *) break ;;
+    esac
+done

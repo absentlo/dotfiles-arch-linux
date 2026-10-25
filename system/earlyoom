@@ -1,0 +1,4 @@
+# Act at 5% RAM + 10% swap free, before the kernel OOM freeze.
+# Prefer killing a browser tab process; never the desktop itself.
+# No quotes/spaces: systemd splits $EARLYOOM_ARGS on whitespace.
+EARLYOOM_ARGS="-m 5 -s 10 -r 3600 --prefer ^(Isolated.Web.Co|Web.Content|brave)$ --avoid ^(Xorg|i3|polybar|picom|dunst|pipewire|wireplumber|systemd|claude)$"

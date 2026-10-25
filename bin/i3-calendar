@@ -1,0 +1,101 @@
+#!/usr/bin/env bash
+# i3-calendar - date/time popup built with rofi (no resident application)
+#
+# Open it by clicking the clock in i3blocks or with $mod+c.
+# It closes on Esc, on click-away, or when run again while open (toggle).
+#
+# Inside the popup:
+#   Enter on "Previous month" / "Today" / "Next month"  -> navigate
+#   Alt+Left / Alt+Home / Alt+Right                      -> previous / today / next
+#
+# Requires: rofi, python3
+
+POPUP_ID="i3cal-popup"      # unique marker used to detect the open popup
+FIRST_WEEKDAY=6             # 0 = Monday ... 6 = Sunday
+BAR_HEIGHT=30               # popup sits just above the bottom bar
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+
+# Toggle: if the popup is already open, close it and quit
+if pkill -f "rofi.*${POPUP_ID}" 2>/dev/null; then
+    exit 0
+fi
+
+# Reuse the graphite rofi theme when it exists
+theme_args=()
+[ -f "$THEME" ] && theme_args=(-theme "$THEME")
+
+# Popup placement and look (bottom-right corner, above the bar)
+theme_str="window { location: south east; anchor: south east; x-offset: -8px; y-offset: -${BAR_HEIGHT}px; width: 340px; }
+mainbox { children: [ listview ]; }
+listview { lines: 12; columns: 1; scrollbar: false; fixed-height: true; }
+element-text { horizontal-align: 0.5; font: \"JetBrainsMono Nerd Font 11\"; }"
+
+# Print the menu rows for the month shown (offset = months from the current one)
+build_menu() {
+python3 - "$1" "$FIRST_WEEKDAY" <<'PY'
+import calendar, datetime, sys
+
+offset, first = int(sys.argv[1]), int(sys.argv[2])
+now = datetime.datetime.now()
+today = now.date()
+
+# Month being displayed
+idx = today.year * 12 + (today.month - 1) + offset
+year, month = divmod(idx, 12)
+month += 1
+
+weeks = calendar.Calendar(firstweekday=first).monthdatescalendar(year, month)
+while len(weeks) < 6:  # always 6 rows so the popup keeps a fixed height
+    last = weeks[-1][-1]
+    weeks.append([last + datetime.timedelta(days=i + 1) for i in range(7)])
+
+names = [calendar.day_abbr[(first + i) % 7][:2] for i in range(7)]
+
+rows = [
+    f"<b>{now:%H:%M}</b>   {now:%A, %d %B %Y}",
+    f"<b>{calendar.month_name[month]} {year}</b>",
+    "<span foreground='#8A8A8A'>" + " ".join(names) + "</span>",
+]
+for week in weeks:
+    cells = []
+    for d in week:
+        s = f"{d.day:2d}"
+        if d.month != month:
+            s = f"<span foreground='#5A5A5A'>{s}</span>"
+        elif d == today:
+            s = f"<span foreground='#FFFFFF' background='#606060'><b>{s}</b></span>"
+        cells.append(s)
+    rows.append(" ".join(cells))
+rows += ["◀  Previous month", "Today", "Next month  ▶"]
+print("\n".join(rows))
+PY
+}
+
+# Row indexes of the navigation entries
+PREV=9; TODAY=10; NEXT=11
+
+offset=0
+selected=$TODAY
+
+while :; do
+    choice=$(build_menu "$offset" | rofi -dmenu -markup-rows -no-custom -format i \
+        -p "$POPUP_ID" -selected-row "$selected" \
+        -kb-custom-1 "alt+Left" -kb-custom-2 "alt+Right" -kb-custom-3 "alt+Home" \
+        "${theme_args[@]}" -theme-str "$theme_str")
+    code=$?
+
+    case $code in
+        10) offset=$((offset - 1)); selected=$PREV;  continue ;;
+        11) offset=$((offset + 1)); selected=$NEXT;  continue ;;
+        12) offset=0;               selected=$TODAY; continue ;;
+        0)  ;;
+        *)  break ;;  # Esc, click-away or toggled off
+    esac
+
+    case "$choice" in
+        "$PREV")  offset=$((offset - 1)); selected=$PREV ;;
+        "$TODAY") offset=0;               selected=$TODAY ;;
+        "$NEXT")  offset=$((offset + 1)); selected=$NEXT ;;
+        *)        selected=$TODAY ;;  # clicked a day/header row: just redraw
+    esac
+done

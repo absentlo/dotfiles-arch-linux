@@ -1,0 +1,168 @@
+#!/usr/bin/env bash
+# i3-bluetooth - Bluetooth popup built with rofi + bluetoothctl (no resident application)
+#
+#   i3-bluetooth popup    open the popup; run it again while open to close it
+#   i3-bluetooth status   one short word/name for the polybar module (off | on | <device>)
+#
+# Popup: turn Bluetooth on/off, connect or disconnect paired devices.
+# "Pair a new device" starts Blueman only for that job; "Close Blueman" frees its RAM.
+# Requires: bluez-utils (bluetoothctl), rofi, python3, dunst (dunstify)
+
+PROMPT="Bluetooth"
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+RUN="${XDG_RUNTIME_DIR:-/tmp}"
+
+notify() { dunstify -a "Bluetooth" -r 5561 -t 3500 "Bluetooth" "$1" >/dev/null 2>&1; }
+
+# One python helper for both modes:  py status   |   py list <rows-file>
+py() {
+python3 - "$@" <<'PY'
+import subprocess, sys
+
+mode = sys.argv[1]
+
+def bt(*args, t=4):
+    try:
+        r = subprocess.run(["bluetoothctl", *args], capture_output=True, text=True, timeout=t)
+        return r.stdout if r.returncode == 0 else ""
+    except Exception:
+        return ""
+
+def clean(s):
+    return s.replace("\t", " ").replace("\n", " ")
+
+powered = "Powered: yes" in bt("show")
+
+devs = []   # (mac, name, connected)
+if powered:
+    for line in bt("devices").splitlines():
+        p = line.split(" ", 2)
+        if len(p) < 3 or p[0] != "Device":
+            continue
+        info = bt("info", p[1])
+        if "Paired: yes" not in info:
+            continue
+        devs.append((p[1], clean(p[2]), "Connected: yes" in info))
+
+if mode == "status":
+    if not powered:
+        print("off")
+    else:
+        conn = [d for d in devs if d[2]]
+        if conn:
+            label = conn[0][1][:14]
+            if len(conn) > 1:
+                label += "+%d" % (len(conn) - 1)
+            print(label)
+        else:
+            print("on")
+    sys.exit(0)
+
+out_file = sys.argv[2]
+rows = []
+if powered:
+    rows.append(("power", "", "Bluetooth is ON  -  select to turn OFF"))
+    for mac, name, conn in devs:
+        nm = name if len(name) <= 26 else name[:25] + "…"
+        rows.append(("dev:%d" % (1 if conn else 0), mac,
+                     "%s %-26s %s" % ("●" if conn else " ", nm, "connected" if conn else "")))
+    rows.append(("pair", "", "Pair a new device..."))
+else:
+    rows.append(("power", "", "Bluetooth is OFF  -  select to turn ON"))
+
+try:
+    running = subprocess.run(["pgrep", "-f", "blueman-(applet|tray)"],
+                             capture_output=True, timeout=3).returncode == 0
+except Exception:
+    running = False
+if running:
+    rows.append(("quit", "", "Close Blueman (frees RAM)"))
+
+with open(out_file, "w", encoding="utf-8") as f:
+    for kind, arg, text in rows:
+        f.write("%s\t%s\t%s\n" % (kind, arg, text))
+PY
+}
+
+popup() {
+    # Toggle: if the popup is already open, close it and quit
+    if pkill -f "rofi.* -p ${PROMPT}( |\$)" 2>/dev/null; then
+        return 0
+    fi
+    command -v bluetoothctl >/dev/null 2>&1 || { notify "bluetoothctl not found (package: bluez-utils)"; return 1; }
+
+    local theme_args=() ROWS count lines choice n kind arg sel=0 out
+    [ -f "$THEME" ] && theme_args=(-theme "$THEME")
+    ROWS=$(mktemp "$RUN/i3-bluetooth.XXXXXX") || return 1
+    trap 'rm -f "$ROWS"' RETURN
+
+    while :; do
+        py list "$ROWS"
+        count=$(wc -l < "$ROWS")
+        lines=$(( count > 10 ? 10 : count ))
+        [ "$lines" -lt 1 ] && lines=1
+
+        choice=$(cut -f3 "$ROWS" | rofi -dmenu -i -no-custom -format i -p "$PROMPT" \
+            -selected-row "$sel" "${theme_args[@]}" \
+            -theme-str "window { width: 440px; } listview { lines: $lines; } element-text { font: \"JetBrainsMono Nerd Font 8\"; }")
+        [ $? -eq 0 ] || break      # Esc, click-away or toggled off
+
+        n=$((choice + 1))
+        kind=$(sed -n "${n}p" "$ROWS" | cut -f1)
+        arg=$(sed -n "${n}p" "$ROWS" | cut -f2)
+
+        case "$kind" in
+            power)
+                if bluetoothctl show 2>/dev/null | grep -q 'Powered: yes'; then
+                    bluetoothctl power off >/dev/null 2>&1
+                else
+                    bluetoothctl power on >/dev/null 2>&1
+                    sleep 1
+                fi
+                sel=0
+                ;;
+            dev:1)
+                if bluetoothctl disconnect "$arg" >/dev/null 2>&1; then
+                    notify "Disconnected"
+                else
+                    notify "Could not disconnect"
+                fi
+                break
+                ;;
+            dev:0)
+                notify "Connecting ..."
+                bluetoothctl trust "$arg" >/dev/null 2>&1
+                out=$(timeout 20 bluetoothctl connect "$arg" 2>&1)
+                if printf '%s' "$out" | grep -q 'Connection successful'; then
+                    notify "Connected"
+                else
+                    notify "Failed: $(printf '%s' "$out" | tail -n1 | cut -c1-90)"
+                fi
+                break
+                ;;
+            pair)
+                # Blueman provides the pairing agent: start it only for this job
+                if ! pgrep -f 'blueman-applet' >/dev/null 2>&1; then
+                    setsid -f blueman-applet >/dev/null 2>&1 </dev/null
+                    sleep 2
+                fi
+                setsid -f blueman-manager >/dev/null 2>&1 </dev/null
+                break
+                ;;
+            quit)
+                pkill -f 'blueman-tray' 2>/dev/null
+                pkill -f 'blueman-applet' 2>/dev/null
+                pkill -x blueman-manager 2>/dev/null
+                notify "Blueman closed"
+                break
+                ;;
+            *) break ;;
+        esac
+    done
+}
+
+case "${1:-popup}" in
+    status) py status ;;
+    popup)  popup ;;
+    *) echo "usage: i3-bluetooth {popup|status}" >&2; exit 1 ;;
+esac
