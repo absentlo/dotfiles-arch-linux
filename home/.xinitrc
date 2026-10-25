@@ -12,4 +12,5 @@ export QT_QPA_PLATFORMTHEME=gtk3
 dbus-update-activation-environment --systemd \
 DISPLAY XAUTHORITY XDG_CURRENT_DESKTOP XDG_SESSION_TYPE QT_QPA_PLATFORMTHEME
 
-exec i3
+# no 25 MB in-memory debug log; "i3-msg shmlog on" when debugging
+exec i3 --shmlog-size=0

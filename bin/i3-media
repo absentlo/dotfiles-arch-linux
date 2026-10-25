@@ -205,7 +205,7 @@ cover = cover_from_url(pc("metadata", "mpris:artUrl")) or app_icon(player)
 sub = " — ".join(x for x in (artist, album) if x) or player or " "
 
 # Progress line: elapsed, thin bar, length and player volume on one row
-BAR_W = 22
+BAR_W = 14
 try:
     pos = float(pc("position"))
     length = float(pc("metadata", "mpris:length")) / 1e6
@@ -242,9 +242,9 @@ entries = [
 def rule(selector, props):
     return "\n".join([selector + " {"] + ["    %s: %s;" % (k, v) for k, v in props] + ["}"])
 
-WIN_W = 380
+WIN_W = 300
 PAD = 14
-COVER_W = WIN_W - 4 - 2 * PAD   # window minus borders minus side margins
+COVER_W = WIN_W - 2 * PAD   # window minus side margins
 
 def cover_height(path):
     """Cover box height from the real aspect ratio (no crop, no zoom)."""
@@ -327,6 +327,7 @@ theme += [
         ("font", '"JetBrainsMono Nerd Font 10"'),
     ]),
     rule("listview", [
+        ("margin", "6px 0px 0px 0px"),
         ("columns", "8"),
         ("lines", "1"),
         ("fixed-columns", "true"),
