@@ -74,7 +74,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -- i3lock -i ~/.local/share/
 exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Split each new window along the focused window's longer side (dwindle-style)
-exec_always --no-startup-id sh -c 'pgrep -x autotiling >/dev/null || exec autotiling'
+exec_always --no-startup-id sh -c '(pkill -x autotiling || true) && sleep 0.3 && exec autotiling'
 bindsym $mod+t exec --no-startup-id sh -c 'pkill -x autotiling && notify-send -t 1500 Autotiling Off || (setsid -f autotiling && notify-send -t 1500 Autotiling On)'
 # Manual extras (uncomment if needed):
 #exec --no-startup-id nm-applet

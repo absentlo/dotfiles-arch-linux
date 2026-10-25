@@ -1,0 +1,21 @@
+#!/usr/bin/env bash
+# dotfiles-sync - copy the live configs into ~/dotfiles and show what changed.
+# Commit yourself afterwards: git -C ~/dotfiles commit -am "..." && git -C ~/dotfiles push
+set -e
+D="$HOME/dotfiles"
+C="$HOME/.config"
+
+for dir in i3 polybar picom rofi dunst gtk-4.0; do
+    mkdir -p "$D/$dir"; cp -r "$C/$dir/." "$D/$dir/"
+done
+cp "$C/gtk-3.0/settings.ini" "$D/gtk-3.0/"   # not the whole dir: Thunar keeps private bookmarks there
+mkdir -p "$D/pipewire" && cp -r "$C/pipewire/." "$D/pipewire/"
+cp "$HOME"/.local/bin/* "$D/bin/"
+cp "$C/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml" \
+   "$HOME/.local/share/xfce4/terminal/colorschemes/graphite.theme" "$D/xfce4-terminal/"
+cp "$HOME/.bashrc" "$D/"
+cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
+cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
+cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
+
+git -C "$D" status --short

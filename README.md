@@ -35,7 +35,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | `$mod + Shift + r` | Restart i3 |
 
 ## Synchronization & Backup
-Configurations are **copies**, not symlinks. Copy each folder back to its place:
+Configurations are **copies**, not symlinks. After changing anything, run `dotfiles-sync` to copy the live files in and see what changed, then commit and push. Copy each folder back to its place:
 
 | Repo folder | Goes to |
 | :--- | :--- |
