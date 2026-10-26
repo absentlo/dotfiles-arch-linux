@@ -17,5 +17,6 @@ cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
 cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
+mkdir -p "$D/librewolf/chrome" && cp "$C"/librewolf/librewolf/*.default-release/chrome/userChrome.css "$D/librewolf/chrome/"
 
 git -C "$D" status --short

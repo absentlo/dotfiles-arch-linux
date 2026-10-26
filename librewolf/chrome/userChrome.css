@@ -1,0 +1,58 @@
+/* Graphite LibreWolf - matches the i3/polybar/rofi rice.
+   Customize: edit the variables below, then restart LibreWolf.
+   Debug live: about:config devtools.chrome.enabled=true, then Ctrl+Alt+Shift+I */
+
+:root {
+  --g-bg:      #111111;  /* tab strip, toolbar */
+  --g-surface: #1C1C1C;  /* selected tab, url bar */
+  --g-border:  #3A3A3A;
+  --g-fg:      #D8D8D8;
+  --g-muted:   #9A9A9A;
+  --g-radius:  4px;
+  --g-tab-height: 28px;
+  --g-font: "JetBrainsMono Nerd Font";
+  --g-font-size: 11px;
+}
+
+/* Recolor the built-in dark theme */
+:root {
+  --lwt-accent-color: var(--g-bg) !important;
+  --lwt-text-color: var(--g-fg) !important;
+  --toolbar-bgcolor: var(--g-bg) !important;
+  --toolbar-color: var(--g-fg) !important;
+  --toolbar-field-background-color: var(--g-surface) !important;
+  --toolbar-field-focus-background-color: var(--g-surface) !important;
+  --toolbar-field-color: var(--g-fg) !important;
+  --toolbar-field-focus-border-color: var(--g-border) !important;
+  --tab-selected-bgcolor: var(--g-surface) !important;
+  --tab-selected-textcolor: var(--g-fg) !important;
+  --arrowpanel-background: var(--g-bg) !important;
+  --arrowpanel-color: var(--g-fg) !important;
+  --arrowpanel-border-color: var(--g-border) !important;
+  --chrome-content-separator-color: var(--g-border) !important;
+  --tab-border-radius: var(--g-radius) !important;
+  --toolbarbutton-border-radius: var(--g-radius) !important;
+  --tab-min-height: var(--g-tab-height) !important;
+}
+
+/* Rice font on tabs and url bar */
+.tab-label, #urlbar-input, .urlbarView {
+  font-family: var(--g-font) !important;
+  font-size: var(--g-font-size) !important;
+}
+
+/* Background tabs dimmed, active tab gets a thin outline instead of a glow */
+.tabbrowser-tab:not([selected]) .tab-label { color: var(--g-muted) !important; }
+.tab-background[selected] {
+  box-shadow: none !important;
+  outline: 1px solid var(--g-border) !important;
+}
+
+/* Close button only on hover/selected - less clutter */
+.tabbrowser-tab:not([selected]):not(:hover) .tab-close-button { display: none !important; }
+
+/* Flat url bar with a subtle border */
+#urlbar-background {
+  border: 1px solid var(--g-border) !important;
+  box-shadow: none !important;
+}
