@@ -1,0 +1,104 @@
+/* Graphite Thunderbird - same palette and font as the LibreWolf rice.
+   Debug live: Tools > Developer Tools > Developer Toolbox */
+
+:root {
+  --g-bg:      #111111;  /* panes, toolbars */
+  --g-surface: #1C1C1C;  /* hover, selected tab, search box */
+  --g-border:  #3A3A3A;
+  --g-select:  #3A3A3A;
+  --g-fg:      #D8D8D8;
+  --g-muted:   #9A9A9A;
+  --g-icon:    #8A8A8A;
+  --g-radius:  8px;
+  --g-font: "JetBrainsMono Nerd Font";
+}
+
+/* Recolor the built-in dark theme */
+:root {
+  --lwt-accent-color: var(--g-bg) !important;
+  --lwt-text-color: var(--g-fg) !important;
+  --toolbar-bgcolor: var(--g-bg) !important;
+  --toolbar-color: var(--g-fg) !important;
+  --toolbar-field-background-color: var(--g-surface) !important;
+  --toolbar-field-focus-background-color: var(--g-surface) !important;
+  --toolbar-field-color: var(--g-fg) !important;
+  --toolbar-field-border-color: var(--g-border) !important;
+  --toolbarbutton-icon-fill: var(--g-icon) !important;
+  --toolbarbutton-hover-background: var(--g-surface) !important;
+  --toolbarbutton-active-background: var(--g-border) !important;
+  --tab-selected-bgcolor: var(--g-surface) !important;
+  --tab-selected-textcolor: var(--g-fg) !important;
+  --arrowpanel-background: var(--g-bg) !important;
+  --arrowpanel-color: var(--g-fg) !important;
+  --arrowpanel-border-color: var(--g-border) !important;
+  --chrome-content-separator-color: var(--g-border) !important;
+  --focus-outline-color: var(--g-muted) !important;
+
+  /* Supernova layout layers: folder pane, message list, headers */
+  --layout-background-0: var(--g-bg) !important;
+  --layout-background-1: var(--g-bg) !important;
+  --layout-background-2: var(--g-surface) !important;
+  --layout-background-3: var(--g-surface) !important;
+  --layout-background-4: var(--g-border) !important;
+  --layout-color-0: var(--g-fg) !important;
+  --layout-color-1: var(--g-fg) !important;
+  --layout-color-2: var(--g-muted) !important;
+  --layout-border-0: var(--g-border) !important;
+  --layout-border-1: var(--g-border) !important;
+  --layout-border-2: var(--g-border) !important;
+  --sidebar-background-color: var(--g-bg) !important;
+  --foldertree-background: var(--g-bg) !important;
+  --tree-view-bg: var(--g-bg) !important;
+  --tree-card-background: var(--g-bg) !important;
+  --tree-card-border: var(--g-border) !important;
+  --listbox-selected-bg: var(--g-select) !important;
+  --listbox-focused-selected-bg: var(--g-select) !important;
+  --selected-item-color: var(--g-select) !important;
+  --selected-item-text-color: #FFFFFF !important;
+  --spaces-bg-color: var(--g-bg) !important;
+}
+
+/* Menus and popups */
+menupopup, panel {
+  --panel-background: var(--g-bg) !important;
+  --panel-color: var(--g-fg) !important;
+  --panel-border-color: var(--g-border) !important;
+  --panel-border-radius: var(--g-radius) !important;
+}
+menupopup menuitem[_moz-menuactive], menupopup menu[_moz-menuactive] {
+  background-color: var(--g-surface) !important;
+  color: var(--g-fg) !important;
+}
+
+/* Rice font in the chrome (not inside emails) */
+#folderTree, #threadTree, .tab-label, #unifiedToolbar, menupopup, panel,
+#messageHeader, .card-container, #quickFilterBar {
+  font-family: var(--g-font) !important;
+}
+
+/* Gray toolbar icons, brighter on hover */
+.unified-toolbar button, .toolbarbutton-1, .spaces-toolbar-button {
+  fill: var(--g-icon) !important;
+  color: var(--g-icon) !important;
+}
+.unified-toolbar button:hover, .toolbarbutton-1:hover, .spaces-toolbar-button:hover {
+  fill: var(--g-fg) !important;
+  color: var(--g-fg) !important;
+}
+
+/* Background tabs dimmed, flat selected tab, close button only on hover */
+.tabmail-tab:not([selected]) .tab-label { color: var(--g-muted) !important; }
+.tabmail-tab .tab-background[selected] { box-shadow: none !important; outline: 1px solid var(--g-border) !important; }
+.tabmail-tab:not([selected]):not(:hover) .tab-close-button { display: none !important; }
+
+/* Unread mail stands out with brightness, not blue */
+#threadTree tr[data-properties~="unread"] { color: #FFFFFF !important; font-weight: bold !important; }
+#folderTree li.unread > .container .name { color: #FFFFFF !important; }
+.unread-count { background-color: var(--g-border) !important; color: var(--g-fg) !important; }
+
+/* Search box and scrollbars */
+global-search-bar, .search-bar, #unifiedToolbarContent search-bar {
+  --search-bar-background: var(--g-surface) !important;
+  --search-bar-border-color: var(--g-border) !important;
+}
+:root { scrollbar-color: var(--g-border) var(--g-bg) !important; }

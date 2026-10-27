@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+# i3-wallpaper <image> - set the wallpaper (saved in ~/.fehbg) and rebuild the
+# darkened lock screen image from it. No argument: the Graphite default.
+set -e
+img=$(realpath "${1:-$HOME/.local/share/backgrounds/graphite.png}")
+[[ -f "$img" ]] || { echo "i3-wallpaper: no such file: $img" >&2; exit 1; }
+
+feh --bg-fill "$img"
+
+size=$(xrandr | awk '/\*/{print $1; exit}'); w=${size%x*}; h=${size#*x}
+mkdir -p ~/.local/share/i3lock
+ffmpeg -loglevel error -y -i "$img" \
+    -vf "scale=$w:$h:force_original_aspect_ratio=increase,crop=$w:$h,boxblur=12:2,eq=brightness=-0.25" \
+    -frames:v 1 ~/.local/share/i3lock/lock.png
+notify-send -i preferences-desktop-wallpaper "Wallpaper" "$(basename "$img")" 2>/dev/null || true

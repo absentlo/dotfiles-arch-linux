@@ -41,6 +41,7 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | :--- | :--- |
 | `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop`, `zathura`, `mpv` | `~/.config/<same name>/` |
 | `bin/` | `~/.local/bin/` |
+| `backgrounds/` | `~/.local/share/backgrounds/` |
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
 | `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |
 | `home/`, `.bashrc` | `~/` |
@@ -53,15 +54,10 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
 | `system/grub` | `/etc/default/grub` (sudo, then `grub-mkconfig -o /boot/grub/grub.cfg`) |
 
-## Lock screen image
+## Wallpaper and lock screen image
 The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur.archlinux.org/i3lock-color.git && cd i3lock-color && makepkg -si`, answer **y** to replace `i3lock`). Without it, `bin/i3-lock` falls back to plain i3lock. Cursor theme: `sudo pacman -S capitaine-cursors`.
 
-`Win + x` and auto-lock use a darkened copy of the wallpaper. Recreate it after a fresh install (or a new wallpaper / screen size):
-
-```
-mkdir -p ~/.local/share/i3lock
-ffmpeg -i /usr/share/backgrounds/archlinux/gritty.png -vf "scale=1600:900:force_original_aspect_ratio=increase,crop=1600:900,boxblur=12:2,eq=brightness=-0.25" -frames:v 1 ~/.local/share/i3lock/lock.png
-```
+`i3-wallpaper <image>` sets any image as the wallpaper and rebuilds the darkened lock screen copy (`Win + x`, auto-lock) at the current screen size. With no argument it uses the Graphite default, `backgrounds/graphite.png` (copy it to `~/.local/share/backgrounds/`). Run it once after a fresh install.
 
 ## Bluetooth earbuds stay in music quality
 Games/apps that open the mic would switch the earbuds to mono 16 kHz "headset" mode (sounds distorted). Turned off once with:

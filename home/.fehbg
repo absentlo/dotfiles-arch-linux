@@ -1,2 +1,2 @@
 #!/bin/sh
-feh --no-fehbg --bg-fill '/usr/share/backgrounds/archlinux/gritty.png' 
+feh --no-fehbg --bg-fill '/home/apo/.local/share/backgrounds/graphite.png' 

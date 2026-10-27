@@ -13,6 +13,7 @@ mkdir -p "$D/pipewire" && cp -r "$C/pipewire/." "$D/pipewire/"
 find "$HOME/.local/bin" -maxdepth 1 -type f -exec cp {} "$D/bin/" \;   # real files only: symlinks there are installed apps (claude)
 cp "$C/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml" \
    "$HOME/.local/share/xfce4/terminal/colorschemes/graphite.theme" "$D/xfce4-terminal/"
+mkdir -p "$D/backgrounds" && cp "$HOME"/.local/share/backgrounds/* "$D/backgrounds/"
 cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/home/.icons/default/"   # X/i3 cursor theme
@@ -20,6 +21,7 @@ cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.
 cp /etc/default/grub "$D/system/grub"
 cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
 mkdir -p "$D/thunderbird" && cp "$C"/thunderbird/*.default-release/user.js "$D/thunderbird/"
+mkdir -p "$D/thunderbird/chrome" && cp "$C"/thunderbird/*.default-release/chrome/*.css "$D/thunderbird/chrome/"
 mkdir -p "$D/librewolf/chrome" && cp "$C"/librewolf/librewolf/*.default-release/chrome/*.css "$D/librewolf/chrome/"
 mkdir -p "$D/brave/graphite-theme" && cp "$C/brave-origin-flags.conf" "$D/brave/" && cp "$C/BraveSoftware/graphite-theme/manifest.json" "$D/brave/graphite-theme/"
 
