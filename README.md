@@ -4,9 +4,14 @@ Basic settings & my first repoooo!!111!
 
 A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Optimized for minimal CPU and RAM usage.
 
-<!-- ![Graphite rice](screenshot.png) -->
+![Graphite rice: terminal, btop and Thunar](screenshots/workspace.png)
 
 **Palette:** `#111111` background · `#1C1C1C` surface · `#3A3A3A` border · `#777777` / `#B8B8B8` accents · `#D8D8D8` text · `#C46A6A` urgent. Font: JetBrainsMono Nerd Font everywhere. Built for an i5-4570 / 8 GB / Radeon HD 8490.
+
+## Gallery
+| Desktop | Terminal | Browser |
+| :---: | :---: | :---: |
+| ![Empty desktop with the Graphite bar and wallpaper](screenshots/desktop.png) | ![fastfetch in the Graphite terminal](screenshots/terminal.png) | ![Terminal, btop and LibreWolf](screenshots/browser.png) |
 
 ## System Specifications
 - **OS**: Arch Linux
