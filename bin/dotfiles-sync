@@ -14,7 +14,6 @@ find "$HOME/.local/bin" -maxdepth 1 -type f -exec cp {} "$D/bin/" \;   # real fi
 cp "$C/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml" \
    "$HOME/.local/share/xfce4/terminal/colorschemes/graphite.theme" "$D/xfce4-terminal/"
 mkdir -p "$D/backgrounds" && cp "$HOME"/.local/share/backgrounds/* "$D/backgrounds/"
-cp "$C/greenclip.toml" "$D/home/"
 mkdir -p "$D/thunar" && cp "$C/Thunar/uca.xml" "$D/thunar/"
 mkdir -p "$D/krita" && cp "$HOME"/.local/share/krita/color-schemes/*.colors "$D/krita/"
 mkdir -p "$D/gtksourceview-4" && cp "$HOME"/.local/share/gtksourceview-4/styles/*.xml "$D/gtksourceview-4/"

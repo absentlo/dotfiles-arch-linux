@@ -27,7 +27,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 - **Terminal**: xfce4-terminal (Graphite scheme), fastfetch, btop (Graphite theme)
 - **Browsers**: LibreWolf (userChrome.css), Brave Origin (theme), shared Graphite start page
 - **Mail / PDF / Video / Editor**: Thunderbird, Zathura, mpv, Mousepad, all on the palette
-- **Extras**: greenclip clipboard with images, rofi calc + emoji, gammastep night light, ananicy-cpp
+- **Extras**: clipmenu text history (images copy and paste directly; image history cost ~117 MB each), rofi calc + emoji, gammastep night light, ananicy-cpp
 
 ## Keybindings Cheat Sheet
 
@@ -48,7 +48,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | `$mod + Shift + h` | Shortcuts Help |
 | `$mod + Shift + s` | Area Screenshot |
 | `Print` / `Shift + Print` | Full / area screenshot: saved, copied, preview |
-| `$mod + Shift + v` | Clipboard history (text and images) |
+| `$mod + Shift + v` | Clipboard history (text) |
 | `$mod + .` | Emoji picker |
 | `$mod + =` | Calculator (Enter copies) |
 | `$mod + ,` / `$mod + Shift + ,` | Last notification / dismiss all |
@@ -65,7 +65,6 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop`, `zathura`, `mpv`, `gammastep`, `fontconfig`, `dircolors` | `~/.config/<same name>/` |
 | `bin/` | `~/.local/bin/` |
 | `backgrounds/` | `~/.local/share/backgrounds/` |
-| `home/greenclip.toml` | `~/.config/greenclip.toml` |
 | `thunar/uca.xml` | `~/.config/Thunar/` (adds "Copy image to clipboard") |
 | `gtksourceview-4/` | `~/.local/share/gtksourceview-4/styles/`, then `gsettings set org.xfce.mousepad.preferences.view color-scheme graphite` |
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
@@ -93,7 +92,7 @@ The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur
 Colored man pages need `sudo pacman -S man-db man-pages less`; `.bashrc` already sets the colors.
 
 ## Add-ons
-`sudo pacman -S --needed rofi-calc rofi-emoji gammastep ananicy-cpp`, then from the AUR (`git clone https://aur.archlinux.org/<name>.git && cd <name> && makepkg -si`): `rofi-greenclip` and `cachyos-ananicy-rules-git`. Enable the priority daemon: `sudo systemctl enable --now ananicy-cpp`. Ristretto background: `xfconf-query -c ristretto -p /window/bgcolor-override -n -t bool -s true`.
+`sudo pacman -S --needed rofi-calc rofi-emoji gammastep ananicy-cpp clipmenu`, then from the AUR (`git clone https://aur.archlinux.org/<name>.git && cd <name> && makepkg -si`): `cachyos-ananicy-rules-git`. Enable the priority daemon: `sudo systemctl enable --now ananicy-cpp`. Ristretto background: `xfconf-query -c ristretto -p /window/bgcolor-override -n -t bool -s true`.
 
 ## Bluetooth earbuds stay in music quality
 Games/apps that open the mic would switch the earbuds to mono 16 kHz "headset" mode (sounds distorted). Turned off once with:
