@@ -1,0 +1,29 @@
+// Graphite fastfetch - colors are ANSI 24-bit codes from the rice palette
+{
+  "$schema": "https://github.com/fastfetch-cli/fastfetch/raw/master/doc/json_schema.json",
+  "logo": {
+    "type": "small",
+    "color": { "1": "38;2;184;184;184", "2": "38;2;119;119;119" },
+    "padding": { "right": 2 }
+  },
+  "display": {
+    "separator": "  ",
+    "color": { "keys": "38;2;138;138;138", "title": "38;2;216;216;216", "output": "38;2;216;216;216" }
+  },
+  "modules": [
+    "title",
+    { "type": "separator", "string": "─" },
+    { "type": "os", "key": "" },
+    { "type": "kernel", "key": "" },
+    { "type": "uptime", "key": "󰅐" },
+    { "type": "packages", "key": "󰏖" },
+    { "type": "wm", "key": "" },
+    { "type": "terminal", "key": "" },
+    { "type": "cpu", "key": "" },
+    { "type": "gpu", "hideType": "integrated", "key": "󰢮" },
+    { "type": "memory", "key": "" },
+    { "type": "disk", "key": "󰋊" },
+    "break",
+    { "type": "colors", "symbol": "circle" }
+  ]
+}

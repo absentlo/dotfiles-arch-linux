@@ -12,7 +12,13 @@ alias ll='ls -la'
 alias grep='grep --color=auto'
 
 # Graphite Minimal Prompt
-PS1='\[\033[1;30m\][\[\033[1;37m\]\u@\h \W\[\033[1;30m\]]\$ \[\033[0m\]'
+# Last command's exit code in red when it failed (set via PROMPT_COMMAND, no subshell)
+__graphite_prompt() {
+    local s=$? x=''
+    (( s )) && x="\[\033[0;31m\]$s "
+    PS1="$x\[\033[1;30m\][\[\033[1;37m\]\u@\h \W\[\033[1;30m\]]\$ \[\033[0m\]"
+}
+PROMPT_COMMAND=__graphite_prompt
 
 # Arch Linux & Dotfiles Aliases
 alias update='sudo pacman -Syu'
