@@ -19,4 +19,7 @@
   <property name="font-name" type="string" value="JetBrainsMono Nerd Font 8"/>
   <property name="font-use-system" type="bool" value="false"/>
   <property name="font-allow-bold" type="bool" value="true"/>
+  <property name="misc-menubar-default" type="bool" value="false"/>
+  <property name="scrolling-bar" type="string" value="TERMINAL_SCROLLBAR_NONE"/>
+  <property name="misc-borders-default" type="bool" value="false"/>
 </channel>
