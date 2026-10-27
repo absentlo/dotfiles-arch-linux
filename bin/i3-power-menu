@@ -7,10 +7,10 @@ menu() {  # menu <prompt> <lines>   (items on stdin)
 }
 
 opcion=$(printf '%s\n' \
-  "Lock" \
-  "Log Out" \
-  "Reboot" \
-  "Power Off" |
+  $'\uf023  Lock' \
+  $'\U000F0343  Log Out' \
+  $'\U000F0709  Reboot' \
+  $'\U000F0425  Power Off' |
   menu "System" 4)
 
 confirmar() {
@@ -19,16 +19,16 @@ confirmar() {
 }
 
 case "$opcion" in
-    "Lock")
+    *"Lock")
         ~/.local/bin/i3-lock
         ;;
-    "Log Out")
+    *"Log Out")
         confirmar "Log Out?" && i3-msg exit
         ;;
-    "Reboot")
+    *"Reboot")
         confirmar "Reboot?" && systemctl reboot
         ;;
-    "Power Off")
+    *"Power Off")
         confirmar "Power Off?" && systemctl poweroff
         ;;
 esac

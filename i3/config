@@ -70,7 +70,7 @@ exec --no-startup-id sh ~/.fehbg
 exec --no-startup-id sh -c 'pgrep -x picom >/dev/null || picom -b'
 exec --no-startup-id sh -c 'pgrep -x dunst >/dev/null || dunst'
 exec --no-startup-id sh -c 'pgrep -x lxqt-policykit-agent >/dev/null || lxqt-policykit-agent'
-exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/i3-lock --nofork
+exec --no-startup-id xss-lock --transfer-sleep-lock -n 'notify-send -u low -i system-lock-screen "Locking in 60 s" "Move the mouse to stay unlocked"' -- ~/.local/bin/i3-lock --nofork
 exec --no-startup-id sh -c 'pgrep -x greenclip >/dev/null || greenclip daemon'
 exec --no-startup-id sh -c 'pgrep -x gammastep >/dev/null || gammastep'
 exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
@@ -191,7 +191,8 @@ for_window [class="(?i)Blueman-manager"] floating enable, resize set 600 400, mo
 for_window [class="(?i)Nm-connection-editor"] floating enable, resize set 600 400, move position center
 for_window [class="(?i)Xfce4-screenshooter"] floating enable, move position center
 
-exec --no-startup-id xset s off
+# Idle: warning at 9 min, lock at 10 (screen saver + cycle -> xss-lock), screen off at 15
+exec --no-startup-id xset s 540 60 dpms 900 900 900
 
 # rice-v3: popups instead of resident tray applets (nm-applet + blueman, ~190 MB)
 bindsym $mod+n exec --no-startup-id ~/.local/bin/i3-wifi

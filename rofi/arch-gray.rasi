@@ -1,5 +1,5 @@
 configuration {
-    icon-theme: "Papirus-Dark";
+    icon-theme: "Papirus-Dark-Graphite";
     drun-display-format: "{name}";
 }
 
@@ -16,7 +16,7 @@ configuration {
 window {
     width: 400px;
     background-color: #111111;
-    border: 0px;
+    border: 1px;
     border-color: #3A3A3A;
     border-radius: 8px;
     padding: 12px;

@@ -29,10 +29,12 @@ dnd_on()   { [[ $(dunstctl is-paused 2>/dev/null) == true ]]; }
 awake_on() { xset q | grep -q 'DPMS is Disabled'; }
 
 status() {
-    local out="%{F#8A8A8A}"$''"%{F-}"
+    # %{T2} = the Nerd Font Propo slot the other modules use; the mono font clips wide icons
+    local out="%{T2}%{F#8A8A8A}"$'\uf29a'"%{F-}"
     [[ $(night_mode) != off ]] && out+=" %{F#C9B27C}"$'\U000F0594'"%{F-}"
     dnd_on && out+=" %{F#D8D8D8}"$'\U000F009B'"%{F-}"
     awake_on && out+=" %{F#D8D8D8}"$'\U000F0176'"%{F-}"
+    out+="%{T-}"
     printf '%s\n' "$out"
 }
 
@@ -54,8 +56,8 @@ menu() {
         *"Night light: off"*)    set_night off ;;
         *"Do not disturb"*)      dunstctl set-paused toggle ;;
         *"Keep screen awake"*)
-            # i3 config already has 'xset s off'; DPMS is what turns the screen off after 10 min
-            if awake_on; then xset +dpms; else xset -dpms; fi ;;
+            # Same idle values as the i3 config: lock at 10 min (screen saver), screen off at 15
+            if awake_on; then xset s 540 60 +dpms; else xset s off -dpms; fi ;;
         *) exit 0 ;;
     esac
     polybar-msg action "#a11y.hook.0" >/dev/null 2>&1
