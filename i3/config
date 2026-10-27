@@ -126,10 +126,10 @@ bindsym $mod+x exec --no-startup-id ~/.local/bin/i3-lock
 bindsym $mod+Shift+p exec --no-startup-id ~/.local/bin/i3-power-menu
 bindsym $mod+Shift+b exec --no-startup-id gtk-launch brave-origin.desktop
 bindsym $mod+Shift+f exec --no-startup-id thunar
-bindsym Print exec --no-startup-id xfce4-screenshooter -f
+bindsym Print exec --no-startup-id ~/.local/bin/i3-screenshot full
 bindsym $mod+Shift+s exec --no-startup-id xfce4-screenshooter
-# Area screenshot straight to the clipboard (paste anywhere)
-bindsym Shift+Print exec --no-startup-id xfce4-screenshooter -r -c
+# Print / Shift+Print: full / area, saved to ~/Pictures/Screenshots + clipboard + preview
+bindsym Shift+Print exec --no-startup-id ~/.local/bin/i3-screenshot area
 
 # Clipboard history (text and images), emoji, calculator - all in the rice rofi
 bindsym $mod+Shift+v exec --no-startup-id rofi -theme ~/.config/rofi/arch-gray.rasi -modi "clipboard:greenclip print" -show clipboard -run-command '{cmd}' -p "Clipboard"

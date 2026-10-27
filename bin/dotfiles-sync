@@ -26,6 +26,7 @@ cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
 mkdir -p "$D/thunderbird" && cp "$C"/thunderbird/*.default-release/user.js "$D/thunderbird/"
 mkdir -p "$D/thunderbird/chrome" && cp "$C"/thunderbird/*.default-release/chrome/*.css "$D/thunderbird/chrome/"
 mkdir -p "$D/librewolf/chrome" && cp "$C"/librewolf/librewolf/*.default-release/chrome/*.css "$D/librewolf/chrome/"
+mkdir -p "$D/startpage" && cp "$C"/graphite-startpage/* "$D/startpage/"
 mkdir -p "$D/brave/graphite-theme" && cp "$C/brave-origin-flags.conf" "$D/brave/" && cp "$C/BraveSoftware/graphite-theme/manifest.json" "$D/brave/graphite-theme/"
 
 git -C "$D" status --short

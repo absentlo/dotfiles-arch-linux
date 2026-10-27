@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# i3-screenshot full|area - save to ~/Pictures/Screenshots, copy to the clipboard and
+# show a notification with a thumbnail; clicking it opens the image.
+dir="$(xdg-user-dir PICTURES)/Screenshots"
+mkdir -p "$dir"
+file="$dir/$(date +%Y-%m-%d_%H-%M-%S).png"
+
+case "$1" in
+    full) xfce4-screenshooter -f -s "$file" ;;
+    area) xfce4-screenshooter -r -s "$file" ;;
+    *)    echo "usage: i3-screenshot full|area" >&2; exit 1 ;;
+esac
+[[ -f "$file" ]] || exit 0   # area selection cancelled with Esc
+
+xclip -selection clipboard -t image/png -i "$file"
+action=$(dunstify -a Screenshot -i "$file" -A open,Open "Screenshot copied" "$(basename "$file")")
+[[ "$action" == open ]] && xdg-open "$file"

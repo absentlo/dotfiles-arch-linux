@@ -32,9 +32,9 @@ ESCRITORIOS | Win + Shift + 1 al 0 - Mover ventana
 VOLUMEN | Win + Alt + Arriba - Subir 5%
 VOLUMEN | Win + Alt + Abajo - Bajar 5%
 VOLUMEN | Win + Alt + M - Silenciar
-CAPTURAS | Print - Pantalla completa
+CAPTURAS | Print - Pantalla completa (guarda, copia y muestra vista previa)
 CAPTURAS | Win + Shift + S - Seleccionar area
-CAPTURAS | Shift + Print - Area al portapapeles
+CAPTURAS | Shift + Print - Area (guarda, copia y muestra vista previa)
 PORTAPAPELES | Win + Shift + V - Historial (texto e imagenes)
 PORTAPAPELES | Thunar clic derecho - Copiar imagen
 HERRAMIENTAS | Win + . - Emojis

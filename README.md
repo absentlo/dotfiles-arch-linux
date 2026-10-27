@@ -52,6 +52,7 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `thunderbird/user.js` | your Thunderbird profile folder |
 | `brave/brave-origin-flags.conf` | `~/.config/` (restart Brave) |
 | `brave/graphite-theme/` | `~/.config/BraveSoftware/graphite-theme/`, then `brave://extensions` → Developer mode → Load unpacked |
+| `startpage/` | `~/.config/graphite-startpage/`. Brave: `brave://extensions` → Load unpacked. LibreWolf: zip it to an `.xpi` and install from file (needs `xpinstall.signatures.required` = false in `about:config`), or `about:debugging` → Load Temporary Add-on |
 | `system/99-rice.conf` | `/etc/sysctl.d/` (sudo) |
 | `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |

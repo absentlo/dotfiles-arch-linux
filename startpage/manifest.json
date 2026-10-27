@@ -1,0 +1,17 @@
+{
+  "manifest_version": 3,
+  "name": "Graphite Start",
+  "version": "1.0",
+  "description": "Graphite rice new tab: clock, search, links. No background code.",
+  "chrome_url_overrides": {
+    "newtab": "newtab.html"
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "graphite-start@rice.local"
+    }
+  },
+  "chrome_settings_overrides": {
+    "homepage": "newtab.html"
+  }
+}

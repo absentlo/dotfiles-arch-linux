@@ -28,6 +28,9 @@
     icon_position = left
     min_icon_size = 24
     max_icon_size = 32
+    # Left click runs the notification's action (e.g. open a screenshot), then closes it
+    mouse_left_click = do_action, close_current
+    mouse_right_click = close_all
     icon_theme = "Papirus-Dark-Graphite, Papirus-Dark, Adwaita"
     enable_recursive_icon_lookup = true
 
@@ -58,3 +61,9 @@
     foreground = "#FFFFFF"
     frame_color = "#C46A6A"
     timeout = 0
+
+# Screenshot previews: a real thumbnail instead of a 32px icon
+[screenshot]
+    appname = Screenshot
+    min_icon_size = 96
+    max_icon_size = 160

@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>New Tab</title>
+  <link rel="stylesheet" href="newtab.css">
+</head>
+<body>
+  <main>
+    <svg class="logo" viewBox="0 0 256 256" aria-hidden="true"><path d="m127.98 12.07c-10.316 25.309-16.543 41.855-28.031 66.41 7.043 7.4609 15.691 16.156 29.734 25.977-15.098-6.207-25.395-12.445-33.094-18.918-14.703 30.68-37.742 74.391-84.492 158.39 36.746-21.219 65.23-34.293 91.773-39.289-1.1406-4.8945-1.7852-10.195-1.7422-15.734l0.042969-1.1719c0.58203-23.551 12.828-41.645 27.336-40.418 14.508 1.2266 25.781 21.316 25.199 44.867-0.10938 4.4219-0.60938 8.6914-1.4805 12.641 26.258 5.1328 54.438 18.18 90.684 39.105-7.1484-13.156-13.527-25.016-19.621-36.316-9.5938-7.4336-19.605-17.117-40.023-27.594 14.035 3.6406 24.082 7.8516 31.914 12.555-61.941-115.32-66.957-130.66-88.199-180.5z"/></svg>
+    <h1 id="clock">--:--</h1>
+    <p id="date"></p>
+    <p id="greeting"></p>
+    <form action="https://noai.duckduckgo.com/" method="get" role="search">
+      <input name="q" type="search" placeholder="Search DuckDuckGo" autocomplete="off" autofocus aria-label="Search">
+    </form>
+    <nav id="links" aria-label="Links"></nav>
+  </main>
+  <script src="newtab.js"></script>
+</body>
+</html>
