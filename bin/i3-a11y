@@ -1,0 +1,68 @@
+#!/usr/bin/env bash
+# i3-a11y - accessibility toggles for the polybar a11y module (click) and $mod+Shift+a.
+#   i3-a11y status   icons for the bar (polybar custom/ipc hook, no polling)
+#   i3-a11y menu     rofi menu: night light, do not disturb, keep screen awake
+
+THEME="$HOME/.config/rofi/arch-gray.rasi"
+NIGHT_STATE="${XDG_RUNTIME_DIR:-/tmp}/a11y-night"
+NIGHT_TEMP=3800   # "Always on" warmth (auto mode uses ~/.config/gammastep/config.ini)
+
+night_mode() {   # auto | always | off
+    if [[ -f "$NIGHT_STATE" ]]; then cat "$NIGHT_STATE"
+    elif pgrep -x gammastep >/dev/null; then echo auto
+    else echo off; fi
+}
+
+set_night() {
+    # gammastep fades out on the first signal; a second one makes it exit at once
+    pkill -x gammastep && sleep 0.2 && pkill -x gammastep
+    for _ in {1..30}; do pgrep -x gammastep >/dev/null || break; sleep 0.1; done
+    case "$1" in
+        auto)   setsid -f gammastep >/dev/null 2>&1 ;;
+        always) gammastep -P -O "$NIGHT_TEMP" >/dev/null 2>&1 ;;
+        off)    gammastep -x >/dev/null 2>&1 ;;
+    esac
+    echo "$1" > "$NIGHT_STATE"
+}
+
+dnd_on()   { [[ $(dunstctl is-paused 2>/dev/null) == true ]]; }
+awake_on() { xset q | grep -q 'DPMS is Disabled'; }
+
+status() {
+    local out="%{F#8A8A8A}"$''"%{F-}"
+    [[ $(night_mode) != off ]] && out+=" %{F#C9B27C}"$'\U000F0594'"%{F-}"
+    dnd_on && out+=" %{F#D8D8D8}"$'\U000F009B'"%{F-}"
+    awake_on && out+=" %{F#D8D8D8}"$'\U000F0176'"%{F-}"
+    printf '%s\n' "$out"
+}
+
+menu() {
+    local n on off pick
+    n=$(night_mode)
+    on="●"; off="○"
+    pick=$(printf '%s\n' \
+        "$([[ $n == auto ]] && echo $on || echo $off)  Night light: auto (sunset to sunrise)" \
+        "$([[ $n == always ]] && echo $on || echo $off)  Night light: always on" \
+        "$([[ $n == off ]] && echo $on || echo $off)  Night light: off" \
+        "$(dnd_on && echo $on || echo $off)  Do not disturb" \
+        "$(awake_on && echo $on || echo $off)  Keep screen awake" |
+        rofi -dmenu -i -no-custom -p "Accessibility" -theme "$THEME" \
+             -theme-str 'listview { lines: 5; }')
+    case "$pick" in
+        *"Night light: auto"*)   set_night auto ;;
+        *"Night light: always"*) set_night always ;;
+        *"Night light: off"*)    set_night off ;;
+        *"Do not disturb"*)      dunstctl set-paused toggle ;;
+        *"Keep screen awake"*)
+            # i3 config already has 'xset s off'; DPMS is what turns the screen off after 10 min
+            if awake_on; then xset +dpms; else xset -dpms; fi ;;
+        *) exit 0 ;;
+    esac
+    polybar-msg action "#a11y.hook.0" >/dev/null 2>&1
+}
+
+case "$1" in
+    status) status ;;
+    menu)   menu ;;
+    *)      echo "usage: i3-a11y status|menu" >&2; exit 1 ;;
+esac

@@ -64,7 +64,7 @@ The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur
 `i3-wallpaper <image>` sets any image as the wallpaper and rebuilds the darkened lock screen copy (`Win + x`, auto-lock) at the current screen size. With no argument it uses the Graphite default, `backgrounds/graphite.png` (copy it to `~/.local/share/backgrounds/`). Run it once after a fresh install.
 
 ## Add-ons
-`sudo pacman -S --needed rofi-calc rofi-emoji udiskie gammastep ananicy-cpp`, then from the AUR (`git clone https://aur.archlinux.org/<name>.git && cd <name> && makepkg -si`): `rofi-greenclip` and `cachyos-ananicy-rules-git`. Enable the priority daemon: `sudo systemctl enable --now ananicy-cpp`. Ristretto background: `xfconf-query -c ristretto -p /window/bgcolor-override -n -t bool -s true`.
+`sudo pacman -S --needed rofi-calc rofi-emoji gammastep ananicy-cpp`, then from the AUR (`git clone https://aur.archlinux.org/<name>.git && cd <name> && makepkg -si`): `rofi-greenclip` and `cachyos-ananicy-rules-git`. Enable the priority daemon: `sudo systemctl enable --now ananicy-cpp`. Ristretto background: `xfconf-query -c ristretto -p /window/bgcolor-override -n -t bool -s true`.
 
 ## Bluetooth earbuds stay in music quality
 Games/apps that open the mic would switch the earbuds to mono 16 kHz "headset" mode (sounds distorted). Turned off once with:

@@ -73,7 +73,6 @@ exec --no-startup-id sh -c 'pgrep -x lxqt-policykit-agent >/dev/null || lxqt-pol
 exec --no-startup-id xss-lock --transfer-sleep-lock -- ~/.local/bin/i3-lock --nofork
 exec --no-startup-id sh -c 'pgrep -x greenclip >/dev/null || greenclip daemon'
 exec --no-startup-id sh -c 'pgrep -x gammastep >/dev/null || gammastep'
-exec --no-startup-id sh -c 'pgrep -x udiskie >/dev/null || udiskie --no-tray'
 exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Split each new window along the focused window's longer side (dwindle-style)
@@ -138,6 +137,7 @@ bindsym $mod+period exec --no-startup-id rofi -theme ~/.config/rofi/arch-gray.ra
 bindsym $mod+equal exec --no-startup-id rofi -theme ~/.config/rofi/arch-gray.rasi -show calc -modi calc -no-show-match -no-sort -p "Calc" -calc-command "echo -n '{result}' | xclip -selection clipboard"
 
 # Notifications: bring back the last one, dismiss all
+bindsym $mod+Shift+a exec --no-startup-id ~/.local/bin/i3-a11y menu
 bindsym $mod+comma exec --no-startup-id dunstctl history-pop
 bindsym $mod+Shift+comma exec --no-startup-id dunstctl close-all
 
