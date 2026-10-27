@@ -5,7 +5,7 @@ set -e
 D="$HOME/dotfiles"
 C="$HOME/.config"
 
-for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep; do
+for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep fontconfig dircolors; do
     mkdir -p "$D/$dir"; cp -r "$C/$dir/." "$D/$dir/"
 done
 cp "$C/gtk-3.0/settings.ini" "$C/gtk-3.0/gtk.css" "$D/gtk-3.0/"   # not the whole dir: Thunar keeps private bookmarks there

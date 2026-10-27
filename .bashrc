@@ -7,6 +7,12 @@
 
 export PATH="$HOME/.local/bin:$PATH"
 
+# Graphite colors for ls, grep and man pages (palette in ~/.config/dircolors/graphite)
+[[ -f ~/.config/dircolors/graphite ]] && eval "$(dircolors -b ~/.config/dircolors/graphite)"
+export GREP_COLORS='mt=1;38;2;201;178;124:fn=38;2;154;154;154:ln=38;2;90;90;90:bn=38;2;90;90;90:se=38;2;58;58;58'
+# man pages (needs man-db + less): bold = yellow headings, underline = blue
+export MANPAGER='less -R --use-color -Dd+y -Du+b'
+export MANROFFOPT='-P -c'
 alias ls='ls --color=auto -F'
 alias ll='ls -la'
 alias grep='grep --color=auto'

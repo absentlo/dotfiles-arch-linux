@@ -27,9 +27,13 @@ PERCENT=$(awk '{printf "%.0f", $2 * 100}' <<< "$STATUS")
 if [[ "$STATUS" == *MUTED* ]]; then
     MESSAGE="Silenciado"
     BAR_VALUE=0
+    ICON=audio-volume-muted
 else
     MESSAGE="${PERCENT}%"
     BAR_VALUE="$PERCENT"
+    if   (( PERCENT >= 66 )); then ICON=audio-volume-high
+    elif (( PERCENT >= 33 )); then ICON=audio-volume-medium
+    else ICON=audio-volume-low; fi
 fi
 
 # Notificacion compacta con barra de progreso
@@ -38,5 +42,6 @@ dunstify \
     -r 5559 \
     -u low \
     -t 1200 \
+    -i "$ICON" \
     -h "int:value:$BAR_VALUE" \
     "Volumen" "$MESSAGE"

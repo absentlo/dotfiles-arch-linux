@@ -1,9 +1,21 @@
 #!/usr/bin/env bash
-# i3-wallpaper <image> - set the wallpaper (saved in ~/.fehbg) and rebuild the
-# darkened lock screen image from it. No argument: the Graphite default.
+# i3-wallpaper [--graphite] <image> - set the wallpaper (saved in ~/.fehbg) and rebuild
+# the darkened lock screen image from it. No argument: the Graphite default.
+# --graphite first converts the image to the rice grays (saved next to graphite.png).
 set -e
+graphite=0
+[[ "$1" == --graphite ]] && { graphite=1; shift; }
 img=$(realpath "${1:-$HOME/.local/share/backgrounds/graphite.png}")
 [[ -f "$img" ]] || { echo "i3-wallpaper: no such file: $img" >&2; exit 1; }
+
+if (( graphite )); then
+    out="$HOME/.local/share/backgrounds/$(basename "${img%.*}")-graphite.png"
+    # Gray, softer contrast, then squeeze black..white into #111111..#D8D8D8
+    ffmpeg -loglevel error -y -i "$img" \
+        -vf "hue=s=0,eq=contrast=0.9:brightness=-0.08,colorlevels=romin=0.067:gomin=0.067:bomin=0.067:romax=0.85:gomax=0.85:bomax=0.85" \
+        -frames:v 1 "$out"
+    img="$out"
+fi
 
 feh --bg-fill "$img"
 
