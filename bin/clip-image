@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# clip-image <file> - copy an image file to the clipboard as PNG (paste into chats, docs, Krita)
+set -e
+f=$1
+[[ -f "$f" ]] || { echo "clip-image: no such file: $f" >&2; exit 1; }
+# Most apps only accept image/png on paste, so convert anything else
+if [[ $(file -b --mime-type "$f") == image/png ]]; then
+    xclip -selection clipboard -t image/png -i "$f"
+else
+    ffmpeg -loglevel error -i "$f" -frames:v 1 -f image2pipe -c:v png - | xclip -selection clipboard -t image/png
+fi
+notify-send -i edit-copy "Copied to clipboard" "$(basename "$f")" 2>/dev/null || true

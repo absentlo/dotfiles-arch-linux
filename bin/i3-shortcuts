@@ -34,6 +34,13 @@ VOLUMEN | Win + Alt + Abajo - Bajar 5%
 VOLUMEN | Win + Alt + M - Silenciar
 CAPTURAS | Print - Pantalla completa
 CAPTURAS | Win + Shift + S - Seleccionar area
+CAPTURAS | Shift + Print - Area al portapapeles
+PORTAPAPELES | Win + Shift + V - Historial (texto e imagenes)
+PORTAPAPELES | Thunar clic derecho - Copiar imagen
+HERRAMIENTAS | Win + . - Emojis
+HERRAMIENTAS | Win + = - Calculadora (Enter copia)
+NOTIFICACIONES | Win + , - Mostrar la anterior
+NOTIFICACIONES | Win + Shift + , - Cerrar todas
 SISTEMA | Win + X - Bloquear
 SISTEMA | Win + Shift + P - Menu de energia
 SISTEMA | Win + Shift + C - Recargar i3

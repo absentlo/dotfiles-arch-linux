@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Graphite - rice palette for Mousepad (GtkSourceView 4). Syntax colors = terminal theme. -->
+<style-scheme id="graphite" name="Graphite" version="1.0">
+  <author>rice</author>
+  <description>Graphite grays with the muted terminal accents</description>
+
+  <color name="bg"      value="#111111"/>
+  <color name="surface" value="#1C1C1C"/>
+  <color name="border"  value="#3A3A3A"/>
+  <color name="dim"     value="#5A5A5A"/>
+  <color name="fg"      value="#D8D8D8"/>
+  <color name="white"   value="#FFFFFF"/>
+  <color name="red"     value="#C46A6A"/>
+  <color name="green"   value="#8FA876"/>
+  <color name="yellow"  value="#C9B27C"/>
+  <color name="blue"    value="#7A98B8"/>
+  <color name="magenta" value="#A58AB5"/>
+  <color name="cyan"    value="#7FAFAF"/>
+
+  <style name="text"                 foreground="fg" background="bg"/>
+  <style name="selection"            foreground="white" background="border"/>
+  <style name="selection-unfocused"  foreground="fg" background="surface"/>
+  <style name="cursor"               foreground="fg"/>
+  <style name="current-line"         background="surface"/>
+  <style name="line-numbers"         foreground="dim" background="bg"/>
+  <style name="right-margin"         foreground="border" background="surface"/>
+  <style name="bracket-match"        foreground="white" background="border" bold="true"/>
+  <style name="bracket-mismatch"     foreground="red" background="surface" bold="true"/>
+  <style name="search-match"         foreground="white" background="dim"/>
+  <style name="draw-spaces"          foreground="border"/>
+
+  <style name="def:comment"          foreground="dim" italic="true"/>
+  <style name="def:string"           foreground="green"/>
+  <style name="def:special-char"     foreground="yellow"/>
+  <style name="def:keyword"          foreground="blue" bold="true"/>
+  <style name="def:statement"        foreground="blue"/>
+  <style name="def:type"             foreground="magenta"/>
+  <style name="def:preprocessor"     foreground="magenta"/>
+  <style name="def:constant"         foreground="yellow"/>
+  <style name="def:number"           foreground="yellow"/>
+  <style name="def:boolean"          foreground="yellow"/>
+  <style name="def:function"         foreground="cyan"/>
+  <style name="def:identifier"       foreground="fg"/>
+  <style name="def:error"            foreground="red" underline="error"/>
+  <style name="def:warning"          foreground="yellow"/>
+  <style name="def:note"             foreground="yellow" bold="true"/>
+  <style name="def:heading"          foreground="white" bold="true"/>
+  <style name="def:link-text"        foreground="cyan" underline="single"/>
+</style-scheme>

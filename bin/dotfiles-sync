@@ -5,7 +5,7 @@ set -e
 D="$HOME/dotfiles"
 C="$HOME/.config"
 
-for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv; do
+for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep; do
     mkdir -p "$D/$dir"; cp -r "$C/$dir/." "$D/$dir/"
 done
 cp "$C/gtk-3.0/settings.ini" "$C/gtk-3.0/gtk.css" "$D/gtk-3.0/"   # not the whole dir: Thunar keeps private bookmarks there
@@ -14,6 +14,9 @@ find "$HOME/.local/bin" -maxdepth 1 -type f -exec cp {} "$D/bin/" \;   # real fi
 cp "$C/xfce4/xfconf/xfce-perchannel-xml/xfce4-terminal.xml" \
    "$HOME/.local/share/xfce4/terminal/colorschemes/graphite.theme" "$D/xfce4-terminal/"
 mkdir -p "$D/backgrounds" && cp "$HOME"/.local/share/backgrounds/* "$D/backgrounds/"
+cp "$C/greenclip.toml" "$D/home/"
+mkdir -p "$D/thunar" && cp "$C/Thunar/uca.xml" "$D/thunar/"
+mkdir -p "$D/gtksourceview-4" && cp "$HOME"/.local/share/gtksourceview-4/styles/*.xml "$D/gtksourceview-4/"
 cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/home/.icons/default/"   # X/i3 cursor theme
