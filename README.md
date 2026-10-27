@@ -12,7 +12,7 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 - **Launcher / Power Menu**: Rofi
 - **Notifications**: Dunst
 - **GTK Theme**: Materia-dark-compact / Adwaita-dark
-- **Icon Theme**: Papirus-Dark
+- **Icon Theme**: Papirus-Dark with grey folders: run `papirus-graphite` once (and after Papirus updates), it builds `Papirus-Dark-Graphite` from symlinks, no root
 
 ## Keybindings Cheat Sheet
 

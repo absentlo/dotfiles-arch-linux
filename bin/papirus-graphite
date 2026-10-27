@@ -1,0 +1,43 @@
+#!/usr/bin/env python3
+# papirus-graphite - build ~/.local/share/icons/Papirus-Dark-Graphite: Papirus-Dark with
+# grey instead of blue folders, as symlinks (no root, no copies). Re-run after Papirus updates.
+import configparser, os, shutil
+
+src = "/usr/share/icons/Papirus-Dark"
+dst = os.path.expanduser("~/.local/share/icons/Papirus-Dark-Graphite")
+
+idx = configparser.ConfigParser(interpolation=None, strict=False)
+idx.optionxform = str
+idx.read(f"{src}/index.theme")
+dirs = [d for d in idx["Icon Theme"]["Directories"].split(",") if d.endswith("/places")]
+
+shutil.rmtree(dst, ignore_errors=True)
+made, used = 0, []
+for d in dirs:
+    real = os.path.realpath(f"{src}/{d}")
+    if not os.path.isdir(real):
+        continue
+    for name in os.listdir(real):
+        path = f"{real}/{name}"
+        if not os.path.islink(path):
+            continue
+        end = os.path.basename(os.path.realpath(path))  # follow chains like inode-directory -> folder -> folder-blue
+        if "-blue" not in end or "-bluegrey" in end:
+            continue
+        grey = f"{real}/" + end.replace("-blue", "-grey", 1)
+        if os.path.exists(grey):
+            os.makedirs(f"{dst}/{d}", exist_ok=True)
+            os.symlink(grey, f"{dst}/{d}/{name}")
+            made += 1
+    if os.path.isdir(f"{dst}/{d}"):
+        used.append(d)
+
+out = configparser.ConfigParser(interpolation=None)
+out.optionxform = str
+out["Icon Theme"] = {"Name": "Papirus-Dark-Graphite", "Comment": "Papirus-Dark with grey folders (rice)",
+                     "Inherits": "Papirus-Dark", "Directories": ",".join(used)}
+for d in used:
+    out[d] = dict(idx[d])
+with open(f"{dst}/index.theme", "w") as f:
+    out.write(f, space_around_delimiters=False)
+print(f"papirus-graphite: {made} grey folder icons in {len(used)} sizes")
