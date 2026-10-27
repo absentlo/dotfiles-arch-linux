@@ -10,9 +10,9 @@
     offset = (12, 34)
 
     font = JetBrainsMono Nerd Font 8
-    frame_width = 0
-    frame_color = "#393939"
-    corner_radius = 4
+    frame_width = 1
+    frame_color = "#3A3A3A"
+    corner_radius = 8
     transparency = 0
 
     padding = 10
@@ -37,23 +37,24 @@
     progress_bar_min_width = 200
     progress_bar_max_width = 250
     progress_bar_corner_radius = 3
+    highlight = "#B8B8B8"
 
     notification_limit = 4
     sort = yes
     stack_duplicates = true
 
 [urgency_low]
-    background = "#181818"
-    foreground = "#AAAAAA"
+    background = "#1C1C1C"
+    foreground = "#9A9A9A"
     timeout = 3
 
 [urgency_normal]
-    background = "#181818"
-    foreground = "#E4E4E4"
+    background = "#1C1C1C"
+    foreground = "#D8D8D8"
     timeout = 5
 
 [urgency_critical]
-    background = "#2A1818"
+    background = "#1C1C1C"
     foreground = "#FFFFFF"
-    frame_color = "#5A2A2A"
+    frame_color = "#C46A6A"
     timeout = 0

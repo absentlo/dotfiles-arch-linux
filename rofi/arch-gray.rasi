@@ -18,7 +18,7 @@ window {
     background-color: #111111;
     border: 0px;
     border-color: #3A3A3A;
-    border-radius: 4px;
+    border-radius: 8px;
     padding: 12px;
 }
 
@@ -37,7 +37,7 @@ prompt {
 
 entry {
     placeholder: "Search...";
-    placeholder-color: #4A4A4A;
+    placeholder-color: #5A5A5A;
 }
 
 listview {
@@ -48,11 +48,11 @@ listview {
 
 element {
     padding: 6px;
-    border-radius: 2px;
+    border-radius: 6px;
 }
 
 element selected {
-    background-color: #2F2F2F;
+    background-color: #3A3A3A;
     text-color: #FFFFFF;
 }
 
