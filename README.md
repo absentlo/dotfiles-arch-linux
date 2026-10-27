@@ -53,6 +53,8 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
 
 ## Lock screen image
+The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur.archlinux.org/i3lock-color.git && cd i3lock-color && makepkg -si`, answer **y** to replace `i3lock`). Without it, `bin/i3-lock` falls back to plain i3lock. Cursor theme: `sudo pacman -S capitaine-cursors`.
+
 `Win + x` and auto-lock use a darkened copy of the wallpaper. Recreate it after a fresh install (or a new wallpaper / screen size):
 
 ```

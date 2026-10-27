@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# i3-lock - Graphite lock screen. Ring/clock with i3lock-color, plain i3lock otherwise.
+# Extra args pass through (xss-lock adds --nofork).
+img="$HOME/.local/share/i3lock/lock.png"
+bg=(-c 111111); [[ -f "$img" ]] && bg+=(-i "$img")
+
+# Plain i3lock rejects the color flags and would not lock at all, so check first
+if ! i3lock --version 2>&1 | grep -q '\.c\.'; then
+    exec i3lock "${bg[@]}" "$@"
+fi
+
+exec i3lock "${bg[@]}" \
+    --indicator --clock --radius=90 --ring-width=6 \
+    --inside-color=11111199 --ring-color=3A3A3Aff --line-color=00000000 --separator-color=00000000 \
+    --keyhl-color=B8B8B8ff --bshl-color=777777ff \
+    --insidever-color=1C1C1Cff --ringver-color=9A9A9Aff \
+    --insidewrong-color=1C1C1Cff --ringwrong-color=D8D8D8ff \
+    --time-color=D8D8D8ff --date-color=9A9A9Aff --verif-color=D8D8D8ff --wrong-color=D8D8D8ff \
+    --layout-color=9A9A9Aff \
+    --time-str="%H:%M" --date-str="%a %d %b" \
+    --time-font="JetBrainsMono Nerd Font" --date-font="JetBrainsMono Nerd Font" \
+    --verif-font="JetBrainsMono Nerd Font" --wrong-font="JetBrainsMono Nerd Font" \
+    --time-size=28 --date-size=12 --verif-text="..." --wrong-text="nope" --noinput-text="" \
+    "$@"

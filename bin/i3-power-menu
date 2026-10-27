@@ -20,7 +20,7 @@ confirmar() {
 
 case "$opcion" in
     "Lock")
-        i3lock -c 181818
+        ~/.local/bin/i3-lock
         ;;
     "Log Out")
         confirmar "Log Out?" && i3-msg exit
