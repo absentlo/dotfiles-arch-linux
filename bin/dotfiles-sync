@@ -5,7 +5,7 @@ set -e
 D="$HOME/dotfiles"
 C="$HOME/.config"
 
-for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop; do
+for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv; do
     mkdir -p "$D/$dir"; cp -r "$C/$dir/." "$D/$dir/"
 done
 cp "$C/gtk-3.0/settings.ini" "$C/gtk-3.0/gtk.css" "$D/gtk-3.0/"   # not the whole dir: Thunar keeps private bookmarks there
@@ -17,6 +17,7 @@ cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/home/.icons/default/"   # X/i3 cursor theme
 cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
+cp /etc/default/grub "$D/system/grub"
 cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
 mkdir -p "$D/thunderbird" && cp "$C"/thunderbird/*.default-release/user.js "$D/thunderbird/"
 mkdir -p "$D/librewolf/chrome" && cp "$C"/librewolf/librewolf/*.default-release/chrome/*.css "$D/librewolf/chrome/"

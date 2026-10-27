@@ -1,0 +1,34 @@
+# Graphite zathura - rice palette. Ctrl+R toggles dark pages (recolor).
+set font                    "JetBrainsMono Nerd Font 9"
+set default-bg              "#111111"
+set default-fg              "#D8D8D8"
+set statusbar-bg            "#111111"
+set statusbar-fg            "#9A9A9A"
+set inputbar-bg             "#1C1C1C"
+set inputbar-fg             "#D8D8D8"
+set notification-bg         "#1C1C1C"
+set notification-fg         "#D8D8D8"
+set notification-error-bg   "#1C1C1C"
+set notification-error-fg   "#C46A6A"
+set notification-warning-bg "#1C1C1C"
+set notification-warning-fg "#C9B27C"
+set completion-bg           "#1C1C1C"
+set completion-fg           "#9A9A9A"
+set completion-highlight-bg "#3A3A3A"
+set completion-highlight-fg "#FFFFFF"
+set completion-group-bg     "#111111"
+set completion-group-fg     "#8A8A8A"
+set index-bg                "#111111"
+set index-fg                "#9A9A9A"
+set index-active-bg         "#3A3A3A"
+set index-active-fg         "#FFFFFF"
+set highlight-color         "rgba(119,119,119,0.5)"
+set highlight-active-color  "rgba(184,184,184,0.5)"
+set recolor-lightcolor      "#111111"
+set recolor-darkcolor       "#D8D8D8"
+set recolor-keephue         true
+set statusbar-h-padding     8
+set statusbar-v-padding     4
+set page-padding            4
+set selection-clipboard     clipboard
+set guioptions              "s"

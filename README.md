@@ -39,7 +39,7 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 
 | Repo folder | Goes to |
 | :--- | :--- |
-| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop` | `~/.config/<same name>/` |
+| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop`, `zathura`, `mpv` | `~/.config/<same name>/` |
 | `bin/` | `~/.local/bin/` |
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
 | `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |
@@ -51,6 +51,7 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/99-rice.conf` | `/etc/sysctl.d/` (sudo) |
 | `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
+| `system/grub` | `/etc/default/grub` (sudo, then `grub-mkconfig -o /boot/grub/grub.cfg`) |
 
 ## Lock screen image
 The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur.archlinux.org/i3lock-color.git && cd i3lock-color && makepkg -si`, answer **y** to replace `i3lock`). Without it, `bin/i3-lock` falls back to plain i3lock. Cursor theme: `sudo pacman -S capitaine-cursors`.
