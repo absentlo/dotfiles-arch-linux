@@ -4,6 +4,10 @@ Basic settings & my first repoooo!!111!
 
 A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Optimized for minimal CPU and RAM usage.
 
+<!-- ![Graphite rice](screenshot.png) -->
+
+**Palette:** `#111111` background · `#1C1C1C` surface · `#3A3A3A` border · `#777777` / `#B8B8B8` accents · `#D8D8D8` text · `#C46A6A` urgent. Font: JetBrainsMono Nerd Font everywhere. Built for an i5-4570 / 8 GB / Radeon HD 8490.
+
 ## System Specifications
 - **OS**: Arch Linux
 - **WM**: i3wm + autotiling (`sudo pacman -S autotiling`)
@@ -13,6 +17,12 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 - **Notifications**: Dunst
 - **GTK Theme**: Materia-dark-compact / Adwaita-dark
 - **Icon Theme**: Papirus-Dark with grey folders: run `papirus-graphite` once (and after Papirus updates), it builds `Papirus-Dark-Graphite` from symlinks, no root
+- **Cursor**: Capitaine (`sudo pacman -S capitaine-cursors`)
+- **Lock Screen**: i3lock-color ring and clock (`bin/i3-lock`), idle warning at 9 min, lock at 10
+- **Terminal**: xfce4-terminal (Graphite scheme), fastfetch, btop (Graphite theme)
+- **Browsers**: LibreWolf (userChrome.css), Brave Origin (theme), shared Graphite start page
+- **Mail / PDF / Video / Editor**: Thunderbird, Zathura, mpv, Mousepad, all on the palette
+- **Extras**: greenclip clipboard with images, rofi calc + emoji, gammastep night light, ananicy-cpp
 
 ## Keybindings Cheat Sheet
 
@@ -32,6 +42,14 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | `$mod + c` | Calendar |
 | `$mod + Shift + h` | Shortcuts Help |
 | `$mod + Shift + s` | Area Screenshot |
+| `Print` / `Shift + Print` | Full / area screenshot: saved, copied, preview |
+| `$mod + Shift + v` | Clipboard history (text and images) |
+| `$mod + .` | Emoji picker |
+| `$mod + =` | Calculator (Enter copies) |
+| `$mod + ,` / `$mod + Shift + ,` | Last notification / dismiss all |
+| `$mod + Shift + a` | Accessibility: night light, do not disturb, keep awake |
+| `$mod + `` ` `` | Drop-down terminal |
+| Click CPU / RAM on the bar | btop |
 | `$mod + Shift + r` | Restart i3 |
 
 ## Synchronization & Backup
