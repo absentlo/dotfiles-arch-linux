@@ -31,5 +31,5 @@ alias update='sudo pacman -Syu'
 alias cleanup='o=$(pacman -Qtdq) && sudo pacman -Rns $o || echo "No orphan packages"'
 alias dotfiles='cd ~/dotfiles'
 
-# Show minimalist system information on terminal launch
-fastfetch
+# Show minimalist system information in terminal windows (not on the TTY before startx)
+[[ -n $DISPLAY ]] && fastfetch
