@@ -1,25 +1,5 @@
-// Edit your links here, then reload the extension.
 // LibreWolf's resistFingerprinting reports UTC to pages; naming the zone keeps the clock local.
 const TIME_ZONE = "America/Tijuana";
-const LINKS = [
-  ["Dotfiles", "https://github.com/absentlo/dotfiles-arch-linux"],
-  ["Arch Wiki", "https://wiki.archlinux.org/"],
-  ["AUR", "https://aur.archlinux.org/"],
-  ["YouTube", "https://www.youtube.com/"],
-  ["r/unixporn", "https://www.reddit.com/r/unixporn/"],
-  ["Outlook", "https://outlook.live.com/mail/"],
-];
-
-const nav = document.getElementById("links");
-for (const [name, url] of LINKS) {
-  const a = document.createElement("a");
-  const label = document.createElement("span");  // inline-block: dodges forced link underlines
-  label.textContent = name;
-  a.append(label);
-  a.href = url;
-  nav.append(a);
-}
-
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
 const greeting = document.getElementById("greeting");

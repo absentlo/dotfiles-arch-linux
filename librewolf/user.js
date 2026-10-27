@@ -31,3 +31,5 @@ user_pref("browser.sessionstore.interval", 60000);
 user_pref("layout.css.prefers-color-scheme.content-override", 0);
 user_pref("browser.theme.content-theme", 0);
 user_pref("widget.gtk.overlay-scrollbars.enabled", true);
+// Rice: no forced underline on every link (was on; turned off by choice)
+user_pref("layout.css.always_underline_links", false);
