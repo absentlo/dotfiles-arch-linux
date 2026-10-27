@@ -57,6 +57,8 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
 | `system/grub` | `/etc/default/grub` (sudo, then `grub-mkconfig -o /boot/grub/grub.cfg`) |
+| `system/issue` | `/etc/issue` (sudo): Graphite TTY login text |
+| `krita/Graphite.colors` | `~/.local/share/krita/color-schemes/`, then Krita › Settings › Themes › Graphite |
 
 ## Wallpaper and lock screen image
 The lock ring and clock need `i3lock-color` from the AUR (`git clone https://aur.archlinux.org/i3lock-color.git && cd i3lock-color && makepkg -si`, answer **y** to replace `i3lock`). Without it, `bin/i3-lock` falls back to plain i3lock. Cursor theme: `sudo pacman -S capitaine-cursors`.
