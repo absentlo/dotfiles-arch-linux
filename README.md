@@ -44,7 +44,10 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
 | `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |
 | `home/`, `.bashrc` | `~/` |
-| `librewolf/user.js` | your LibreWolf profile folder |
+| `librewolf/user.js`, `librewolf/chrome/` | your LibreWolf profile folder (`~/.config/librewolf/librewolf/*.default-release/`), restart LibreWolf |
+| `thunderbird/user.js` | your Thunderbird profile folder |
+| `brave/brave-origin-flags.conf` | `~/.config/` (restart Brave) |
+| `brave/graphite-theme/` | `~/.config/BraveSoftware/graphite-theme/`, then `brave://extensions` → Developer mode → Load unpacked |
 | `system/99-rice.conf` | `/etc/sysctl.d/` (sudo) |
 | `system/earlyoom` | `/etc/default/earlyoom` (sudo, then `systemctl enable --now earlyoom`) |
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |

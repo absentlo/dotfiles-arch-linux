@@ -8,8 +8,9 @@
   --g-border:  #3A3A3A;
   --g-fg:      #D8D8D8;
   --g-muted:   #9A9A9A;
-  --g-radius:  4px;
-  --g-tab-height: 28px;
+  --g-icon:    #8A8A8A;  /* toolbar icons, like the polybar icon gray */
+  --g-radius:  8px;
+  --g-tab-height: 24px;
   --g-font: "JetBrainsMono Nerd Font";
   --g-font-size: 11px;
 }
@@ -33,7 +34,20 @@
   --tab-border-radius: var(--g-radius) !important;
   --toolbarbutton-border-radius: var(--g-radius) !important;
   --tab-min-height: var(--g-tab-height) !important;
+  --toolbarbutton-icon-fill: var(--g-icon) !important;
+  --toolbar-field-border-radius: var(--g-radius) !important;
+  --arrowpanel-border-radius: var(--g-radius) !important;
 }
+
+/* Rounded url bar, popups and menus */
+#urlbar-background, .urlbarView { border-radius: var(--g-radius) !important; }
+menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
+
+/* Gray icons, brighter on hover */
+.toolbarbutton-1 > .toolbarbutton-icon,
+.toolbarbutton-1 > .toolbarbutton-badge-stack { fill: var(--g-icon) !important; }
+.toolbarbutton-1:hover > .toolbarbutton-icon,
+.toolbarbutton-1:hover > .toolbarbutton-badge-stack { fill: var(--g-fg) !important; }
 
 /* Rice font on tabs and url bar */
 .tab-label, #urlbar-input, .urlbarView {
@@ -56,3 +70,104 @@
   border: 1px solid var(--g-border) !important;
   box-shadow: none !important;
 }
+
+/* Compact: thinner tabs, toolbar and url bar, no wasted gaps */
+:root {
+  --tab-block-margin: 2px !important;
+  --tab-inline-padding: 6px !important;
+  --toolbarbutton-outer-padding: 1px !important;
+  --toolbarbutton-inner-padding: 5px !important;
+  --toolbar-start-end-padding: 2px !important;
+  --urlbar-min-height: 24px !important;
+  --urlbar-container-height: 28px !important;
+}
+#nav-bar { padding-block: 0 !important; }
+#urlbar-container { padding-block: 2px !important; margin-inline: 2px !important; }
+toolbarspring { min-width: 0 !important; max-width: 8px !important; }
+.titlebar-spacer { display: none !important; }
+
+/* Hover states in the same grays */
+:root {
+  --toolbarbutton-hover-background: var(--g-surface) !important;
+  --toolbarbutton-active-background: var(--g-border) !important;
+  --urlbarView-highlight-background: var(--g-border) !important;
+  --urlbarView-highlight-color: var(--g-fg) !important;
+  --urlbarView-hover-background: var(--g-surface) !important;
+}
+.tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected]) {
+  background-color: var(--g-surface) !important;
+}
+.tabbrowser-tab:hover .tab-label { color: var(--g-fg) !important; }
+
+/* Menus, context menus and popups */
+menupopup, panel {
+  --panel-background: var(--g-bg) !important;
+  --panel-color: var(--g-fg) !important;
+  --panel-border-color: var(--g-border) !important;
+}
+menupopup menuitem:hover, menupopup menu:hover,
+menupopup menuitem[_moz-menuactive], menupopup menu[_moz-menuactive] {
+  background-color: var(--g-surface) !important;
+  color: var(--g-fg) !important;
+}
+
+/* Find bar and sidebar match the toolbar */
+findbar, #sidebar-box, #sidebar-header {
+  background-color: var(--g-bg) !important;
+  color: var(--g-fg) !important;
+  border-color: var(--g-border) !important;
+}
+
+/* Declutter: i3 manages windows, no account sync, no AI buttons */
+.titlebar-buttonbox-container,
+#fxa-toolbar-menu-button,
+#ai-window-toggle,
+#smartwindow-group-tabs-button { display: none !important; }
+
+/* Panels (downloads, extensions, app menu) hover in the same grays */
+:root {
+  --panel-item-hover-bgcolor: var(--g-surface) !important;
+  --panel-item-active-bgcolor: var(--g-border) !important;
+  --panel-separator-color: var(--g-border) !important;
+  --focus-outline-color: var(--g-muted) !important;
+  --tab-loading-fill: var(--g-fg) !important;
+  --identity-btn-hover-background: var(--g-border) !important;
+}
+
+/* Rice font everywhere in the chrome, not only tabs */
+menupopup, panel, #PersonalToolbar, findbar, .panel-subview-body {
+  font-family: var(--g-font) !important;
+  font-size: var(--g-font-size) !important;
+}
+
+/* No separator lines between tabs, gray tab-strip buttons */
+.tabbrowser-tab::after, .tabbrowser-tab::before { display: none !important; }
+#tabbrowser-tabs { border-inline-start: none !important; }
+#TabsToolbar .toolbarbutton-1 { fill: var(--g-icon) !important; }
+
+/* URL bar: muted placeholder and site icons, gray text selection */
+#urlbar-input::placeholder { color: var(--g-muted) !important; opacity: 1 !important; }
+#identity-box, #tracking-protection-icon-container, #page-action-buttons {
+  fill: var(--g-icon) !important;
+}
+#urlbar-input::selection { background-color: var(--g-border) !important; color: var(--g-fg) !important; }
+
+/* Tab favicons slightly faded on background tabs */
+.tabbrowser-tab:not([selected]):not(:hover) .tab-icon-image { opacity: 0.7 !important; }
+
+/* Tooltips and chrome scrollbars */
+tooltip {
+  --tooltip-background-color: var(--g-surface) !important;
+  --tooltip-color: var(--g-fg) !important;
+  --tooltip-border-color: var(--g-border) !important;
+  font-family: var(--g-font) !important;
+  font-size: var(--g-font-size) !important;
+}
+:root { scrollbar-color: var(--g-border) var(--g-bg) !important; }
+
+/* Pinned tabs: icon only, tight */
+.tabbrowser-tab[pinned] { padding-inline: 0 !important; }
+.tabbrowser-tab[pinned] .tab-content { padding-inline: 8px !important; }
+
+/* Playing/muted tab indicator in gray instead of the default color */
+.tab-icon-overlay, .tab-audio-button { fill: var(--g-icon) !important; }

@@ -1,0 +1,29 @@
+{
+  "manifest_version": 3,
+  "name": "Graphite",
+  "version": "1.0",
+  "description": "Graphite rice palette: #111111 / #1C1C1C / #3A3A3A / #D8D8D8",
+  "theme": {
+    "colors": {
+      "frame": [17, 17, 17],
+      "frame_inactive": [17, 17, 17],
+      "frame_incognito": [17, 17, 17],
+      "frame_incognito_inactive": [17, 17, 17],
+      "toolbar": [28, 28, 28],
+      "toolbar_text": [216, 216, 216],
+      "toolbar_button_icon": [138, 138, 138],
+      "tab_text": [216, 216, 216],
+      "tab_background_text": [154, 154, 154],
+      "tab_background_text_inactive": [154, 154, 154],
+      "bookmark_text": [216, 216, 216],
+      "omnibox_background": [17, 17, 17],
+      "omnibox_text": [216, 216, 216],
+      "ntp_background": [17, 17, 17],
+      "ntp_text": [216, 216, 216],
+      "ntp_link": [154, 154, 154],
+      "ntp_header": [58, 58, 58],
+      "button_background": [0, 0, 0, 0]
+    },
+    "properties": { "ntp_background_alignment": "center" }
+  }
+}
