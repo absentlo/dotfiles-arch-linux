@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# i3-btop - toggle a floating btop (click CPU/memory on polybar)
+# i3 replies success to kill even with no match, so look in the tree instead
+if i3-msg -t get_tree | grep -q '"window_role":"btop"'; then
+    i3-msg -q '[window_role="^btop$"] kill'
+else
+    exec xfce4-terminal --role=btop --title=btop -x btop
+fi
