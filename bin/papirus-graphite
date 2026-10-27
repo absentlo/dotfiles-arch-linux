@@ -5,6 +5,8 @@ import configparser, os, shutil
 
 src = "/usr/share/icons/Papirus-Dark"
 dst = os.path.expanduser("~/.local/share/icons/Papirus-Dark-Graphite")
+# Purple "Browse Network" in Thunar -> grey network folder
+EXTRA = {"network-workgroup": "folder-grey-network"}
 
 idx = configparser.ConfigParser(interpolation=None, strict=False)
 idx.optionxform = str
@@ -28,6 +30,12 @@ for d in dirs:
         if os.path.exists(grey):
             os.makedirs(f"{dst}/{d}", exist_ok=True)
             os.symlink(grey, f"{dst}/{d}/{name}")
+            made += 1
+    for name, grey_name in EXTRA.items():  # off-palette icons that are not blue folders
+        grey = f"{real}/{grey_name}.svg"
+        if os.path.exists(grey) and os.path.exists(f"{real}/{name}.svg"):
+            os.makedirs(f"{dst}/{d}", exist_ok=True)
+            os.symlink(grey, f"{dst}/{d}/{name}.svg")
             made += 1
     if os.path.isdir(f"{dst}/{d}"):
         used.append(d)
