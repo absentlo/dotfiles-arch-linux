@@ -165,6 +165,9 @@ while :; do
                 nmcli radio wifi off >/dev/null 2>&1
             else
                 nmcli radio wifi on >/dev/null 2>&1
+                # Radio on re-creates wlp4s0 and polybar's network module keeps showing
+                # "Offline"; restart the bar once the connection is back
+                ( nm-online -q -t 30; polybar-msg cmd restart ) >/dev/null 2>&1 &
                 sleep 2
             fi
             want=toggle
