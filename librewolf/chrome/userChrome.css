@@ -171,3 +171,10 @@ tooltip {
 
 /* Playing/muted tab indicator in gray instead of the default color */
 .tab-icon-overlay, .tab-audio-button { fill: var(--g-icon) !important; }
+
+/* Graphite start page (extension new tab): no "Extension (...)" chip or shield,
+   the bar just shows the search placeholder. Normal sites keep both icons. */
+#identity-box.extensionPage #identity-icon-box,
+#urlbar-input-container:has(#identity-box.extensionPage) #tracking-protection-icon-container {
+  display: none !important;
+}

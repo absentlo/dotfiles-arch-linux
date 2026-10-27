@@ -32,5 +32,8 @@ input:focus { border-color: var(--muted); }
   color: var(--muted); text-decoration: none; font-size: 12px;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
+/* layout.css.always_underline_links underlines every <a>; decorations do not
+   propagate into inline-blocks, so the label stays clean */
+#links a span { display: inline-block; }
 #links a:hover, #links a:focus-visible { border-color: var(--border); color: var(--fg); outline: none; }
 @media (max-width: 420px) { #links { grid-template-columns: repeat(2, 1fr); } #clock { font-size: 48px; } }

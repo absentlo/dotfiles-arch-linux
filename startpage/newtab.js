@@ -13,7 +13,9 @@ const LINKS = [
 const nav = document.getElementById("links");
 for (const [name, url] of LINKS) {
   const a = document.createElement("a");
-  a.textContent = name;
+  const label = document.createElement("span");  // inline-block: dodges forced link underlines
+  label.textContent = name;
+  a.append(label);
   a.href = url;
   nav.append(a);
 }
