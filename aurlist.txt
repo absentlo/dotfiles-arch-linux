@@ -1,0 +1,6 @@
+alttab
+brave-origin-bin
+cachyos-ananicy-rules-git
+claude-desktop
+hpuld
+i3lock-color

@@ -55,6 +55,17 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | Click CPU / RAM on the bar | btop |
 | `$mod + Shift + r` | Restart i3 |
 
+## Fresh install
+After a base Arch install (`archinstall` or by hand, with your user in `wheel`), log in on the TTY and run:
+
+```
+sudo pacman -S --needed git
+git clone https://github.com/absentlo/dotfiles-arch-linux.git ~/dotfiles
+cd ~/dotfiles && ./install.sh
+```
+
+It installs every package (`pkglist.txt`, `aurlist.txt`), copies all configs and system files to the places in the table below, enables the services and prints the few manual steps left (LibreWolf/Thunderbird need one first start, browser extensions need a click). Run single steps with `./install.sh configs` (also: `packages aur system services post`); rerunning is safe. `.xinitrc` sets this monitor's mode (`DisplayPort-0`, 1600x900 @ 75 Hz); edit it on other hardware.
+
 ## Synchronization & Backup
 Configurations are **copies**, not symlinks. After changing anything, run `dotfiles-sync` to copy the live files in and see what changed, then commit and push. Copy each folder back to its place:
 
