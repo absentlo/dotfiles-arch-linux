@@ -56,6 +56,8 @@ A resource-efficient, dark graphite-themed i3wm setup built for Arch Linux. Opti
 | `$mod + Shift + r` | Restart i3 |
 
 ## Fresh install
+Step-by-step commands: [INSTALL.md](INSTALL.md).
+
 After a base Arch install (`archinstall` or by hand, with your user in `wheel`), log in on the TTY and run:
 
 ```
