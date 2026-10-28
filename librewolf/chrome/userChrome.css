@@ -200,3 +200,11 @@ body, #navigator-toolbox, #TabsToolbar { background-image: none !important; }
   --tab-content-button-size: 20px !important;
   --tab-content-button-padding: 4px !important;
 }
+
+/* Links in the browser UI (URLs in the address bar dropdown, "Learn more" in panels):
+   gray instead of the cyan LibreWolf forces on dark themes */
+:root {
+  --link-color: var(--g-muted) !important;
+  --link-color-hover: var(--g-fg) !important;
+  --link-color-active: var(--g-fg) !important;
+}
