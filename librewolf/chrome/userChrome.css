@@ -209,8 +209,12 @@ body, #navigator-toolbox, #TabsToolbar { background-image: none !important; }
   --link-color-active: var(--g-fg) !important;
 }
 
-/* Container tabs ("Spot"): gray line and label instead of the container color */
-[class*="identity-color-"] {
-  --identity-tab-color: var(--g-muted) !important;
-  --identity-icon-color: var(--g-muted) !important;
-}
+/* Container colors softened to the rice's TTY palette (same tones as GRUB vt.default_*) */
+.identity-color-blue { --identity-tab-color: #7A98B8 !important; --identity-icon-color: #7A98B8 !important; }
+.identity-color-turquoise { --identity-tab-color: #7FAFAF !important; --identity-icon-color: #7FAFAF !important; }
+.identity-color-green { --identity-tab-color: #8FA876 !important; --identity-icon-color: #8FA876 !important; }
+.identity-color-yellow { --identity-tab-color: #C9B27C !important; --identity-icon-color: #C9B27C !important; }
+.identity-color-orange { --identity-tab-color: #C98F6A !important; --identity-icon-color: #C98F6A !important; }
+.identity-color-red { --identity-tab-color: #C46A6A !important; --identity-icon-color: #C46A6A !important; }
+.identity-color-pink { --identity-tab-color: #C48AA0 !important; --identity-icon-color: #C48AA0 !important; }
+.identity-color-purple { --identity-tab-color: #A58AB5 !important; --identity-icon-color: #A58AB5 !important; }
