@@ -19,24 +19,28 @@
 :root {
   --lwt-accent-color: var(--g-bg) !important;
   --lwt-text-color: var(--g-fg) !important;
-  --toolbar-bgcolor: var(--g-bg) !important;
-  --toolbar-color: var(--g-fg) !important;
+  /* LibreWolf 158+: tab strip color, otherwise it falls back to the GTK gray */
+  --toolbox-background-color: var(--g-bg) !important;
+  --toolbox-background-color-inactive: var(--g-bg) !important;
+  --toolbox-text-color: var(--g-fg) !important;
+  --toolbox-text-color-inactive: var(--g-muted) !important;
+  --toolbar-background-color: var(--g-bg) !important;
+  --toolbar-text-color: var(--g-fg) !important;
   --toolbar-field-background-color: var(--g-surface) !important;
-  --toolbar-field-focus-background-color: var(--g-surface) !important;
-  --toolbar-field-color: var(--g-fg) !important;
-  --toolbar-field-focus-border-color: var(--g-border) !important;
-  --tab-selected-bgcolor: var(--g-surface) !important;
-  --tab-selected-textcolor: var(--g-fg) !important;
-  --arrowpanel-background: var(--g-bg) !important;
-  --arrowpanel-color: var(--g-fg) !important;
-  --arrowpanel-border-color: var(--g-border) !important;
+  --toolbar-field-background-color-focus: var(--g-surface) !important;
+  --toolbar-field-text-color: var(--g-fg) !important;
+  --toolbar-field-border-color-focus: var(--g-border) !important;
+  --tab-background-color-selected: var(--g-surface) !important;
+  --tab-text-color-selected: var(--g-fg) !important;
+  --panel-background-color: var(--g-bg) !important;
+  --panel-text-color: var(--g-fg) !important;
+  --panel-border-color: var(--g-border) !important;
   --chrome-content-separator-color: var(--g-border) !important;
   --tab-border-radius: var(--g-radius) !important;
   --toolbarbutton-border-radius: var(--g-radius) !important;
   --tab-min-height: var(--g-tab-height) !important;
   --toolbarbutton-icon-fill: var(--g-icon) !important;
-  --toolbar-field-border-radius: var(--g-radius) !important;
-  --arrowpanel-border-radius: var(--g-radius) !important;
+  --panel-border-radius: var(--g-radius) !important;
 }
 
 /* Rounded url bar, popups and menus */
@@ -73,13 +77,12 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
 
 /* Compact: thinner tabs, toolbar and url bar, no wasted gaps */
 :root {
-  --tab-block-margin: 2px !important;
-  --tab-inline-padding: 6px !important;
-  --toolbarbutton-outer-padding: 1px !important;
-  --toolbarbutton-inner-padding: 5px !important;
-  --toolbar-start-end-padding: 2px !important;
-  --urlbar-min-height: 24px !important;
-  --urlbar-container-height: 28px !important;
+  --tab-margin-block: 2px !important;
+  --tab-padding-inline: 6px !important;
+  --toolbarbutton-padding-outer: 1px !important;
+  --toolbarbutton-padding-inner: 5px !important;
+  --toolbar-padding-inline: 2px !important;
+  --urlbar-height: 24px !important;
 }
 #nav-bar { padding-block: 0 !important; }
 #urlbar-container { padding-block: 2px !important; margin-inline: 2px !important; }
@@ -88,11 +91,11 @@ toolbarspring { min-width: 0 !important; max-width: 8px !important; }
 
 /* Hover states in the same grays */
 :root {
-  --toolbarbutton-hover-background: var(--g-surface) !important;
-  --toolbarbutton-active-background: var(--g-border) !important;
-  --urlbarView-highlight-background: var(--g-border) !important;
-  --urlbarView-highlight-color: var(--g-fg) !important;
-  --urlbarView-hover-background: var(--g-surface) !important;
+  --toolbarbutton-background-color-hover: var(--g-surface) !important;
+  --toolbarbutton-background-color-active: var(--g-border) !important;
+  --urlbarview-background-color-selected: var(--g-border) !important;
+  --urlbarview-text-color-selected: var(--g-fg) !important;
+  --urlbarview-background-color-hover: var(--g-surface) !important;
 }
 .tabbrowser-tab:hover > .tab-stack > .tab-background:not([selected]) {
   background-color: var(--g-surface) !important;
@@ -101,8 +104,8 @@ toolbarspring { min-width: 0 !important; max-width: 8px !important; }
 
 /* Menus, context menus and popups */
 menupopup, panel {
-  --panel-background: var(--g-bg) !important;
-  --panel-color: var(--g-fg) !important;
+  --panel-background-color: var(--g-bg) !important;
+  --panel-text-color: var(--g-fg) !important;
   --panel-border-color: var(--g-border) !important;
 }
 menupopup menuitem:hover, menupopup menu:hover,
@@ -126,12 +129,12 @@ findbar, #sidebar-box, #sidebar-header {
 
 /* Panels (downloads, extensions, app menu) hover in the same grays */
 :root {
-  --panel-item-hover-bgcolor: var(--g-surface) !important;
-  --panel-item-active-bgcolor: var(--g-border) !important;
+  --button-background-color-menu-hover: var(--g-surface) !important;
+  --button-background-color-menu-active: var(--g-border) !important;
   --panel-separator-color: var(--g-border) !important;
   --focus-outline-color: var(--g-muted) !important;
-  --tab-loading-fill: var(--g-fg) !important;
-  --identity-btn-hover-background: var(--g-border) !important;
+  --tab-icon-fill-loading: var(--g-fg) !important;
+  --urlbar-box-background-color-hover: var(--g-border) !important;
 }
 
 /* Rice font everywhere in the chrome, not only tabs */
@@ -157,9 +160,9 @@ menupopup, panel, #PersonalToolbar, findbar, .panel-subview-body {
 
 /* Tooltips and chrome scrollbars */
 tooltip {
-  --tooltip-background-color: var(--g-surface) !important;
-  --tooltip-color: var(--g-fg) !important;
-  --tooltip-border-color: var(--g-border) !important;
+  --tooltip-background: var(--g-surface) !important;
+  --tooltip-foreground: var(--g-fg) !important;
+  --tooltip-border: var(--g-border) !important;
   font-family: var(--g-font) !important;
   font-size: var(--g-font-size) !important;
 }
@@ -177,4 +180,23 @@ tooltip {
 #identity-box.extensionPage #identity-icon-box,
 #urlbar-input-container:has(#identity-box.extensionPage) #tracking-protection-icon-container {
   display: none !important;
+}
+
+/* Split view: thin border on the active pane instead of the bright 2px focus ring */
+#tabbrowser-tabpanels[splitview] .split-view-panel.deck-selected > .browserContainer {
+  outline: 1px solid var(--g-border) !important;
+}
+
+/* LibreWolf 158 paints the tab scroller GTK gray; let the #111 strip show through */
+#tabbrowser-arrowscrollbox { background: transparent !important; }
+/* ...and no gradient/theme image over the strip, just the flat #111 */
+body, #navigator-toolbox, #TabsToolbar { background-image: none !important; }
+/* The strip ends up 2px shorter than tab + margins and the tab is pushed up flush with the top;
+   pad the top so the space above and below the tabs is equal */
+#TabsToolbar { padding-top: 2px !important; }
+/* Close button 24px -> 20px so it fits split-view tabs (20px tall); otherwise the selected
+   tab's content is taller than its partner's and the two labels end up 2px apart */
+:root {
+  --tab-content-button-size: 20px !important;
+  --tab-content-button-padding: 4px !important;
 }
