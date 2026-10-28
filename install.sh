@@ -83,6 +83,8 @@ system() {
     sudo install -Dm644 "$D/system/10-intel-primary.conf" /etc/X11/xorg.conf.d/10-intel-primary.conf
     # sudo shows * while typing the password; validated first, a broken sudoers file would lock out sudo
     sudo visudo -cf "$D/system/sudoers-pwfeedback" && sudo install -m 0440 "$D/system/sudoers-pwfeedback" /etc/sudoers.d/pwfeedback
+    # Terminus on the TTY; the initramfs carries the console font (sd-vconsole hook), so rebuild it
+    sudo install -Dm644 "$D/system/vconsole.conf" /etc/vconsole.conf && sudo mkinitcpio -P
     if [[ -d /boot/grub ]]; then   # no UUIDs in it, so it is safe on a new disk layout
         sudo install -Dm644 "$D/system/grub" /etc/default/grub
         sudo grub-mkconfig -o /boot/grub/grub.cfg
@@ -102,6 +104,12 @@ post() {
     xdg-user-dirs-update
     "$HOME/.local/bin/papirus-graphite" || echo "!! papirus-graphite failed (is papirus-icon-theme installed?)"
     gsettings set org.xfce.mousepad.preferences.view color-scheme graphite 2>/dev/null || true
+    # same look for apps that read gsettings instead of gtk settings.ini (Flatpak, Electron, libadwaita)
+    local g=org.gnome.desktop.interface
+    gsettings set $g color-scheme prefer-dark && gsettings set $g accent-color slate &&
+    gsettings set $g icon-theme Papirus-Dark-Graphite && gsettings set $g cursor-theme capitaine-cursors &&
+    gsettings set $g font-name 'JetBrainsMono Nerd Font 8' && gsettings set $g monospace-font-name 'JetBrainsMono Nerd Font Mono 9' ||
+        todo+=("gsettings failed (no session bus?): rerun ./install.sh post after logging into i3")
     todo+=("After logging into i3: i3-wallpaper   (sets the wallpaper and builds the lock screen image)")
     todo+=("After logging into i3: wpctl settings --save bluetooth.autoswitch-to-headset-profile false")
     todo+=("After logging into i3: xfconf-query -c ristretto -p /window/bgcolor-override -n -t bool -s true")

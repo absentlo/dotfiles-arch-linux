@@ -94,6 +94,7 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/10-intel-primary.conf` | `/etc/X11/xorg.conf.d/` (sudo): Intel iGPU as main GPU (monitor on the motherboard port) |
 | (pacman colors) | `install.sh system` turns on `Color`, `ILoveCandy` and `VerbosePkgLists` in `/etc/pacman.conf` |
 | `system/sudoers-pwfeedback` | `/etc/sudoers.d/pwfeedback` (sudo, mode 0440): `*` while typing the sudo password |
+| `system/vconsole.conf` | `/etc/vconsole.conf` (sudo, needs `terminus-font`, then `mkinitcpio -P`): Terminus TTY font |
 | `krita/Graphite.colors` | `~/.local/share/krita/color-schemes/`, then Krita › Settings › Themes › Graphite |
 
 ## Wallpaper and lock screen image

@@ -78,6 +78,7 @@ spotify-launcher
 sudo
 sysstat
 system-config-printer
+terminus-font
 thunar
 thunar-volman
 thunderbird
