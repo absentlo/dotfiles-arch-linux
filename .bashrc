@@ -6,6 +6,8 @@
 [[ $- != *i* ]] && return
 
 export PATH="$HOME/.local/bin:$PATH"
+# git commit, sudoedit, crontab -e open the riced nano (~/.config/nano/nanorc)
+export EDITOR=nano VISUAL=nano
 
 # Graphite colors for ls, grep and man pages (palette in ~/.config/dircolors/graphite)
 [[ -f ~/.config/dircolors/graphite ]] && eval "$(dircolors -b ~/.config/dircolors/graphite)"

@@ -1,6 +1,7 @@
 #!/bin/sh
 
-xrandr --output DisplayPort-0 --mode 1600x900 --rate 74.89
+# 75 Hz on whichever port the monitor is plugged into
+xrandr --output "$(xrandr | awk '/ connected/{print $1; exit}')" --mode 1600x900 --rate 74.89
 
 # Identificar nuestra sesion grafica
 export XDG_CURRENT_DESKTOP=i3

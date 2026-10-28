@@ -1,0 +1,25 @@
+## nano on the Graphite palette. Color names map to the terminal's soft palette
+## (black #1C1C1C, grey #5A5A5A, white #B8B8B8, red #C46A6A, yellow #C9B27C, ...)
+
+include "/usr/share/nano/*.nanorc"
+include "/usr/share/nano/extra/*.nanorc"
+
+set linenumbers
+set indicator
+set minibar
+set zap
+set tabsize 4
+set tabstospaces
+
+set titlecolor     bold,lightwhite,black
+set minicolor      white,black
+set statuscolor    lightwhite,black
+set errorcolor     bold,lightwhite,red
+set promptcolor    lightwhite,black
+set keycolor       white
+set functioncolor  grey
+set numbercolor    grey
+set scrollercolor  grey
+set selectedcolor  lightwhite,grey
+set spotlightcolor black,yellow
+set stripecolor    ,black

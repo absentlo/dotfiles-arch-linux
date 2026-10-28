@@ -41,7 +41,7 @@ aur() {
 
 configs() {
     say "Config files"
-    for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep fontconfig dircolors pipewire; do
+    for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep fontconfig dircolors pipewire nano; do
         mkdir -p "$C/$dir"; cp -r "$D/$dir/." "$C/$dir/"
     done
     mkdir -p "$C/gtk-3.0" && cp "$D/gtk-3.0/settings.ini" "$D/gtk-3.0/gtk.css" "$C/gtk-3.0/"
@@ -78,6 +78,11 @@ system() {
     sudo install -Dm644 "$D/system/earlyoom" /etc/default/earlyoom
     sudo install -Dm644 "$D/system/zram-generator.conf" /etc/systemd/zram-generator.conf
     sudo install -Dm644 "$D/system/issue" /etc/issue
+    # pacman: colors, Pac-Man progress bar, table view (edits in place, rerun-safe)
+    sudo sed -i -e 's/^#Color$/Color\nILoveCandy/' -e 's/^#VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
+    sudo install -Dm644 "$D/system/10-intel-primary.conf" /etc/X11/xorg.conf.d/10-intel-primary.conf
+    # sudo shows * while typing the password; validated first, a broken sudoers file would lock out sudo
+    sudo visudo -cf "$D/system/sudoers-pwfeedback" && sudo install -m 0440 "$D/system/sudoers-pwfeedback" /etc/sudoers.d/pwfeedback
     if [[ -d /boot/grub ]]; then   # no UUIDs in it, so it is safe on a new disk layout
         sudo install -Dm644 "$D/system/grub" /etc/default/grub
         sudo grub-mkconfig -o /boot/grub/grub.cfg

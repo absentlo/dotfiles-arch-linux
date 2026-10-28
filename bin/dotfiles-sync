@@ -5,7 +5,7 @@ set -e
 D="$HOME/dotfiles"
 C="$HOME/.config"
 
-for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep fontconfig dircolors; do
+for dir in i3 polybar picom rofi dunst gtk-4.0 fastfetch btop zathura mpv gammastep fontconfig dircolors nano; do
     mkdir -p "$D/$dir"; cp -r "$C/$dir/." "$D/$dir/"
 done
 cp "$C/gtk-3.0/settings.ini" "$C/gtk-3.0/gtk.css" "$D/gtk-3.0/"   # not the whole dir: Thunar keeps private bookmarks there
@@ -23,6 +23,7 @@ mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/h
 cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
 cp /etc/default/grub "$D/system/grub"
 cp /etc/issue "$D/system/issue"
+cp /etc/X11/xorg.conf.d/10-intel-primary.conf "$D/system/" 2>/dev/null || true
 cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
 mkdir -p "$D/thunderbird" && cp "$C"/thunderbird/*.default-release/user.js "$D/thunderbird/"
 mkdir -p "$D/thunderbird/chrome" && cp "$C"/thunderbird/*.default-release/chrome/*.css "$D/thunderbird/chrome/"

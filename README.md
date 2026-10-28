@@ -66,14 +66,14 @@ git clone https://github.com/absentlo/dotfiles-arch-linux.git ~/dotfiles
 cd ~/dotfiles && ./install.sh
 ```
 
-It installs every package (`pkglist.txt`, `aurlist.txt`), copies all configs and system files to the places in the table below, enables the services and prints the few manual steps left (LibreWolf/Thunderbird need one first start, browser extensions need a click). Run single steps with `./install.sh configs` (also: `packages aur system services post`); rerunning is safe. `.xinitrc` sets this monitor's mode (`DisplayPort-0`, 1600x900 @ 75 Hz); edit it on other hardware.
+It installs every package (`pkglist.txt`, `aurlist.txt`), copies all configs and system files to the places in the table below, enables the services and prints the few manual steps left (LibreWolf/Thunderbird need one first start, browser extensions need a click). Run single steps with `./install.sh configs` (also: `packages aur system services post`); rerunning is safe. `.xinitrc` sets 1600x900 @ 75 Hz on whichever port is connected; edit it for another monitor.
 
 ## Synchronization & Backup
 Configurations are **copies**, not symlinks. After changing anything, run `dotfiles-sync` to copy the live files in and see what changed, then commit and push. Copy each folder back to its place:
 
 | Repo folder | Goes to |
 | :--- | :--- |
-| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop`, `zathura`, `mpv`, `gammastep`, `fontconfig`, `dircolors` | `~/.config/<same name>/` |
+| `i3`, `polybar`, `picom`, `rofi`, `dunst`, `gtk-3.0`, `gtk-4.0`, `pipewire`, `fastfetch`, `btop`, `zathura`, `mpv`, `gammastep`, `fontconfig`, `dircolors`, `nano` | `~/.config/<same name>/` |
 | `bin/` | `~/.local/bin/` |
 | `backgrounds/` | `~/.local/share/backgrounds/` |
 | `thunar/uca.xml` | `~/.config/Thunar/` (adds "Copy image to clipboard") |
@@ -91,6 +91,9 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/zram-generator.conf` | `/etc/systemd/` (sudo) |
 | `system/grub` | `/etc/default/grub` (sudo, then `grub-mkconfig -o /boot/grub/grub.cfg`) |
 | `system/issue` | `/etc/issue` (sudo): Graphite TTY login text |
+| `system/10-intel-primary.conf` | `/etc/X11/xorg.conf.d/` (sudo): Intel iGPU as main GPU (monitor on the motherboard port) |
+| (pacman colors) | `install.sh system` turns on `Color`, `ILoveCandy` and `VerbosePkgLists` in `/etc/pacman.conf` |
+| `system/sudoers-pwfeedback` | `/etc/sudoers.d/pwfeedback` (sudo, mode 0440): `*` while typing the sudo password |
 | `krita/Graphite.colors` | `~/.local/share/krita/color-schemes/`, then Krita › Settings › Themes › Graphite |
 
 ## Wallpaper and lock screen image
