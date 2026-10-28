@@ -208,3 +208,9 @@ body, #navigator-toolbox, #TabsToolbar { background-image: none !important; }
   --link-color-hover: var(--g-fg) !important;
   --link-color-active: var(--g-fg) !important;
 }
+
+/* Container tabs ("Spot"): gray line and label instead of the container color */
+[class*="identity-color-"] {
+  --identity-tab-color: var(--g-muted) !important;
+  --identity-icon-color: var(--g-muted) !important;
+}

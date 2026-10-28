@@ -33,3 +33,5 @@ user_pref("browser.theme.content-theme", 0);
 user_pref("widget.gtk.overlay-scrollbars.enabled", true);
 // Rice: no forced underline on every link (was on; turned off by choice)
 user_pref("layout.css.always_underline_links", false);
+// Rice: plain tab tooltip instead of the preview card (it showed the start page's internal ID)
+user_pref("browser.tabs.hoverPreview.enabled", false);
