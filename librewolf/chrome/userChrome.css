@@ -149,6 +149,14 @@ findbar, #sidebar-box, #sidebar-header {
   --urlbar-box-background-color-hover: var(--g-border) !important;
 }
 
+/* Primary buttons in popups (install and permission prompts, blocked downloads) gray, not purple */
+:root {
+  --color-accent-primary: #B8B8B8 !important;
+  --color-accent-primary-hover: var(--g-fg) !important;
+  --color-accent-primary-active: var(--g-muted) !important;
+  --button-text-color-primary: var(--g-bg) !important;
+}
+
 /* Rice font everywhere in the chrome, not only tabs */
 menupopup, panel, #PersonalToolbar, findbar, .panel-subview-body {
   font-family: var(--g-font) !important;
