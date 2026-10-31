@@ -27,3 +27,15 @@
     scrollbar-color: #3A3A3A #111111 !important;
   }
 }
+
+/* Settings, Add-ons and other about: pages: palette grays instead of the cyan accent.
+   Toggles, buttons, links, focus rings and the selected sidebar item all derive from these */
+@-moz-document url-prefix("about:") {
+  :root {
+    --color-accent-primary: #B8B8B8 !important;
+    --color-accent-primary-hover: #D8D8D8 !important;
+    --color-accent-primary-active: #9A9A9A !important;
+    --color-accent-primary-selected: #B8B8B8 !important;
+    --button-text-color-primary: #111111 !important;
+  }
+}

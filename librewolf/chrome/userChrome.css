@@ -155,8 +155,8 @@ menupopup, panel, #PersonalToolbar, findbar, .panel-subview-body {
 }
 #urlbar-input::selection { background-color: var(--g-border) !important; color: var(--g-fg) !important; }
 
-/* Tab favicons slightly faded on background tabs */
-.tabbrowser-tab:not([selected]):not(:hover) .tab-icon-image { opacity: 0.7 !important; }
+/* Tab favicons gray and slightly faded on background tabs; real colors on hover or when selected */
+.tabbrowser-tab:not([selected]):not(:hover) .tab-icon-image { filter: grayscale(1) !important; opacity: 0.7 !important; }
 
 /* Tooltips and chrome scrollbars */
 tooltip {
@@ -171,6 +171,9 @@ tooltip {
 /* Pinned tabs: icon only, tight */
 .tabbrowser-tab[pinned] { padding-inline: 0 !important; }
 .tabbrowser-tab[pinned] .tab-content { padding-inline: 8px !important; }
+/* Bookmark-toolbar icons in gray; real colors on hover */
+#PersonalToolbar .bookmark-item:not(:hover) > .toolbarbutton-icon,
+menupopup .bookmark-item:not([_moz-menuactive]) :is(.menu-icon, .menu-iconic-icon) { filter: grayscale(1) !important; }
 
 /* Playing/muted tab indicator in gray instead of the default color */
 .tab-icon-overlay, .tab-audio-button { fill: var(--g-icon) !important; }
