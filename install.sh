@@ -17,6 +17,8 @@ todo=()   # manual steps, printed at the end
 
 packages() {
     say "Official packages (pkglist.txt)"
+    # multilib for Steam's 32-bit packages; without it they'd be skipped below as "not in the repos"
+    sudo sed -i '/^#\[multilib\]$/,+1 s/^#//' /etc/pacman.conf
     # skip names that left the repos, otherwise one missing package aborts the whole install
     mapfile -t avail < <(sudo pacman -Sy >/dev/null && comm -12 <(sort -u "$D/pkglist.txt") <(pacman -Slq | sort -u))
     missing=$(comm -23 <(sort -u "$D/pkglist.txt") <(printf '%s\n' "${avail[@]}"))
