@@ -1,8 +1,11 @@
 {
   "manifest_version": 3,
   "name": "Graphite Start",
-  "version": "1.0",
-  "description": "Graphite rice new tab: clock, search, links. No background code.",
+  "version": "1.4",
+  "description": "Graphite rice new tab: clock, search, pages, weather, wallpaper. No background code.",
+  "permissions": ["storage", "unlimitedStorage"],
+  "optional_permissions": ["topSites"],
+  "optional_host_permissions": ["https://icons.duckduckgo.com/*"],
   "chrome_url_overrides": {
     "newtab": "newtab.html"
   },

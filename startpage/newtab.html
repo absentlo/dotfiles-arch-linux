@@ -6,16 +6,76 @@
   <link rel="stylesheet" href="newtab.css">
 </head>
 <body>
+  <svg hidden aria-hidden="true">
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></symbol>
+    <symbol id="i-cloud" viewBox="0 0 24 24"><path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 0 1 0 9z"/></symbol>
+    <symbol id="i-cloud-sun" viewBox="0 0 24 24"><path d="M12 2v2M4.9 4.9l1.4 1.4M20 12h2M19.1 4.9l-1.4 1.4M15.9 12.7a4 4 0 0 0-5.9-4.1M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6z"/></symbol>
+    <symbol id="i-cloud-moon" viewBox="0 0 24 24"><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6zM10 8a6 6 0 0 1 4-5.5 5 5 0 0 0 7 7 6 6 0 0 1-3.5 4.5"/></symbol>
+    <symbol id="i-fog" viewBox="0 0 24 24"><path d="M4 14.9A7 7 0 1 1 15.7 8h1.8a4.5 4.5 0 0 1 2.5 8.2M16 17H7M17 21H9"/></symbol>
+    <symbol id="i-rain" viewBox="0 0 24 24"><path d="M20 16.6A5 5 0 0 0 18 7h-1.3A8 8 0 1 0 4 15.3M16 14v6M8 14v6M12 16v6"/></symbol>
+    <symbol id="i-snow" viewBox="0 0 24 24"><path d="M20 17.6A5 5 0 0 0 18 8h-1.3A8 8 0 1 0 4 16.3M8 16h.01M8 20h.01M12 18h.01M12 22h.01M16 16h.01M16 20h.01"/></symbol>
+    <symbol id="i-storm" viewBox="0 0 24 24"><path d="M19 16.9A5 5 0 0 0 18 7h-1.3a8 8 0 1 0-11.7 9M13 12l-3 5h4l-3 5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 12-8 12s-8-7-8-12a8 8 0 0 1 16 0z"/><circle cx="12" cy="10" r="3"/></symbol>
+    <symbol id="i-pencil" viewBox="0 0 24 24"><path d="M17 3a2.8 2.8 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5zM15 5l4 4"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20 15 15 0 0 1 0-20z"/></symbol>
+    <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+    <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 18l6-6-6-6"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="9" cy="9" r="2"/><path d="M21 15l-3-3L6 21"/></symbol>
+  </svg>
   <main>
-    <svg class="logo" viewBox="0 0 256 256" aria-hidden="true"><path d="m127.98 12.07c-10.316 25.309-16.543 41.855-28.031 66.41 7.043 7.4609 15.691 16.156 29.734 25.977-15.098-6.207-25.395-12.445-33.094-18.918-14.703 30.68-37.742 74.391-84.492 158.39 36.746-21.219 65.23-34.293 91.773-39.289-1.1406-4.8945-1.7852-10.195-1.7422-15.734l0.042969-1.1719c0.58203-23.551 12.828-41.645 27.336-40.418 14.508 1.2266 25.781 21.316 25.199 44.867-0.10938 4.4219-0.60938 8.6914-1.4805 12.641 26.258 5.1328 54.438 18.18 90.684 39.105-7.1484-13.156-13.527-25.016-19.621-36.316-9.5938-7.4336-19.605-17.117-40.023-27.594 14.035 3.6406 24.082 7.8516 31.914 12.555-61.941-115.32-66.957-130.66-88.199-180.5z"/></svg>
-    <h1 id="clock">--:--</h1>
-    <p id="date"></p>
-    <p id="greeting"></p>
-    <form action="https://noai.duckduckgo.com/" method="get" role="search">
+    <svg class="logo" data-section="logo" viewBox="0 0 256 256" aria-hidden="true"><path d="m127.98 12.07c-10.316 25.309-16.543 41.855-28.031 66.41 7.043 7.4609 15.691 16.156 29.734 25.977-15.098-6.207-25.395-12.445-33.094-18.918-14.703 30.68-37.742 74.391-84.492 158.39 36.746-21.219 65.23-34.293 91.773-39.289-1.1406-4.8945-1.7852-10.195-1.7422-15.734l0.042969-1.1719c0.58203-23.551 12.828-41.645 27.336-40.418 14.508 1.2266 25.781 21.316 25.199 44.867-0.10938 4.4219-0.60938 8.6914-1.4805 12.641 26.258 5.1328 54.438 18.18 90.684 39.105-7.1484-13.156-13.527-25.016-19.621-36.316-9.5938-7.4336-19.605-17.117-40.023-27.594 14.035 3.6406 24.082 7.8516 31.914 12.555-61.941-115.32-66.957-130.66-88.199-180.5z"/></svg>
+    <h1 id="clock" data-section="clock">--:--</h1>
+    <p id="date" data-section="date"></p>
+    <p id="greeting" data-section="date"></p>
+    <p id="weather" data-section="weather"></p>
+    <form data-section="search" action="https://noai.duckduckgo.com/" method="get" role="search">
       <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
       <input name="q" type="search" placeholder="Search DuckDuckGo" autocomplete="off" autofocus aria-label="Search">
     </form>
+    <nav id="links" class="sites" data-section="links" aria-label="My pages"></nav>
+    <nav id="visited" class="sites" data-section="visited" aria-label="Most visited"></nav>
   </main>
+
+  <button id="customize" type="button" popovertarget="panel" title="Customize" aria-label="Customize"><svg class="i" aria-hidden="true"><use href="#i-pencil"/></svg></button>
+  <aside id="panel" popover aria-label="Customize">
+    <h2>Sections</h2>
+    <label><input type="checkbox" data-show="logo"> Logo</label>
+    <label><input type="checkbox" data-show="clock"> Clock</label>
+    <label><input type="checkbox" data-show="date"> Date and greeting</label>
+    <label><input type="checkbox" data-show="search"> Search</label>
+    <label><input type="checkbox" data-show="links"> My pages</label>
+    <label><input type="checkbox" data-show="siteIcons"> Page icons</label>
+    <label><input type="checkbox" data-show="visited"> Most visited</label>
+    <label><input type="checkbox" data-show="visitedIcons"> Most visited: icons only</label>
+    <label><input type="checkbox" data-show="weather"> Weather</label>
+
+    <label class="field">Sites per page <input id="per-page" type="number" min="1" max="24" required></label>
+
+    <h2>Clock</h2>
+    <input id="time-zone" type="text" list="time-zones" autocomplete="off" aria-label="Time zone">
+    <datalist id="time-zones"></datalist>
+
+    <h2>Weather</h2>
+    <form id="city-form">
+      <input id="city" type="text" placeholder="City" autocomplete="off" aria-label="City" required>
+      <button type="submit">set</button>
+    </form>
+
+    <h2>Wallpaper</h2>
+    <input id="wall-file" type="file" accept="image/*" hidden>
+    <div class="row">
+      <button id="wall-pick" type="button">choose</button>
+      <button id="wall-remove" type="button" hidden>remove</button>
+    </div>
+
+    <h2>My pages</h2>
+    <form id="link-form">
+      <input id="link-url" type="text" placeholder="archlinux.org" autocomplete="off" aria-label="Page address" required>
+      <button type="submit">add</button>
+    </form>
+    <ul id="link-list"></ul>
+  </aside>
   <script src="newtab.js"></script>
 </body>
 </html>
