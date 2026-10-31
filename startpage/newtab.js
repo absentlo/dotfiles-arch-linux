@@ -2,6 +2,19 @@
 // time zone field, then from the weather city, and only then from the browser.
 const BROWSER_TIME_ZONE = Intl.DateTimeFormat().resolvedOptions().timeZone;
 let timeZone = BROWSER_TIME_ZONE;
+// Logos ship inside the add-on, already in the palette, so they never touch the network.
+const SEARCH = {
+  "ddg-noai": { logo: "engine-ddg.png", label: "DuckDuckGo", option: "DuckDuckGo (no AI)", url: "https://noai.duckduckgo.com/" },
+  ddg: { logo: "engine-ddg.png", label: "DuckDuckGo", option: "DuckDuckGo", url: "https://duckduckgo.com/" },
+  brave: { logo: "engine-brave.png", label: "Brave", option: "Brave Search", url: "https://search.brave.com/search" },
+  startpage: { logo: "engine-startpage.png", label: "Startpage", option: "Startpage", url: "https://www.startpage.com/do/search" },
+  mojeek: { logo: "engine-mojeek.png", label: "Mojeek", option: "Mojeek", url: "https://www.mojeek.com/search" },
+  google: { logo: "engine-google.png", label: "Google", option: "Google", url: "https://www.google.com/search" },
+};
+const PREF_CHOICES = { clock: ["24", "12"], clockSize: ["s", "m", "l"], tempUnit: ["c", "f"], search: Object.keys(SEARCH) };
+const CLOCK_SIZES = { s: "44px", m: "64px", l: "96px" };
+const MAX_NAME = 30;
+let prefs = { clock: "24", clockSize: "m", tempUnit: "c", search: "ddg-noai", name: "", wallDim: 60 };
 const clock = document.getElementById("clock");
 const date = document.getElementById("date");
 const greeting = document.getElementById("greeting");
@@ -10,41 +23,67 @@ let clockTimer;
 function tick() {
   clearTimeout(clockTimer);
   const now = new Date();
-  clock.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hourCycle: "h23", timeZone });
+  clock.textContent = now.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit", hourCycle: prefs.clock === "12" ? "h12" : "h23", timeZone });
   date.textContent = now.toLocaleDateString([], { weekday: "long", day: "numeric", month: "long", timeZone });
   const h = Number(now.toLocaleString("en-US", { hour: "numeric", hourCycle: "h23", timeZone }));
-  greeting.textContent = h < 6 ? "Late night" : h < 12 ? "Good morning" : h < 19 ? "Good afternoon" : "Good evening";
+  const hello = h < 6 ? "Late night" : h < 12 ? "Good morning" : h < 19 ? "Good afternoon" : "Good evening";
+  greeting.textContent = prefs.name ? `${hello}, ${prefs.name}` : hello;
   // Wake once per minute, on the minute, and never while the tab is in the background
   if (!document.hidden) clockTimer = setTimeout(tick, 60000 - (now.getSeconds() * 1000 + now.getMilliseconds()));
 }
 tick();
 
 // Wallpaper: stored as a data URL because Brave's storage.local can't hold Blobs (this page is shared with Brave).
-const MAX_WALL_BYTES = 10 * 1024 * 1024;  // the base64 string is decoded on every new tab
+const MAX_WALL_BYTES = 10 * 1024 * 1024;
+const MAX_WALL_WIDTH = 1920;
 const wallFile = document.getElementById("wall-file");
 const wallRemove = document.getElementById("wall-remove");
 
 function showWall(url) {
-  document.body.style.backgroundImage = url ? `linear-gradient(#11111199, #11111199), url("${url}")` : "";
+  document.body.style.backgroundImage = url ? `url("${url}")` : "";
   document.body.classList.toggle("has-wall", Boolean(url));
   wallRemove.hidden = !url;
+}
+
+// The saved image is read and decoded on every new tab, so it's stored small. WebP keeps transparency.
+// shortcut: 4K screens get a slightly soft wallpaper and animations become still, raise the width or keep the original if anyone asks.
+async function shrinkWall(file) {
+  const src = URL.createObjectURL(file);
+  try {
+    const img = new Image();
+    img.src = src;
+    await img.decode();
+    const scale = Math.min(1, MAX_WALL_WIDTH / img.naturalWidth);
+    const canvas = document.createElement("canvas");
+    canvas.width = Math.round(img.naturalWidth * scale);
+    canvas.height = Math.round(img.naturalHeight * scale);
+    canvas.getContext("2d").drawImage(img, 0, 0, canvas.width, canvas.height);
+    const url = canvas.toDataURL("image/webp", 0.8);
+    if (!url.startsWith("data:image/")) throw new Error("image has no usable size");
+    return url;
+  } finally {
+    URL.revokeObjectURL(src);
+  }
 }
 
 document.getElementById("wall-pick").onclick = () => wallFile.click();
 wallRemove.onclick = () => chrome.storage.local.remove("wallpaper").then(() => showWall(null));
 
-wallFile.onchange = () => {
+wallFile.onchange = async () => {
   const file = wallFile.files[0];
   wallFile.value = "";  // lets the same file be picked again
   if (!file) return;
   if (!file.type.startsWith("image/")) return alert("That file is not an image.");
   if (file.size > MAX_WALL_BYTES) return alert("Image is over 10 MB, pick a smaller one.");
-  const reader = new FileReader();
-  reader.onerror = () => alert("Could not read that image.");
-  reader.onload = () => chrome.storage.local.set({ wallpaper: reader.result })
-    .then(() => showWall(reader.result))
+  let wallpaper;
+  try {
+    wallpaper = await shrinkWall(file);
+  } catch {
+    return alert("Could not read that image.");
+  }
+  chrome.storage.local.set({ wallpaper })
+    .then(() => showWall(wallpaper))
     .catch((e) => alert(`Could not save the wallpaper: ${e.message}`));
-  reader.readAsDataURL(file);
 };
 
 // Customize panel: which sections show, my pages, most visited, weather.
@@ -347,7 +386,7 @@ async function renderWeather() {
         chrome.storage.local.set({ city });
         pickTimeZone();
       }
-      weather = { key, at: Date.now(), temp: Math.round(current.temperature_2m), code: current.weather_code, isDay: current.is_day === 1 };
+      weather = { key, at: Date.now(), temp: current.temperature_2m, code: current.weather_code, isDay: current.is_day === 1 };
       chrome.storage.local.set({ weather });
     } catch {
       // Offline or API down: keep the last reading, the page must still work.
@@ -356,7 +395,8 @@ async function renderWeather() {
   if (weather?.key !== key) return out.replaceChildren();
   const [icon, label] = weatherInfo(weather.code, weather.isDay);
   const now = document.createElement("span");
-  now.textContent = `${weather.temp}°C ${label}`;
+  const temp = prefs.tempUnit === "f" ? weather.temp * 9 / 5 + 32 : weather.temp;
+  now.textContent = `${Math.round(temp)}°${prefs.tempUnit.toUpperCase()} ${label}`;
   const place = document.createElement("span");
   place.textContent = city.name;
   out.replaceChildren(svgIcon(icon), now, svgIcon("pin"), place);
@@ -390,6 +430,121 @@ for (const box of document.querySelectorAll("[data-show]")) {
     });
   };
 }
+
+function applyPrefs() {
+  document.body.style.setProperty("--wall-dim", prefs.wallDim / 100);
+  document.documentElement.style.setProperty("--clock-size", CLOCK_SIZES[prefs.clockSize]);
+  const engine = SEARCH[prefs.search];
+  const search = document.querySelector("main form");
+  search.action = engine.url;
+  search.querySelector("input").placeholder = `Search ${engine.label}`;
+  search.querySelector("img").src = engine.logo;
+  tick();
+  renderWeather();
+}
+
+document.getElementById("search-engine").append(...Object.entries(SEARCH).map(([key, engine]) => new Option(engine.option, key)));
+
+for (const field of document.querySelectorAll("[data-pref]")) {
+  const key = field.dataset.pref;
+  // input applies it live, change saves it, so dragging the slider doesn't write on every step
+  field.oninput = () => {
+    prefs[key] = field.type === "range" ? field.valueAsNumber : field.value.trim();
+    applyPrefs();
+  };
+  field.onchange = () => chrome.storage.local.set({ prefs });
+}
+
+// Backup: a JSON file that carries the settings into a new profile.
+const BACKUP_APP = "graphite-start";
+const MAX_BACKUP_BYTES = 30 * 1024 * 1024;  // room for the largest allowed wallpaper once in base64
+const MAX_LINKS = 500;
+const BACKUP_KEYS = ["show", "links", "perPage", "timeZone", "city", "prefs", "wallpaper"];
+const IMAGE_DATA_URL = /^data:image\/[a-z0-9.+-]+;base64,[A-Za-z0-9+/]+=*$/;
+
+// A backup can come from anyone, so only known keys with valid values get through.
+function cleanBackup(raw) {
+  if (raw?.app !== BACKUP_APP) throw new Error("This is not a Graphite Start backup.");
+  const clean = {};
+  if (raw.show && typeof raw.show === "object") {
+    clean.show = {};
+    for (const key of Object.keys(show)) if (typeof raw.show[key] === "boolean") clean.show[key] = raw.show[key];
+  }
+  if (Array.isArray(raw.links)) {
+    clean.links = [];
+    for (const link of raw.links.slice(0, MAX_LINKS)) {
+      const url = typeof link?.url === "string" ? parseUrl(link.url) : null;
+      if (!url) continue;
+      const entry = { url };
+      if (typeof link.name === "string") entry.name = link.name.trim().slice(0, 40);
+      if (typeof link.iconOnly === "boolean") entry.iconOnly = link.iconOnly;
+      clean.links.push(entry);
+    }
+  }
+  if (Number.isInteger(raw.perPage) && raw.perPage >= 1 && raw.perPage <= 24) clean.perPage = raw.perPage;
+  if (typeof raw.timeZone === "string" && raw.timeZone) {
+    try {
+      new Intl.DateTimeFormat(undefined, { timeZone: raw.timeZone });
+      clean.timeZone = raw.timeZone;
+    } catch {
+      // Unknown zone: leave it out and let the clock follow the browser
+    }
+  }
+  const place = raw.city;
+  if (typeof place?.name === "string" && Number.isFinite(place.lat) && Number.isFinite(place.lon)) {
+    clean.city = { name: place.name.slice(0, 100), lat: place.lat, lon: place.lon };
+    if (typeof place.label === "string") clean.city.label = place.label.slice(0, 200);
+    if (typeof place.timezone === "string") clean.city.timezone = place.timezone.slice(0, 100);
+  }
+  if (raw.prefs && typeof raw.prefs === "object") {
+    clean.prefs = {};
+    for (const [key, choices] of Object.entries(PREF_CHOICES)) if (choices.includes(raw.prefs[key])) clean.prefs[key] = raw.prefs[key];
+    if (typeof raw.prefs.name === "string") clean.prefs.name = raw.prefs.name.trim().slice(0, MAX_NAME);
+    if (Number.isInteger(raw.prefs.wallDim) && raw.prefs.wallDim >= 0 && raw.prefs.wallDim <= 90) clean.prefs.wallDim = raw.prefs.wallDim;
+  }
+  // Goes inside a CSS url(""), so the pattern also keeps quotes and other CSS out
+  if (typeof raw.wallpaper === "string" && IMAGE_DATA_URL.test(raw.wallpaper)) clean.wallpaper = raw.wallpaper;
+  return clean;
+}
+
+document.getElementById("export").onclick = async () => {
+  try {
+    const saved = await chrome.storage.local.get(BACKUP_KEYS);
+    // links come from memory: storage can still hold the plain URLs of older builds
+    const blob = new Blob([JSON.stringify({ app: BACKUP_APP, format: 1, ...saved, links })], { type: "application/json" });
+    const a = document.createElement("a");
+    a.href = URL.createObjectURL(blob);
+    a.download = "graphite-start-backup.json";
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+  } catch (e) {
+    alert(`Could not export: ${e.message}`);
+  }
+};
+
+const importFile = document.getElementById("import-file");
+document.getElementById("import").onclick = () => importFile.click();
+importFile.onchange = async () => {
+  const file = importFile.files[0];
+  importFile.value = "";  // lets the same file be picked again
+  if (!file) return;
+  try {
+    if (file.size > MAX_BACKUP_BYTES) throw new Error("That file is too large to be a backup.");
+    let raw;
+    try {
+      raw = JSON.parse(await file.text());
+    } catch {
+      throw new Error("That file is not a backup.");
+    }
+    const clean = cleanBackup(raw);
+    if (!confirm("Replace your current start page settings with this backup?")) return;
+    await chrome.storage.local.set(clean);  // first, so a failed write can't leave the settings empty
+    await chrome.storage.local.remove(BACKUP_KEYS.filter((key) => !(key in clean)));
+    location.reload();
+  } catch (e) {
+    alert(`Could not import: ${e.message}`);
+  }
+};
 
 const perPageInput = document.getElementById("per-page");
 perPageInput.onchange = () => {
@@ -459,9 +614,15 @@ document.getElementById("link-form").onsubmit = (event) => {
   input.value = "";
 };
 
-chrome.storage.local.get().then((saved) => {
+chrome.storage.local.get().then(async (saved) => {
   show = { ...show, ...saved.show };
-  links = (saved.links ?? []).map((link) => (typeof link === "string" ? { url: link } : link));  // 1.2 saved plain URLs
+  // A backup from another profile, or a permission removed in about:addons, can leave a box ticked with no access
+  for (const key of Object.keys(NEEDS)) {
+    if (show[key] && !(await chrome.permissions.contains(NEEDS[key]))) show[key] = false;
+  }
+  prefs = { ...prefs, ...saved.prefs };
+  for (const field of document.querySelectorAll("[data-pref]")) field.value = prefs[field.dataset.pref];
+  links = (saved.links ?? []).map((link) => (typeof link === "string" ? { url: link } : link));  // older builds saved plain URLs
   icons = saved.icons ?? icons;
   city = saved.city ?? city;
   weather = saved.weather ?? weather;
@@ -474,6 +635,6 @@ chrome.storage.local.get().then((saved) => {
   for (const box of document.querySelectorAll("[data-show]")) box.checked = show[box.dataset.show];
   if (city) document.getElementById("city").value = city.label ?? city.name;
   applyShow();
+  applyPrefs();
   renderLinks();
-  renderWeather();
 }).finally(() => document.body.classList.add("ready"));

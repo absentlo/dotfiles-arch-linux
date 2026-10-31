@@ -1,4 +1,7 @@
-// Unload background tabs when RAM runs low instead of swapping (8 GB machine)
+// Graphite LibreWolf preferences. Applied every time the browser starts.
+// The "Perf" lines are for low-spec PCs; delete any you don't want.
+
+// Perf: unload background tabs when RAM runs low instead of swapping
 user_pref("browser.tabs.unloadOnLowMemory", true);
 // Rice: load chrome/userChrome.css, compact density, built-in dark theme as the base
 user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
@@ -20,10 +23,11 @@ user_pref("browser.newtabpage.activity-stream.showWeather", false);
 // Rice: compact - narrower min tab width, no UI animations (saves CPU/GPU)
 user_pref("browser.tabs.tabMinWidth", 60);
 user_pref("ui.prefersReducedMotion", 1);
-// Perf: GPU video decode (HD 8490/UVD3 = H.264 only; VP9/AV1 still use CPU, falls back on error)
+// Perf: GPU video decode when the driver supports it (falls back to the CPU on error)
 user_pref("media.ffmpeg.vaapi.enabled", true);
-// Perf/RAM: fewer content processes and cached back/forward pages (8 GB machine)
-user_pref("dom.ipc.processCount", 4);
+// Perf: no AV1. Most older CPUs and GPUs can only decode it in software, so sites fall back to a lighter format
+user_pref("media.av1.enabled", false);
+// Perf: fewer cached back/forward pages, for around 8 GB of RAM
 user_pref("browser.sessionhistory.max_total_viewers", 2);
 // Perf: write session to disk every 60s instead of 15s
 user_pref("browser.sessionstore.interval", 60000);

@@ -30,7 +30,7 @@
     <p id="greeting" data-section="date"></p>
     <p id="weather" data-section="weather"></p>
     <form data-section="search" action="https://noai.duckduckgo.com/" method="get" role="search">
-      <svg class="search-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M15.5 15.5 21 21"/></svg>
+      <img class="search-icon" src="engine-ddg.png" alt="">
       <input name="q" type="search" placeholder="Search DuckDuckGo" autocomplete="off" autofocus aria-label="Search">
     </form>
     <nav id="links" class="sites" data-section="links" aria-label="My pages"></nav>
@@ -53,14 +53,31 @@
     <label class="field">Sites per page <input id="per-page" type="number" min="1" max="24" required></label>
 
     <h2>Clock</h2>
-    <input id="time-zone" type="text" list="time-zones" autocomplete="off" aria-label="Time zone">
+    <label class="field">Format
+      <select data-pref="clock"><option value="24">24 hour</option><option value="12">12 hour</option></select>
+    </label>
+    <label class="field">Size
+      <select data-pref="clockSize"><option value="s">Small</option><option value="m">Medium</option><option value="l">Large</option></select>
+    </label>
+    <label class="field">Time zone
+      <input id="time-zone" type="text" list="time-zones" autocomplete="off">
+    </label>
     <datalist id="time-zones"></datalist>
+    <label class="field">Your name
+      <input data-pref="name" type="text" maxlength="30" autocomplete="off" placeholder="For the greeting">
+    </label>
+
+    <h2>Search</h2>
+    <label class="field">Engine <select id="search-engine" data-pref="search"></select></label>
 
     <h2>Weather</h2>
     <form id="city-form">
       <input id="city" type="text" placeholder="City" autocomplete="off" aria-label="City" required>
       <button type="submit">set</button>
     </form>
+    <label class="field">Unit
+      <select data-pref="tempUnit"><option value="c">°C</option><option value="f">°F</option></select>
+    </label>
 
     <h2>Wallpaper</h2>
     <input id="wall-file" type="file" accept="image/*" hidden>
@@ -68,6 +85,9 @@
       <button id="wall-pick" type="button">choose</button>
       <button id="wall-remove" type="button" hidden>remove</button>
     </div>
+    <label class="field">Darkness
+      <input data-pref="wallDim" type="range" min="0" max="90" step="5">
+    </label>
 
     <h2>My pages</h2>
     <form id="link-form">
@@ -75,6 +95,13 @@
       <button type="submit">add</button>
     </form>
     <ul id="link-list"></ul>
+
+    <h2>Backup</h2>
+    <input id="import-file" type="file" accept="application/json,.json" hidden>
+    <div class="row">
+      <button id="export" type="button">export</button>
+      <button id="import" type="button">import</button>
+    </div>
   </aside>
   <script src="newtab.js"></script>
 </body>

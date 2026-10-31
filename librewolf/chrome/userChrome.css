@@ -1,4 +1,4 @@
-/* Graphite LibreWolf - matches the i3/polybar/rofi rice.
+/* Graphite LibreWolf.
    Customize: edit the variables below, then restart LibreWolf.
    Debug live: about:config devtools.chrome.enabled=true, then Ctrl+Alt+Shift+I */
 
@@ -44,7 +44,7 @@
 }
 
 /* Rounded url bar, popups and menus */
-#urlbar-background, .urlbarView { border-radius: var(--g-radius) !important; }
+.urlbar-background, .urlbarView { border-radius: var(--g-radius) !important; }
 menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
 
 /* Gray icons, brighter on hover */
@@ -54,7 +54,7 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
 .toolbarbutton-1:hover > .toolbarbutton-badge-stack { fill: var(--g-fg) !important; }
 
 /* Rice font on tabs and url bar */
-.tab-label, #urlbar-input, .urlbarView {
+.tab-label, #urlbar-input, #identity-icon-label, .urlbarView {
   font-family: var(--g-font) !important;
   font-size: var(--g-font-size) !important;
 }
@@ -70,7 +70,7 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
 .tabbrowser-tab:not([selected]):not(:hover) .tab-close-button { display: none !important; }
 
 /* Flat url bar with a subtle border */
-#urlbar-background {
+.urlbar-background {
   border: 1px solid var(--g-border) !important;
   box-shadow: none !important;
 }
@@ -121,8 +121,11 @@ findbar, #sidebar-box, #sidebar-header {
   border-color: var(--g-border) !important;
 }
 
-/* Declutter: i3 manages windows, no account sync, no AI buttons */
-.titlebar-buttonbox-container,
+/* On a tiling window manager (i3, sway, Hyprland), uncomment this to hide the window buttons:
+.titlebar-buttonbox-container { display: none !important; }
+*/
+
+/* Declutter: no account sync, no AI buttons */
 #fxa-toolbar-menu-button,
 #ai-window-toggle,
 #smartwindow-group-tabs-button { display: none !important; }
@@ -150,7 +153,7 @@ menupopup, panel, #PersonalToolbar, findbar, .panel-subview-body {
 
 /* URL bar: muted placeholder and site icons, gray text selection */
 #urlbar-input::placeholder { color: var(--g-muted) !important; opacity: 1 !important; }
-#identity-box, #tracking-protection-icon-container, #page-action-buttons {
+#identity-box, #trust-icon-container, #page-action-buttons {
   fill: var(--g-icon) !important;
 }
 #urlbar-input::selection { background-color: var(--g-border) !important; color: var(--g-fg) !important; }
@@ -178,10 +181,10 @@ menupopup .bookmark-item:not([_moz-menuactive]) :is(.menu-icon, .menu-iconic-ico
 /* Playing/muted tab indicator in gray instead of the default color */
 .tab-icon-overlay, .tab-audio-button { fill: var(--g-icon) !important; }
 
-/* Graphite start page (extension new tab): no "Extension (...)" chip or shield,
-   the bar just shows the search placeholder. Normal sites keep both icons. */
+/* Graphite start page (extension new tab): no "Extension (...)" chip, shield or bookmark star,
+   the bar just shows the search placeholder. Normal sites keep all of them. */
 #identity-box.extensionPage #identity-icon-box,
-#urlbar-input-container:has(#identity-box.extensionPage) #tracking-protection-icon-container {
+.urlbar-input-container:has(#identity-box.extensionPage) :is(#trust-icon-container, #star-button-box) {
   display: none !important;
 }
 
