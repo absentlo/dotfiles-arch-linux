@@ -53,6 +53,11 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
 .toolbarbutton-1:hover > .toolbarbutton-icon,
 .toolbarbutton-1:hover > .toolbarbutton-badge-stack { fill: var(--g-fg) !important; }
 
+/* Extension icons and badges in the palette; real colors on hover */
+.webextension-browser-action:not(:hover) > .toolbarbutton-badge-stack,
+.unified-extensions-item:not(:hover) .unified-extensions-item-icon { filter: grayscale(1) !important; }
+.toolbarbutton-badge { background-color: var(--g-border) !important; color: var(--g-fg) !important; }
+
 /* Rice font on tabs and url bar */
 .tab-label, #urlbar-input, #identity-icon-label, .urlbarView {
   font-family: var(--g-font) !important;
@@ -65,6 +70,10 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
   box-shadow: none !important;
   outline: 1px solid var(--g-border) !important;
 }
+
+/* Close button in the icon gray, brighter on hover */
+.tab-close-button { fill: var(--g-icon) !important; color: var(--g-icon) !important; }
+.tab-close-button:hover { fill: var(--g-fg) !important; color: var(--g-fg) !important; }
 
 /* Close button only on hover/selected - less clutter */
 .tabbrowser-tab:not([selected]):not(:hover) .tab-close-button { display: none !important; }
@@ -184,7 +193,7 @@ menupopup .bookmark-item:not([_moz-menuactive]) :is(.menu-icon, .menu-iconic-ico
 /* Graphite start page (extension new tab): no "Extension (...)" chip, shield or bookmark star,
    the bar just shows the search placeholder. Normal sites keep all of them. */
 #identity-box.extensionPage #identity-icon-box,
-.urlbar-input-container:has(#identity-box.extensionPage) :is(#trust-icon-container, #star-button-box) {
+.urlbar-input-container:has(#identity-box.extensionPage) :is(#trust-icon-container, #star-button-box, #urlbar-zoom-button) {
   display: none !important;
 }
 

@@ -31,7 +31,7 @@ user_pref("media.av1.enabled", false);
 user_pref("browser.sessionhistory.max_total_viewers", 2);
 // Perf: write session to disk every 60s instead of 15s
 user_pref("browser.sessionstore.interval", 60000);
-// Look: dark pages/about: pages, thin overlay scrollbars
+// Look: dark about: pages, thin overlay scrollbars. Websites still see "light": resistFingerprinting hides this from them
 user_pref("layout.css.prefers-color-scheme.content-override", 0);
 user_pref("browser.theme.content-theme", 0);
 user_pref("widget.gtk.overlay-scrollbars.enabled", true);

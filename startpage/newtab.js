@@ -91,7 +91,7 @@ const WEATHER_MAX_AGE = 30 * 60 * 1000;  // new tabs reuse the last reading inst
 const MAX_VISITED = 24;
 const WHEEL_GAP = 200;  // ms between page flips, a touchpad fires many wheel events per swipe
 const ICON_SIZE = 32;
-const ICON_DARKEST = 0x5A;   // --dim
+const ICON_DARKEST = 0x5A;
 const ICON_LIGHTEST = 0xD8;  // --fg
 const SVG_NS = "http://www.w3.org/2000/svg";
 let show = { logo: true, clock: true, date: true, search: true, links: true, siteIcons: false, visited: false, visitedIcons: false, weather: false };
@@ -589,6 +589,7 @@ document.getElementById("city-form").onsubmit = async (event) => {
   const query = input.value.trim();
   if (!query) return;
   try {
+    if (NEEDS.weather && !(await chrome.permissions.request(NEEDS.weather))) return;
     const res = await fetch(`https://geocoding-api.open-meteo.com/v1/search?count=1&name=${encodeURIComponent(query)}`);
     if (!res.ok) throw new Error(res.status);
     const place = (await res.json()).results?.[0];
@@ -616,6 +617,11 @@ document.getElementById("link-form").onsubmit = (event) => {
 
 chrome.storage.local.get().then(async (saved) => {
   show = { ...show, ...saved.show };
+  // Firefox's consent for data the add-on sends. Brave has no such permission and would throw on the key.
+  if ((await chrome.permissions.getAll()).data_collection) {
+    NEEDS.weather = { data_collection: ["locationInfo"] };
+    NEEDS.siteIcons.data_collection = ["browsingActivity"];
+  }
   // A backup from another profile, or a permission removed in about:addons, can leave a box ticked with no access
   for (const key of Object.keys(NEEDS)) {
     if (show[key] && !(await chrome.permissions.contains(NEEDS[key]))) show[key] = false;

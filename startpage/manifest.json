@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Graphite Start",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "description": "Graphite rice new tab: clock, search, pages, weather, wallpaper. No background code.",
   "permissions": ["storage", "unlimitedStorage"],
   "optional_permissions": ["topSites"],
@@ -11,7 +11,12 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "graphite-start@rice.local"
+      "id": "graphite-start@rice.local",
+      "strict_min_version": "140.0",
+      "data_collection_permissions": {
+        "required": ["none"],
+        "optional": ["locationInfo", "browsingActivity"]
+      }
     }
   },
   "chrome_settings_overrides": {
