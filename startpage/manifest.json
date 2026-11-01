@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Graphite Start",
-  "version": "0.5.3",
+  "version": "0.5.4",
   "description": "Graphite rice new tab: clock, search, pages, weather, wallpaper. No background code.",
   "permissions": ["storage", "unlimitedStorage"],
   "optional_permissions": ["topSites"],

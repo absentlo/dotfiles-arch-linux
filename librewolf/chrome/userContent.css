@@ -30,6 +30,8 @@
     --border-color: #3A3A3A !important;
     --text-color: #D8D8D8 !important;
     --text-color-deemphasized: #9A9A9A !important;
+    --input-background-color: #1C1C1C !important;
+    --input-border-color: #3A3A3A !important;
     scrollbar-color: #3A3A3A #111111 !important;
   }
 }

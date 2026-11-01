@@ -84,6 +84,10 @@ menupopup, panel { --panel-border-radius: var(--g-radius) !important; }
   box-shadow: none !important;
 }
 
+/* Focused url bar: a lighter thin border instead of a thick ring, like the start page's search box */
+.urlbar-background { outline: none !important; }
+#urlbar[focused] > .urlbar-background { border-color: var(--g-muted) !important; }
+
 /* Compact: thinner tabs, toolbar and url bar, no wasted gaps */
 :root {
   --tab-margin-block: 2px !important;
@@ -146,7 +150,9 @@ findbar, #sidebar-box, #sidebar-header {
   --panel-separator-color: var(--g-border) !important;
   --focus-outline-color: var(--g-muted) !important;
   --tab-icon-fill-loading: var(--g-fg) !important;
+  --urlbar-box-background-color: var(--g-surface) !important;  /* search button and zoom badge, otherwise blue-gray */
   --urlbar-box-background-color-hover: var(--g-border) !important;
+  --urlbar-box-background-color-active: var(--g-border) !important;
 }
 
 /* Primary buttons in popups (install and permission prompts, blocked downloads) gray, not purple */

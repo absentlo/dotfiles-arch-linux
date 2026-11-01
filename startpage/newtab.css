@@ -37,7 +37,7 @@ main input, #panel input[type="text"], #panel input[type="number"] {
   font: inherit; font-size: 13px; outline: none;
 }
 input::placeholder { color: var(--muted); }
-input:focus { border-color: var(--muted); }
+input:focus, #panel input:focus { border-color: var(--muted); }
 
 /* Wallpaper: darkened with the palette bg so the clock stays readable on bright images.
    A layer of its own, so moving the slider repaints it without decoding the image again. */
@@ -47,6 +47,7 @@ body.has-wall #date, body.has-wall #greeting, body.has-wall #weather { color: va
 body.has-wall main { text-shadow: 0 1px 4px #000; }
 #customize { position: fixed; right: 12px; bottom: 12px; display: flex; padding: 6px; opacity: .5; }
 #customize:hover, #customize:focus-visible { opacity: 1; }
+:where(:focus-visible) { outline: 1px solid var(--muted); outline-offset: 1px; }  /* keyboard focus in gray, not the system blue */
 button {
   padding: 4px 10px; background: var(--surface); color: var(--muted);
   border: 1px solid var(--border); border-radius: var(--radius);
