@@ -29,11 +29,13 @@ gamemode
 gammastep
 ghostscript
 git
+github-cli
 grub
 gvfs
 i3-wm
 intel-ucode
 iw
+keepassxc
 krita
 lib32-gamemode
 lib32-mesa
