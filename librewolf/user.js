@@ -8,6 +8,10 @@ user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
 user_pref("browser.compactmode.show", true);
 user_pref("browser.uidensity", 1);
 user_pref("extensions.activeThemeID", "firefox-compact-dark@mozilla.org");
+// Rice: classic design. New profiles default to Nova, which adds a colored glow on the active tab and a colored search button
+user_pref("browser.nova.enabled", false);
+// Rice: no bookmarks bar or its "place your bookmarks here" message on new tabs. Delete this line to use the bar
+user_pref("browser.toolbars.bookmarks.visibility", "never");
 // Rice: horizontal tabs (vertical tabs off)
 user_pref("sidebar.revamp", false);
 user_pref("sidebar.verticalTabs", false);
