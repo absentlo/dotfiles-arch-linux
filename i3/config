@@ -74,7 +74,7 @@ exec --no-startup-id xss-lock --transfer-sleep-lock -n 'notify-send -u low -i sy
 # Clipboard history: only what is copied (not every selection), last 50 entries
 exec --no-startup-id sh -c "pgrep -f '^bash /usr/bin/clipmenud' >/dev/null || CM_SELECTIONS=clipboard CM_MAX_CLIPS=50 clipmenud"
 exec --no-startup-id sh -c 'pgrep -x gammastep >/dev/null || gammastep'
-exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#3A3A3A" -t 128x128 -i 32x32'
+exec_always --no-startup-id sh -c '(pkill -x alttab || true) && sleep 0.3 && exec alttab -fg "#D8D8D8" -bg "#111111" -frame "#111111" -t 128x128 -i 32x32'
 exec_always --no-startup-id ~/.config/polybar/launch.sh
 # Split each new window along the focused window's longer side (dwindle-style)
 exec_always --no-startup-id sh -c '(pkill -x autotiling || true) && sleep 0.3 && exec autotiling'
