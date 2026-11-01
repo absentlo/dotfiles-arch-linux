@@ -83,6 +83,10 @@ system() {
     # pacman: colors, Pac-Man progress bar, table view (edits in place, rerun-safe)
     sudo sed -i -e 's/^#Color$/Color\nILoveCandy/' -e 's/^#VerbosePkgLists$/VerbosePkgLists/' /etc/pacman.conf
     sudo install -Dm644 "$D/system/10-intel-primary.conf" /etc/X11/xorg.conf.d/10-intel-primary.conf
+    sudo install -Dm644 "$D/system/20-radeon-tearfree.conf" /etc/X11/xorg.conf.d/20-radeon-tearfree.conf
+    sudo install -Dm644 "$D/system/99-rice-no-mei.conf" /etc/modprobe.d/99-rice-no-mei.conf
+    # no fallback initramfs (edits in place, rerun-safe)
+    sudo sed -i "s/^PRESETS=('default' 'fallback')$/PRESETS=('default')/" /etc/mkinitcpio.d/*.preset
     # sudo shows * while typing the password; validated first, a broken sudoers file would lock out sudo
     sudo visudo -cf "$D/system/sudoers-pwfeedback" && sudo install -m 0440 "$D/system/sudoers-pwfeedback" /etc/sudoers.d/pwfeedback
     # Terminus on the TTY; the initramfs carries the console font (sd-vconsole hook), so rebuild it

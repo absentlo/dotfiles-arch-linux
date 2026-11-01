@@ -92,6 +92,9 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `system/grub` | `/etc/default/grub` (sudo, then `grub-mkconfig -o /boot/grub/grub.cfg`) |
 | `system/issue` | `/etc/issue` (sudo): Graphite TTY login text |
 | `system/10-intel-primary.conf` | `/etc/X11/xorg.conf.d/` (sudo): Intel iGPU as main GPU (monitor on the motherboard port) |
+| `system/20-radeon-tearfree.conf` | `/etc/X11/xorg.conf.d/` (sudo): TearFree on the `radeon` driver |
+| `system/99-rice-no-mei.conf` | `/etc/modprobe.d/` (sudo, then `mkinitcpio -P`): blacklists `mei`/`mei_me`, which fail to init on this machine; skip it on other hardware |
+| (no fallback initramfs) | `install.sh system` sets `PRESETS=('default')` in `/etc/mkinitcpio.d/*.preset` |
 | (pacman colors) | `install.sh system` turns on `Color`, `ILoveCandy` and `VerbosePkgLists` in `/etc/pacman.conf` |
 | `system/sudoers-pwfeedback` | `/etc/sudoers.d/pwfeedback` (sudo, mode 0440): `*` while typing the sudo password |
 | `system/vconsole.conf` | `/etc/vconsole.conf` (sudo, needs `terminus-font`, then `mkinitcpio -P`): Terminus TTY font |

@@ -24,6 +24,7 @@ cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.
 cp /etc/default/grub "$D/system/grub"
 cp /etc/issue "$D/system/issue"
 cp /etc/X11/xorg.conf.d/10-intel-primary.conf "$D/system/" 2>/dev/null || true
+cp /etc/X11/xorg.conf.d/20-radeon-tearfree.conf /etc/modprobe.d/99-rice-no-mei.conf /etc/vconsole.conf "$D/system/"
 cp "$C"/librewolf/librewolf/*.default-release/user.js "$D/librewolf/"
 mkdir -p "$D/thunderbird" && cp "$C"/thunderbird/*.default-release/user.js "$D/thunderbird/"
 mkdir -p "$D/thunderbird/chrome" && cp "$C"/thunderbird/*.default-release/chrome/*.css "$D/thunderbird/chrome/"
