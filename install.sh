@@ -113,6 +113,7 @@ post() {
     # same look for apps that read gsettings instead of gtk settings.ini (Flatpak, Electron, libadwaita)
     local g=org.gnome.desktop.interface
     gsettings set $g color-scheme prefer-dark && gsettings set $g accent-color slate &&
+    gsettings set $g gtk-theme Materia-dark-compact &&
     gsettings set $g icon-theme Papirus-Dark-Graphite && gsettings set $g cursor-theme capitaine-cursors &&
     gsettings set $g font-name 'JetBrainsMono Nerd Font 8' && gsettings set $g monospace-font-name 'JetBrainsMono Nerd Font Mono 9' ||
         todo+=("gsettings failed (no session bus?): rerun ./install.sh post after logging into i3")
