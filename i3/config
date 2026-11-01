@@ -14,7 +14,7 @@ gaps inner 8
 gaps outer 4
 
 # class                 border  backgr. text    indicator child_border
-client.focused          #111111 #111111 #D8D8D8 #3A3A3A   #3A3A3A
+client.focused          #111111 #111111 #D8D8D8 #111111   #111111
 client.focused_inactive #111111 #111111 #9A9A9A #111111   #1C1C1C
 client.unfocused        #111111 #111111 #5A5A5A #111111   #111111
 client.urgent           #C46A6A #1C1C1C #FFFFFF #C46A6A   #C46A6A

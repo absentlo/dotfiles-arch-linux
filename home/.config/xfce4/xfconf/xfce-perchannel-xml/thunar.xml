@@ -8,9 +8,9 @@
   <property name="last-window-maximized" type="bool" value="true"/>
   <property name="last-separator-position" type="int" value="158"/>
   <property name="last-details-view-zoom-level" type="string" value="THUNAR_ZOOM_LEVEL_38_PERCENT"/>
-  <property name="last-details-view-column-widths" type="string" value="50,50,122,102,122,422,50,50,1236,50,50,55,50,122"/>
+  <property name="last-details-view-column-widths" type="string" value="50,50,122,102,122,422,50,50,1229,50,50,62,50,122"/>
   <property name="last-menubar-visible" type="bool" value="false"/>
-  <property name="last-show-hidden" type="bool" value="false"/>
+  <property name="last-show-hidden" type="bool" value="true"/>
   <property name="last-sort-column" type="string" value="THUNAR_COLUMN_NAME"/>
   <property name="last-sort-order" type="string" value="GTK_SORT_ASCENDING"/>
   <property name="last-details-view-visible-columns" type="string" value="THUNAR_COLUMN_NAME,THUNAR_COLUMN_SIZE,THUNAR_COLUMN_DATE_MODIFIED"/>
