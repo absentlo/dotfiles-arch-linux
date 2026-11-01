@@ -1,0 +1,10 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Sober (Intel GPU)
+Comment=Roblox usando la Intel HD Graphics 4600
+Exec=flatpak run --env=DRI_PRIME=pci-0000_00_02_0 org.vinegarhq.Sober
+Icon=org.vinegarhq.Sober
+Terminal=false
+Categories=Game;
+StartupNotify=true

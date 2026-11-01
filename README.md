@@ -81,6 +81,8 @@ Configurations are **copies**, not symlinks. After changing anything, run `dotfi
 | `xfce4-terminal/xfce4-terminal.xml` | `~/.config/xfce4/xfconf/xfce-perchannel-xml/` |
 | `xfce4-terminal/graphite.theme` | `~/.local/share/xfce4/terminal/colorschemes/` |
 | `home/`, `.bashrc` | `~/` |
+| `flatpaklist.txt` | Not installed by `install.sh`: `flatpak install flathub $(cat flatpaklist.txt)` |
+| (not in any list) | Install by hand: OpenUtau (`~/.local/opt`), War Thunder (`~/WarThunder`), ABSENToX plugins (`~/.vst3`, `~/.clap`), `npm i -g @anthropic-ai/claude-code` |
 | `librewolf/user.js`, `librewolf/chrome/` | your LibreWolf profile folder (`~/.config/librewolf/librewolf/*.default-release/`), restart LibreWolf |
 | `thunderbird/user.js` | your Thunderbird profile folder |
 | `brave/brave-origin-flags.conf` | `~/.config/` (restart Brave) |

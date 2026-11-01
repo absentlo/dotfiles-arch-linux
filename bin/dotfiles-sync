@@ -19,6 +19,11 @@ mkdir -p "$D/krita" && cp "$HOME"/.local/share/krita/color-schemes/*.colors "$D/
 mkdir -p "$D/gtksourceview-4" && cp "$HOME"/.local/share/gtksourceview-4/styles/*.xml "$D/gtksourceview-4/"
 cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
+mkdir -p "$D/home/.config/xfce4/xfconf/xfce-perchannel-xml" "$D/home/.local/share/applications"
+cp "$C/mimeapps.list" "$D/home/.config/"
+cp "$C/xfce4/xfconf/xfce-perchannel-xml/ristretto.xml" "$D/home/.config/xfce4/xfconf/xfce-perchannel-xml/"
+cp "$HOME"/.local/share/applications/{org.pulseaudio.pavucontrol,sober-intel}.desktop "$D/home/.local/share/applications/"
+flatpak list --app --columns=application > "$D/flatpaklist.txt"
 mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/home/.icons/default/"   # X/i3 cursor theme
 cp /etc/sysctl.d/99-rice.conf /etc/default/earlyoom /etc/systemd/zram-generator.conf "$D/system/"
 cp /etc/default/grub "$D/system/grub"
