@@ -21,7 +21,7 @@ cp "$HOME/.bashrc" "$D/"
 cp "$HOME/.bash_profile" "$HOME/.xinitrc" "$HOME/.fehbg" "$D/home/"
 mkdir -p "$D/home/.config/xfce4/xfconf/xfce-perchannel-xml" "$D/home/.local/share/applications"
 cp "$C/mimeapps.list" "$C/user-dirs.dirs" "$D/home/.config/"
-cp "$C/xfce4/xfconf/xfce-perchannel-xml/ristretto.xml" "$D/home/.config/xfce4/xfconf/xfce-perchannel-xml/"
+cp "$C"/xfce4/xfconf/xfce-perchannel-xml/{ristretto,thunar}.xml "$D/home/.config/xfce4/xfconf/xfce-perchannel-xml/"
 cp "$HOME"/.local/share/applications/{org.pulseaudio.pavucontrol,sober-intel}.desktop "$D/home/.local/share/applications/"
 flatpak list --app --columns=application > "$D/flatpaklist.txt"
 mkdir -p "$D/home/.icons/default" && cp "$HOME/.icons/default/index.theme" "$D/home/.icons/default/"   # X/i3 cursor theme

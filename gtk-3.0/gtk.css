@@ -42,6 +42,12 @@ textview text selection, entry selection, label selection {
     color: #FFFFFF;
 }
 
+/* Drag-select box: Thunar draws it as the view itself, so the .view background above made it solid */
+.view.rubberband, iconview.rubberband, .view rubberband, .rubberband, rubberband {
+    background-color: rgba(184, 184, 184, 0.2);
+    border: 1px solid #B8B8B8;
+}
+
 /* Volume and progress bars */
 scale trough highlight, progressbar trough progress, levelbar block.filled {
     background-color: #B8B8B8;
